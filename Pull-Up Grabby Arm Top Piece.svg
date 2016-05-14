@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16in"
+   height="16in"
+   viewBox="0 0 1440 1440"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Pull-Up Grabby Arm Top Piece.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="232.22368"
+     inkscape:cy="1395.4591"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="in"
+     showguides="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,387.63786)">
+    <g
+       id="g4228"
+       transform="translate(24,-1146.0007)">
+      <ellipse
+         ry="10.806951"
+         rx="10.549734"
+         transform="scale(-1,1)"
+         cy="1007.3995"
+         cx="-1321.9854"
+         id="path3336"
+         style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.09127102;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="rect3338"
+         transform="translate(0,-387.63786)"
+         d="m 1096.7461,1170.0723 c -9.2381,0 -16.6738,4.4584 -16.6738,9.998 l 0,169.9746 -1057.216831,0 c -12.636902,0 -22.81054713,10.1737 -22.81054713,22.8106 l 0,44.289 c 0,12.6369 10.17364513,22.8106 22.81054713,22.8106 l 1124.289031,0 c 0.3687,0 0.7353,-0.01 1.0996,-0.027 l 5.0098,0 185.7656,0 c 6.0433,0 10.9082,-6.4886 10.9082,-14.5488 l 0,-60.7578 c 0,-8.0602 -4.8649,-14.5488 -10.9082,-14.5488 l -169.0918,0 0,-170.002 c 0,-5.5396 -7.4357,-9.998 -16.6738,-9.998 l -56.5078,0 z"
+         style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.09127102;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         inkscape:connector-curvature="0" />
+      <ellipse
+         ry="10.806951"
+         rx="10.549734"
+         cy="1007.317"
+         cx="32.701855"
+         id="path3336-1"
+         style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.09127102;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <ellipse
+         ry="10.806951"
+         rx="10.549734"
+         cy="999.3291"
+         cx="1125"
+         id="path3336-3"
+         style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.09127102;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <ellipse
+         ry="10.806951"
+         rx="10.549734"
+         transform="scale(-1,1)"
+         cy="805.16956"
+         cx="-1125"
+         id="path3336-0"
+         style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.09127102;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>
