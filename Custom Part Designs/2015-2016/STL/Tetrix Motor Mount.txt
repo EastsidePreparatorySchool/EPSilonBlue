@@ -1,0 +1,3 @@
+For our 3D printed motor brackets, we used a bracket made by FTC 8640, Trojan Robotics.
+
+It can be found at the URL http://www.thingiverse.com/thing:699123

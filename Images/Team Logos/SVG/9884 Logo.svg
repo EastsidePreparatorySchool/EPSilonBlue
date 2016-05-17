@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="421.35001"
+   height="339.42001"
+   viewBox="0 0 0 354.3307"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="8103 Logo.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient4514"
+       osb:paint="gradient">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop4516" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop4518" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="658.31947"
+     inkscape:cy="456.10265"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1765.3044)">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4223"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:sans-serif"
+       transform="matrix(1,0,0,0.99999856,-734.55319,697.01084)"><flowRegion
+         id="flowRegion4225"><rect
+           id="rect4227"
+           width="658.61945"
+           height="185.86807"
+           x="44.446712"
+           y="568.79474" /></flowRegion><flowPara
+         id="flowPara4229" /></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4223-6"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:sans-serif"
+       transform="matrix(1,0,0,0.99999856,-521.91608,693.57982)"><flowRegion
+         id="flowRegion4225-9"><rect
+           id="rect4227-0"
+           width="658.61945"
+           height="185.86807"
+           x="44.446712"
+           y="568.79474" /></flowRegion><flowPara
+         id="flowPara4229-6" /></flowRoot>    <path
+       style="fill:#000000"
+       d="m 2.77226,2011.7826 c -2.00244,-1.5374 -3.2041,-4.414 -2.62761,-6.2901 0.92366,-3.0059 136.36124,-237.372 138.00976,-238.8171 1.48117,-1.2983 9.29163,-1.3749 140.2059,-1.3749 87.2498,0 139.1607,0.2801 140.0493,0.7556 0.7765,0.4157 1.8617,1.8417 2.4116,3.1691 0.9091,2.1947 0.7838,2.8203 -1.3828,6.9047 -5.4225,10.2224 -134.5624,233.2676 -135.999,234.892 l -1.5634,1.7678 -138.92856,-0.024 C 34.97676,2012.7467 3.74108,2012.5273 2.77226,2011.7834 z m 339.19485,-125.7135 62.1742,-107.8049 -62.3706,-0.2011 c -34.3038,-0.1107 -90.43628,-0.1107 -124.73874,0 l -62.36807,0.2011 62.17166,107.8068 c 34.19441,59.2937 62.34845,107.8059 62.56455,107.8049 0.2162,0 28.3712,-48.514 62.567,-107.8068 z m -163.36019,29.8855 c -0.24006,-29.9246 -0.68224,-55.2038 -0.98258,-56.1761 -0.30034,-0.9723 -0.92985,-1.7678 -1.39891,-1.7678 -2.98569,0 -66.5076,20.1911 -68.00533,21.6162 -0.91406,0.8698 -0.82007,1.8835 0.6119,6.5979 0.93054,3.0636 1.94689,5.5592 2.25852,5.5457 0.31166,-0.014 12.4108,-3.6897 26.887,-8.1694 23.00151,-7.1179 26.38766,-7.9816 26.85435,-6.8502 0.84939,2.0592 0.72645,17.3512 -0.15269,18.9939 -0.84825,1.585 -5.09325,3.0187 -30.23723,10.2118 -7.77825,2.2252 -17.41267,5.0923 -21.40983,6.3714 -7.17872,2.2971 -7.26733,2.3562 -7.25031,4.842 0.0188,2.5844 2.38681,8.6456 3.69523,9.4543 0.40336,0.2492 2.47311,-0.073 4.5995,-0.7166 12.27493,-3.7142 48.63082,-13.685 49.89861,-13.685 1.3863,0 1.50117,0.6576 1.50117,8.5913 0,4.7252 -0.31856,9.4293 -0.70797,10.4535 -0.62426,1.642 -3.76096,2.8216 -26.51676,9.9722 -32.85526,10.3241 -34.32081,11.0865 -32.83351,17.0801 l 0.74641,3.0079 5.10338,-0.071 c 3.74279,-0.052 10.0259,-1.4549 23.56693,-5.261 29.24109,-8.219 29.03371,-8.1716 29.88548,-6.8248 0.40261,0.6367 0.73744,5.6654 0.74405,11.175 l 0.0108,10.0173 6.78354,0 6.78351,0 -0.43648,-54.4083 z"
+       id="path4221-0-2"
+       inkscape:connector-curvature="0" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4233-5-6"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:sans-serif;-inkscape-font-specification:sans-serif"
+       transform="matrix(3.0442142,0,0,3.0442098,-205.16617,290.19104)"><flowRegion
+         id="flowRegion4235-8-2"><rect
+           id="rect4237-7-8"
+           width="626.29456"
+           height="258.59906"
+           x="72.73098"
+           y="560.7135"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif" /></flowRegion><flowPara
+         id="flowPara4239-5-6"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Estrangelo Edessa;-inkscape-font-specification:Estrangelo Edessa">9884</flowPara></flowRoot>  </g>
+</svg>
