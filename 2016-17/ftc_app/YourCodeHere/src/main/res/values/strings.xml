@@ -1,0 +1,8 @@
+<resources>
+    <string name="version_name">Swerve YourCodeHere Robot Controller App v1.7.1</string>
+    <string name="pref_view_logs">View Log</string>
+    <string name="pref_sound_on_off_title">SoundTitle</string>
+    <string name="pref_sound_on_off">Sound</string>
+    <string name="pref_launch_viewlogs">ViewLogs</string>
+    <string name="pref_configure_robot_title">Robot Title</string>
+</resources>
