@@ -27,7 +27,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareTwitchy
 {
     /* Public OpMode members. */
-    public DcMotor  leftFrontMotor   = null;
+    public DcMotor  leftFrontMotor   = null; //why?
     public DcMotor  leftBackMotor = null;
     public DcMotor  rightBackMotor  = null;
     public DcMotor  rightFrontMotor = null;
