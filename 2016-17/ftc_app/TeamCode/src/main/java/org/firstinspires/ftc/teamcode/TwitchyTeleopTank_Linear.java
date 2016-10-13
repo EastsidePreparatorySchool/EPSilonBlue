@@ -73,7 +73,7 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
         double horizontol;
 
         /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
+         * The init() method of the hardware class does all the work here 
          */
         robot.init(hardwareMap);
 
