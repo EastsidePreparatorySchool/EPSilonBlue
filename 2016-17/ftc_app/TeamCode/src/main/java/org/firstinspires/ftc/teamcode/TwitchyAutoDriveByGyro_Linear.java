@@ -140,9 +140,9 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         // Put a hold after each turn
         gyroDrive(DRIVE_SPEED, 20, 0.0);    // Drive FWD 20 centimeters
         gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
-//        gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
+        gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
-//        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hcold  45 Deg heading for a 1/2 second
+//        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
 //        gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
 //        gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 centimeters
