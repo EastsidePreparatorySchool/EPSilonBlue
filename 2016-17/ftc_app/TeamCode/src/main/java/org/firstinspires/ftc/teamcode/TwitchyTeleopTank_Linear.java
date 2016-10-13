@@ -66,14 +66,14 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
     double          clawPosition    = robot.CLAW_HOME;                  // Servo safe position
     final double    CLAW_SPEED      = 0.01 ;                            // sets rate to move servo
     final double    ARM_SPEED       = 0.01 ;                            // sets rate to move servo
-
+//hello -cliu
     @Override
     public void runOpMode() throws InterruptedException {
         double vertical;
         double horizontol;
 
         /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
+         * The init() method of the hardware class does all the work here 
          */
         robot.init(hardwareMap);
 
