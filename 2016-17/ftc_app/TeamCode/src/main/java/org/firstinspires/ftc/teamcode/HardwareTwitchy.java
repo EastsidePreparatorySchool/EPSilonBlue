@@ -31,6 +31,7 @@ public class HardwareTwitchy
     public DcMotor  leftBackMotor = null;
     public DcMotor  rightBackMotor  = null;
     public DcMotor  rightFrontMotor = null;
+    public DcMotor cannon =null;
 //    public Servo    arm         = null;
 //    public Servo    claw        = null;
 
@@ -59,6 +60,7 @@ public class HardwareTwitchy
         leftFrontMotor  = hwMap.dcMotor.get("motorLeftFront");
         rightBackMotor  = hwMap.dcMotor.get("motorRightBack");
         rightFrontMotor = hwMap.dcMotor.get("motorRightFront");
+        cannon = hwMap.dcMotor.get("cannon");
 
         //set the two backward motors to run in reverse
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);

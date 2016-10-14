@@ -35,9 +35,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwareK9bot;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This OpMode uses the common HardwareK9bot class to define the devices on the robot.
@@ -65,8 +69,12 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
     double          armPosition     = robot.ARM_HOME;                   // Servo safe position
     double          clawPosition    = robot.CLAW_HOME;                  // Servo safe position
     final double    CLAW_SPEED      = 0.01 ;                            // sets rate to move servo
-    final double    ARM_SPEED       = 0.01 ;                            // sets rate to move servo
-//hello -cliu
+    final double    ARM_SPEED       = 0.01 ;     // sets rate to move servo
+
+    private ElapsedTime runtime = new ElapsedTime();
+    Timer timer =  new Timer();
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         double vertical;
@@ -90,7 +98,7 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             vertical = gamepad1.left_stick_y;
             horizontol = gamepad1.left_stick_x;
 
-            double pp = Math.signum(vertical);
+            double pp = Math.signum(vertical); // checking if it is positive and negative and setting power according to those variables)
             robot.leftBackMotor.setPower(pp);
             robot.leftFrontMotor.setPower(pp);
             robot.rightBackMotor.setPower(pp);
@@ -113,7 +121,15 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 //                clawPosition += CLAW_SPEED;
 //            else if (gamepad1.b)
 //                clawPosition -= CLAW_SPEED;
-//
+
+            // if right trigger pressed will run cannon motor for half a second
+            if (gamepad1.right_trigger > 0.25) {
+                runtime.reset(); //
+                robot.cannon.setPower(1.0);
+                sleep(500);
+                robot.cannon.setPower(0.0);
+                }
+
 //            // Move both servos to new position.
 //            armPosition  = Range.clip(armPosition, robot.ARM_MIN_RANGE, robot.ARM_MAX_RANGE);
 //            robot.arm.setPosition(armPosition);
@@ -123,13 +139,14 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 //            // Send telemetry message to signify robot running;
 //            telemetry.addData("arm",   "%.2f", armPosition);
 //            telemetry.addData("claw",  "%.2f", clawPosition);
-            telemetry.addData("horizontol",  "%.2f", horizontol);
-            telemetry.addData("vertical", "%.2f", vertical);
-            telemetry.update();
+                telemetry.addData("horizontol", "%.2f", horizontol);
+                telemetry.addData("vertical", "%.2f", vertical);
+                telemetry.update();
 
-            // Pause for metronome tick.  40 mS each cycle = update 25 times a second.
-            robot.waitForTick(40);
-            idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
+                // Pause for metronome tick.  40 mS each cycle = update 25 times a second.
+                robot.waitForTick(40);
+                idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
+
         }
     }
 }
