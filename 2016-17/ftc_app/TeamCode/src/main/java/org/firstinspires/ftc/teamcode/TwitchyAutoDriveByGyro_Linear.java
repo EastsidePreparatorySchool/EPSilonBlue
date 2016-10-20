@@ -139,8 +139,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
         gyroDrive(DRIVE_SPEED, 20, 0.0);    // Drive FWD 20 centimeters
-        gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
-        gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
+        gyroTurn( TURN_SPEED, -90.0);         // Turn  CCW to -45 Degrees
+        gyroHold( TURN_SPEED, -90.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
 //        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
