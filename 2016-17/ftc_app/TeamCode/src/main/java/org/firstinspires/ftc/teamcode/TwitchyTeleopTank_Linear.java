@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwareK9bot;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -66,8 +67,7 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareTwitchy   robot         = new HardwareTwitchy();            // Use a twitch's hardware
-    double          armPosition     = robot.ARM_HOME;                   // Servo safe position
-    double          clawPosition    = robot.CLAW_HOME;                  // Servo safe position
+    //double          armPosition     = robot.ARM_HOME;                   // Servo safe position (current no servo. Exists for reference
     final double    CLAW_SPEED      = 0.01 ;                            // sets rate to move servo
     final double    ARM_SPEED       = 0.01 ;     // sets rate to move servo
 
@@ -99,16 +99,13 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             horizontol = gamepad1.left_stick_x;
 
             double pp = Math.signum(vertical); // checking if it is positive and negative and setting power according to those variables)
-            robot.leftBackMotor.setPower(pp);
-            robot.leftFrontMotor.setPower(pp);
-            robot.rightBackMotor.setPower(pp);
-            robot.rightFrontMotor.setPower(pp);
+            robot.leftMotor.setPower(pp);
+            robot.rightMotor.setPower(pp);
 
             pp = Math.signum(horizontol);
-            robot.leftBackMotor.setPower(pp);
-            robot.leftFrontMotor.setPower(pp);
-            robot.rightBackMotor.setPower(-pp);
-            robot.rightFrontMotor.setPower(-pp);
+            robot.rightMotor.setPower(pp);
+            robot.leftMotor.setPower(pp);
+
 
 //            // Use gamepad Y & A raise and lower the arm
 //            if (gamepad1.a)
@@ -124,10 +121,12 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
             // if right trigger pressed will run cannon motor for half a second
             if (gamepad1.right_trigger > 0.25) {
-                runtime.reset(); //
-                robot.cannon.setPower(1.0);
-                sleep(500);
-                robot.cannon.setPower(0.0);
+                robot.cannon.setPower(0.33);// guess time
+                timer.schedule(new TimerTask() {
+                    public void run() {
+                        robot.cannon.setPower(0.0);
+                    }
+                }, 500);
                 }
 
 //            // Move both servos to new position.

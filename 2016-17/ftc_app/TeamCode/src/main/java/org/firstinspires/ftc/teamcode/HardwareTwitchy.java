@@ -27,20 +27,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareTwitchy
 {
     /* Public OpMode members. */
-    public DcMotor  leftFrontMotor   = null; //why?
-    public DcMotor  leftBackMotor = null;
-    public DcMotor  rightBackMotor  = null;
-    public DcMotor  rightFrontMotor = null;
+    public DcMotor  leftMotor   = null; //why?
+    public DcMotor  rightMotor = null;
     public DcMotor cannon =null;
-//    public Servo    arm         = null;
-//    public Servo    claw        = null;
+//    public Servo    servo         = null;
 
-    public final static double ARM_HOME = 0.2;
-    public final static double CLAW_HOME = 0.2;
-    public final static double ARM_MIN_RANGE  = 0.20;
-    public final static double ARM_MAX_RANGE  = 0.90;
-    public final static double CLAW_MIN_RANGE  = 0.20;
-    public final static double CLAW_MAX_RANGE  = 0.7;
+
+    public final static double servo_home = 0; // set starting positoin
+    public final static double servo_MIN_RANGE  = 0; // lowest position
+    public final static double servo_MAX_RANGE  = 0.50;// highest posible
 
     /* Local OpMode members. */
     HardwareMap hwMap  = null;
@@ -56,29 +51,22 @@ public class HardwareTwitchy
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftBackMotor   = hwMap.dcMotor.get("motorLeftBack");
-        leftFrontMotor  = hwMap.dcMotor.get("motorLeftFront");
-        rightBackMotor  = hwMap.dcMotor.get("motorRightBack");
-        rightFrontMotor = hwMap.dcMotor.get("motorRightFront");
+        leftMotor   = hwMap.dcMotor.get("motorLeft");
+        rightMotor = hwMap.dcMotor.get("motorRight");
         cannon = hwMap.dcMotor.get("cannon");
 
         //set the two backward motors to run in reverse
-        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set all motors to zero power
-        leftFrontMotor.setPower(0.0);
-        leftBackMotor.setPower(0.0);
-        rightFrontMotor.setPower(0.0);
-        rightBackMotor.setPower(0.0);
+        leftMotor.setPower(0.0);
+        rightMotor.setPower(0.0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
 
-        leftBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBackMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
 //        arm = hwMap.servo.get("arm");
