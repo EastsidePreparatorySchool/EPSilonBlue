@@ -36,6 +36,7 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.qualcomm.ftcrobotcontroller.R;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -56,11 +57,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@TeleOp(name = "AutoLineFollowing", group = "twitchy")
-@Disabled
+@Autonomous(name = "AutoLineFollowing", group = "twitchy")
+//@Disabled
 public class AutoLineFollowing extends LinearOpMode {
 
-    ColorSensor colorSensor;    // Hardware Device Object
+    ColorSensor bottomColor;    // Hardware Device Object
+    ColorSensor beaconColor;
     HardwareTwitchy   robot         = new HardwareTwitchy();
 
     @Override
@@ -90,8 +92,8 @@ public class AutoLineFollowing extends LinearOpMode {
         robot.init(hardwareMap);
 
         // get a reference to our ColorSensor object.
-        colorSensor = hardwareMap.colorSensor.get("bottomColor");
-
+        bottomColor = hardwareMap.colorSensor.get("bottomColor");
+        beaconColor = hardwareMap.colorSensor.get("beaconColor");
 
         //set up the motors
 //        robot.leftMotors.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -99,7 +101,7 @@ public class AutoLineFollowing extends LinearOpMode {
 
 
         // Set the LED in the beginning to active mode
-        colorSensor.enableLed(bLedOn);
+        bottomColor.enableLed(bLedOn);
 
 
         // wait for the start button to be pressed.
@@ -111,14 +113,14 @@ public class AutoLineFollowing extends LinearOpMode {
 
 
             // convert the RGB values to HSV values.
-            Color.RGBToHSV(colorSensor.red() * 8, colorSensor.green() * 8, colorSensor.blue() * 8, hsvValues);
+            Color.RGBToHSV(bottomColor.red() * 8, bottomColor.green() * 8, bottomColor.blue() * 8, hsvValues);
 
             // send the info back to driver station using telemetry function.
             telemetry.addData("LED", bLedOn ? "On" : "Off");
-            telemetry.addData("Clear", colorSensor.alpha());
-            telemetry.addData("Red  ", colorSensor.red());
-            telemetry.addData("Green", colorSensor.green());
-            telemetry.addData("Blue ", colorSensor.blue());
+            telemetry.addData("Clear", bottomColor.alpha());
+            telemetry.addData("Red  ", bottomColor.red());
+            telemetry.addData("Green", bottomColor.green());
+            telemetry.addData("Blue ", bottomColor.blue());
             telemetry.addData("Hue", hsvValues[0]);
 
             // change the background color to match the color detected by the RGB sensor.

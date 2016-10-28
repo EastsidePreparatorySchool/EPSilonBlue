@@ -119,15 +119,15 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 //            else if (gamepad1.b)
 //                clawPosition -= CLAW_SPEED;
 
-            // if right trigger pressed will run cannon motor for half a second
-            if (gamepad1.right_trigger > 0.25) {
-                robot.cannon.setPower(0.33);// guess time
-                timer.schedule(new TimerTask() {
-                    public void run() {
-                        robot.cannon.setPower(0.0);
-                    }
-                }, 500);
-                }
+//            // if right trigger pressed will run cannon motor for half a second
+//            if (gamepad1.right_trigger > 0.25) {
+//                robot.cannon.setPower(0.33);// guess time
+//                timer.schedule(new TimerTask() {
+//                    public void run() {
+//                        robot.cannon.setPower(0.0);
+//                    }
+//                }, 500);
+//                }
 
 //            // Move both servos to new position.
 //            armPosition  = Range.clip(armPosition, robot.ARM_MIN_RANGE, robot.ARM_MAX_RANGE);
