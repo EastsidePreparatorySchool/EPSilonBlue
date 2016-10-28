@@ -105,8 +105,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
-        robot.rightBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.leftBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Send telemetry message to alert driver that we are calibrating;
         telemetry.addData(">", "Calibrating Gyro");    //
@@ -123,8 +123,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         telemetry.addData(">", "Robot Ready.");    //
         telemetry.update();
 
-        robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Wait for the game to start (Display Gyro value), and reset gyro before we move..
         while (!isStarted()) {
@@ -184,26 +184,25 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
             // Determine new target position, and pass to motor controller
             moveCounts = (int)(distance * COUNTS_PER_CENTIMETERS);
-            newLeftTarget = robot.leftBackMotor.getCurrentPosition() + moveCounts;
-            newRightTarget = robot.rightBackMotor.getCurrentPosition() + moveCounts;
+            newLeftTarget = robot.leftMotor.getCurrentPosition() + moveCounts;
+            newRightTarget = robot.rightMotor.getCurrentPosition() + moveCounts;
 
             // Set Target and Turn On RUN_TO_POSITION
-            robot.leftBackMotor.setTargetPosition(newLeftTarget);
-            robot.rightBackMotor.setTargetPosition(newRightTarget);
+            robot.leftMotor.setTargetPosition(newLeftTarget);
+            robot.rightMotor.setTargetPosition(newRightTarget);
 
-            robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightBackMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // start motion.
             speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-            robot.leftBackMotor.setPower(speed);
-            robot.leftFrontMotor.setPower(speed);
-            robot.rightBackMotor.setPower(speed);
-            robot.rightFrontMotor.setPower(speed);
+            robot.rightMotor.setPower(speed);
+            robot.leftMotor.setPower(speed);
+
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-                   (robot.leftBackMotor.isBusy() && robot.rightBackMotor.isBusy())) {
+                   (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
 
                 // adjust relative speed based on heading error.
                 error = getError(angle);
@@ -224,10 +223,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
                     rightSpeed /= max;
                 }
 
-                robot.leftBackMotor.setPower(leftSpeed);
-                robot.leftFrontMotor.setPower(leftSpeed);
-                robot.rightBackMotor.setPower(rightSpeed);
-                robot.rightFrontMotor.setPower(rightSpeed);
+                robot.leftMotor.setPower(leftSpeed);
+                robot.rightMotor.setPower(rightSpeed);
 
                 // Display drive status for the driver.
 //                telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
@@ -244,14 +241,14 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
             }
 
             // Stop all motion;
-            robot.leftBackMotor.setPower(0);
-            robot.leftFrontMotor.setPower(0);
-            robot.rightBackMotor.setPower(0);
-            robot.rightFrontMotor.setPower(0);
+            robot.leftMotor.setPower(0);
+            robot.leftMotor.setPower(0);
+            robot.rightMotor.setPower(0);
+            robot.rightMotor.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            robot.leftBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightBackMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
@@ -304,8 +301,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         }
 
         // Stop all motion;
-        robot.leftBackMotor.setPower(0);
-        robot.rightBackMotor.setPower(0);
+        robot.leftMotor.setPower(0);
+        robot.rightMotor.setPower(0);
     }
 
     /**
@@ -341,10 +338,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         }
 
         // Send desired speeds to motors.
-        robot.leftBackMotor.setPower(leftSpeed);
-        robot.leftFrontMotor.setPower(leftSpeed);
-        robot.rightBackMotor.setPower(rightSpeed);
-        robot.rightFrontMotor.setPower(rightSpeed);
+        robot.leftMotor.setPower(leftSpeed);
+        robot.rightMotor.setPower(rightSpeed);
 
         // Display it for the driver.
         telemetry.addData("Target", "%5.2f", angle);
