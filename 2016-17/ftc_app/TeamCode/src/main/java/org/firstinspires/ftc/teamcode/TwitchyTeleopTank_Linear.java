@@ -95,6 +95,7 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+            // done to check if error is in pp
             vertical = gamepad1.left_stick_y;
             horizontol = gamepad1.left_stick_x;
 
