@@ -57,47 +57,44 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Autonomous(name = "AutoLineFollowing", group = "twitchy")
+@Autonomous(name = "AutoLineFollowing", group = "Twitchy")
 //@Disabled
 public class AutoLineFollowing extends LinearOpMode {
 
+    //white hue is about 300
+    int whiteHueValue = 300;
+
+    // bLedOn represents the state of the LED.
+    boolean bLedOn = true;
+
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    float hsvValues[] = {0F,0F,0F};
+
+
     ColorSensor bottomColor;    // Hardware Device Object
-    ColorSensor beaconColor;
     HardwareTwitchy   robot         = new HardwareTwitchy();
+
 
     @Override
     public void runOpMode() throws InterruptedException {
 
 
 
-        // hsvValues is an array that will hold the hue, saturation, and value information.
-        float hsvValues[] = {0F,0F,0F};
-
-        // values is a reference to the hsvValues array.
-        final float values[] = hsvValues;
-
         // get a reference to the RelativeLayout so we can change the background
         // color of the Robot Controller app to match the hue detected by the RGB sensor.
-        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(R.id.RelativeLayout);
 
-        // bPrevState and bCurrState represent the previous and current state of the button.
-        //these variables are for turning on or off leds manually. they are not necessary in autonomous.
-        boolean bPrevState = false;
-        boolean bCurrState = false;
 
-        // bLedOn represents the state of the LED.
-        boolean bLedOn = true;
 
 
         robot.init(hardwareMap);
 
         // get a reference to our ColorSensor object.
         bottomColor = hardwareMap.colorSensor.get("bottomColor");
-        beaconColor = hardwareMap.colorSensor.get("beaconColor");
+
 
         //set up the motors
-//        robot.leftMotors.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        robot.rightMotors.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         // Set the LED in the beginning to active mode
@@ -107,33 +104,67 @@ public class AutoLineFollowing extends LinearOpMode {
         // wait for the start button to be pressed.
         waitForStart();
 
-        // while the op mode is active, loop and read the RGB data.
-        // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
+        // while the op mode is active, loop and read the RGB data and determine motion
+
         while (opModeIsActive()) {
 
+            findHue();
 
-            // convert the RGB values to HSV values.
-            Color.RGBToHSV(bottomColor.red() * 8, bottomColor.green() * 8, bottomColor.blue() * 8, hsvValues);
+            //if hue is same as compare to whitehue,
+            //then keep going straight,
+            //if hue is not the same as whitehue,
+            //wiggle around until sees the white hue, and stop
+            //keep going straight
+            //continue...
 
-            // send the info back to driver station using telemetry function.
-            telemetry.addData("LED", bLedOn ? "On" : "Off");
-            telemetry.addData("Clear", bottomColor.alpha());
-            telemetry.addData("Red  ", bottomColor.red());
-            telemetry.addData("Green", bottomColor.green());
-            telemetry.addData("Blue ", bottomColor.blue());
-            telemetry.addData("Hue", hsvValues[0]);
 
-            // change the background color to match the color detected by the RGB sensor.
-            // pass a reference to the hue, saturation, and value array as an argument
-            // to the HSVToColor method.
-            relativeLayout.post(new Runnable() {
-                public void run() {
-                    relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-                }
-            });
-
-            telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
+
+
+
+    //find the hue from bottomColor and print the color values to phone.
+    public float findHue (){
+
+        float hue = 0;
+
+
+        // values is a reference to the hsvValues array.
+        final float values[] = hsvValues;
+
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(R.id.RelativeLayout);
+        // convert the RGB values to HSV values.
+        Color.RGBToHSV(bottomColor.red() * 8, bottomColor.green() * 8, bottomColor.blue() * 8, hsvValues);
+
+
+        //float hue is for return the value of hue. each color has a unique hue.
+        hue = hsvValues[0];
+
+
+        // send the info back to driver station using telemetry function.
+        telemetry.addData("LED", bLedOn ? "On" : "Off");
+        telemetry.addData("Clear", bottomColor.alpha());
+        telemetry.addData("Red  ", bottomColor.red());
+        telemetry.addData("Green", bottomColor.green());
+        telemetry.addData("Blue ", bottomColor.blue());
+        telemetry.addData("Hue", hsvValues[0]);
+
+        telemetry.update();
+
+        // change the background color to match the color detected by the RGB sensor.         // pass a reference to the hue, saturation, and value array as an argument
+        // to the HSVToColor method.
+        relativeLayout.post(new Runnable() {
+            public void run() {
+                relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+            }
+        });
+
+
+        return hue;
+    }
+
+
+
+
 }
