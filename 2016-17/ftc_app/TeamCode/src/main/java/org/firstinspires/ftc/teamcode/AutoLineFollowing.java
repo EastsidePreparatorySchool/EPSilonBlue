@@ -72,6 +72,7 @@ public class AutoLineFollowing extends LinearOpMode {
 
 
     ColorSensor bottomColor;    // Hardware Device Object
+    ColorSensor beaconColor;
     HardwareTwitchy   robot         = new HardwareTwitchy();
 
 
@@ -90,7 +91,7 @@ public class AutoLineFollowing extends LinearOpMode {
 
         // get a reference to our ColorSensor object.
         bottomColor = hardwareMap.colorSensor.get("bottomColor");
-
+        beaconColor = hardwareMap.colorSensor.get("beaconColor");
 
         //set up the motors
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -108,7 +109,7 @@ public class AutoLineFollowing extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            findHue();
+            //findHue();
 
             //if hue is same as compare to whitehue,
             //then keep going straight,
@@ -116,11 +117,20 @@ public class AutoLineFollowing extends LinearOpMode {
             //wiggle around until sees the white hue, and stop
             //keep going straight
             //continue...
-
+            telemetry.addData("bottomColor Address", bottomColor.getI2cAddress());
+            telemetry.addData("beaconColor Address", beaconColor.getI2cAddress());
+            telemetry.update();
 
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
+
+    //after the robot is close to line, lineFollowing() can be used to drive along the line
+    public void lineFollowing(){
+        //wiggle around until find white line
+
+    }
+
 
 
 
@@ -163,6 +173,13 @@ public class AutoLineFollowing extends LinearOpMode {
 
         return hue;
     }
+
+
+    public void wiggle(){
+
+    }
+
+
 
 
 

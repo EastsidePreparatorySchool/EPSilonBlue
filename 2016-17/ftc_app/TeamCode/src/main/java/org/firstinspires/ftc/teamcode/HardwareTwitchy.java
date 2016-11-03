@@ -55,7 +55,7 @@ public class HardwareTwitchy
         rightMotor = hwMap.dcMotor.get("motorRight");
         // cannon = hwMap.dcMotor.get("cannon");
 
-        //set the two backward motors to run in reverse
+        //set the one backward motors to run in reverse
         leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set all motors to zero power
