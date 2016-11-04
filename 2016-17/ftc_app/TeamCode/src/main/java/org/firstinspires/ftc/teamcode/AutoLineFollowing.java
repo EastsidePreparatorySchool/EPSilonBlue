@@ -127,8 +127,17 @@ public class AutoLineFollowing extends LinearOpMode {
 
     //after the robot is close to line, lineFollowing() can be used to drive along the line
     public void lineFollowing(){
-        //wiggle around until find white line
-
+        //drive foward until don't see white line;
+        // wiggle around to see white line
+        //record the angle when see the white line
+        //turn that angle plus a small amount
+        //repeating:
+        //drive forward a small amount
+        //wiggle around to see where the edges are.
+        //record angle to left edge and angle to right edge
+        //correct that angle
+        //forward
+        //when to stop?
     }
 
 
@@ -174,8 +183,12 @@ public class AutoLineFollowing extends LinearOpMode {
         return hue;
     }
 
-
+    //wiggle() will be within a maximum positive angle and a minimun negative angle set by user, returns the left edge angle and right edge angle
     public void wiggle(){
+
+    }
+
+    public void drive (){
 
     }
 

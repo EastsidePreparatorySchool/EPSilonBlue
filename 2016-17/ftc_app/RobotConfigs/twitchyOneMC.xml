@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Robot type="FirstInspires-FTC">
+    <DeviceInterfaceModule name="Device Interface Module 1" serialNumber="AL00VCR3">
+        <Gyro name="gyro" port="0" />
+        <ColorSensor name="bottomColor" port="1" />
+        <ColorSensor name="beaconColor" port="2" />
+    </DeviceInterfaceModule>
+    <MotorController name="Motor Controller 2" serialNumber="AL00VF7D">
+        <Motor name="motorLeft" port="1" />
+        <Motor name="motorRight" port="2" />
+    </MotorController>
+    <ServoController name="Servo Controller 3" serialNumber="AL00VBEH">
+        <Servo name="beacon" port="6" />
+    </ServoController>
+</Robot>
