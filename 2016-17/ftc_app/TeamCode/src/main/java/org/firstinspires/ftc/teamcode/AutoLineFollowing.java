@@ -48,6 +48,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 /*
  *
@@ -129,6 +130,8 @@ public class AutoLineFollowing extends LinearOpMode {
         beaconColor.enableLed(bLedOff);
 
 
+
+
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -167,10 +170,10 @@ public class AutoLineFollowing extends LinearOpMode {
 
 
 
-
+// TODO
         while (opModeIsActive()) {
 
-            //findHue();
+            findBottomHue();
 
             //if hue is same as compare to whitehue,
             //then keep going straight,
@@ -179,15 +182,17 @@ public class AutoLineFollowing extends LinearOpMode {
             //keep going straight
             //continue...
 
-            gyroDrive(DRIVE_SPEED, 20, 0.0);    // Drive FWD 20 centimeters
-            gyroTurn(TURN_SPEED, -90.0);         // Turn  CCW to -90 Degrees
+//            gyroDrive(DRIVE_SPEED, 20, 0.0);    // Drive FWD 20 centimeters
+//            gyroTurn(TURN_SPEED, -90.0);         // Turn  CCW to -90 Degrees
+
 
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
 
     //after the robot is close to line, lineFollowing() can be used to drive along the line
-    public void lineFollowing(){
+    public void lineFollowing()throws InterruptedException{
+        int whiteHue = 370; //temporary value, it is not correct
         //drive foward until don't see white line;
         // wiggle around to see white line
         //record the angle when see the white line
@@ -199,6 +204,22 @@ public class AutoLineFollowing extends LinearOpMode {
         //correct that angle
         //forward
         //when to stop?
+
+        //drive back ward until sees the line
+        while (findBottomHue() != whiteHue){
+            //drive backwards for 10m at angle of 45 degrees, these values are temporary and will be changed
+            gyroDrive(-DRIVE_SPEED,1000,45.0);
+
+        }
+        // now the robot should see the white line
+        //keep drive in the same direction at a lower speed until not see the line
+        while (findBottomHue() == whiteHue){
+            gyroDrive(-DRIVE_SPEED/2 ,20,45.0);
+        }
+
+
+
+
     }
 
 
@@ -227,7 +248,8 @@ public class AutoLineFollowing extends LinearOpMode {
         telemetry.addData("Green", bottomColor.green());
         telemetry.addData("Blue ", bottomColor.blue());
         telemetry.addData("Hue", hsvValues[0]);
-
+        telemetry.addData("beacon address", beaconColor.getI2cAddress());
+        telemetry.addData("bottom address", bottomColor.getI2cAddress());
         telemetry.update();
 
         // change the background color to match the color detected by the RGB sensor.         // pass a reference to the hue, saturation, and value array as an argument
@@ -244,19 +266,73 @@ public class AutoLineFollowing extends LinearOpMode {
 
 
 
+
+
+
+
+
+
+
+
+
     //wiggle() will be within a maximum positive angle and a minimun negative angle set by user,
     // returns the left edge angle and right edge angle
-    public void wiggle() throws InterruptedException{
+    public float[] wiggle(int maxAngle) throws InterruptedException {
+
+        //wiggle left and right while collecting hue value
+
+        int initAngle = gyro.getHeading();
+        float turnAngle;
+        //right array stores right hue from 1 degrees to maxAngle
+        float[] rightHueArray = new float[maxAngle];
+        //left array stores left hue from 0 degrees to -maxAngle
+        float[] leftHueArray = new float[maxAngle + 1];
+        //totalHueArray is the returned array, contains hue value from left to right.
+        float[] totalHueArray = new float[leftHueArray.length+rightHueArray.length];
 
 
-        gyroTurn(TURN_SPEED, 45.0);
-        gyroTurn(TURN_SPEED, -45.0);
+        //turn 45 degrees CW while collecting hue value
+        //starting from 1 degrees in the right turn, and includes 0 degrees in the left turn
+        for(int i = 1; i < maxAngle; i++){
+            turnAngle = i;
+            gyroTurn(TURN_SPEED,turnAngle);
+            rightHueArray[i-1] = findBottomHue();
 
+            //print data to phone so the driver can see
+            telemetry.addData("turn angle", turnAngle);
+            telemetry.addData("hue", rightHueArray[i-1]);
+            telemetry.update();
+        }
 
+        //turn CCW back to center
+        gyroTurn(TURN_SPEED, -45);
 
+        //turn 45 degrees CCW while collecting hue value
+        //starting from 1 degrees in the right turn, and from 0 degrees in the left turn
+        for(int i = 0; i > -maxAngle; i--){
+            turnAngle = i;
+            gyroTurn(TURN_SPEED,turnAngle);
+            leftHueArray[i-1] = findBottomHue();
 
+            //print data to phone so the driver can see
+            telemetry.addData("turn angle", turnAngle);
+            telemetry.addData("hue", rightHueArray[i-1]);
+            telemetry.update();
+        }
 
+        //turn CW back to center
+        gyroTurn(TURN_SPEED, 45);
 
+        //add members of leftHueArray and rightHueArray to totalHueArray
+        for(int i = 0; i < leftHueArray.length; i++){
+            totalHueArray[i] = leftHueArray[i];
+        }
+        for(int i = 0; i < rightHueArray.length; i++){
+            totalHueArray[i + leftHueArray.length - 1] = rightHueArray[i];
+        }
+
+        //totalHueArray now stores hue value collected from left turn to right turn
+        return totalHueArray;
 
     }
 
@@ -327,6 +403,90 @@ public class AutoLineFollowing extends LinearOpMode {
                 // if driving in reverse, the motor correction also needs to be reversed
                 if (distance < 0)
                     steer *= -1.0;
+
+                leftSpeed = speed - steer;
+                rightSpeed = speed + steer;
+
+                // Normalize speeds if any one exceeds +/- 1.0;
+                max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+                if (max > 1.0)
+                {
+                    leftSpeed /= max;
+                    rightSpeed /= max;
+                }
+
+                robot.leftMotor.setPower(leftSpeed);
+                robot.rightMotor.setPower(rightSpeed);
+
+                // Display drive status for the driver.
+//                telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
+//                telemetry.addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
+//                telemetry.addData("Actual",  "%7d:%7d",      robot.leftBackMotor.getCurrentPosition(),
+//                                                             robot.rightBackMotor.getCurrentPosition());
+//                telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
+                telemetry.addData("Counts Per Centimeters",COUNTS_PER_CENTIMETERS);
+
+                telemetry.update();
+
+                // Allow time for other processes to run.
+                idle();
+            }
+
+            // Stop all motion;
+            robot.leftMotor.setPower(0);
+            robot.leftMotor.setPower(0);
+            robot.rightMotor.setPower(0);
+            robot.rightMotor.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
+
+
+    public void gyroDriveInfinite (double speed, double angle) throws InterruptedException{
+        int     newLeftTarget;
+        int     newRightTarget;
+        int     moveCounts;
+        double  max;
+        double  error;
+        double  steer;
+        double  leftSpeed;
+        double  rightSpeed;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            //moveCounts = (int)(distance * COUNTS_PER_CENTIMETERS);
+//            newLeftTarget = robot.leftMotor.getCurrentPosition() + moveCounts;
+//            newRightTarget = robot.rightMotor.getCurrentPosition() + moveCounts;
+
+            // Set Target and Turn On RUN_TO_POSITION
+//            robot.leftMotor.setTargetPosition(newLeftTarget);
+//            robot.rightMotor.setTargetPosition(newRightTarget);
+//
+//            robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // start motion.
+            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
+            robot.rightMotor.setPower(speed);
+            robot.leftMotor.setPower(speed);
+
+
+            // keep looping while we are still active, and BOTH motors are running.
+            while (opModeIsActive() &&
+                    (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+
+                // adjust relative speed based on heading error.
+                error = getError(angle);
+                steer = getSteer(error, P_DRIVE_COEFF);
+
+//                // if driving in reverse, the motor correction also needs to be reversed
+//                if (distance < 0)
+//                    steer *= -1.0;
 
                 leftSpeed = speed - steer;
                 rightSpeed = speed + steer;

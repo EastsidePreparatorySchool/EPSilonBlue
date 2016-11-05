@@ -75,7 +75,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  */
 
 @Autonomous(name="Twitchy: Auto Drive By Gyro", group="Twitchy")
-@Disabled
+//@Disabled
 public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -155,8 +155,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
         while(opModeIsActive()){
 
-            gyroDrive(-DRIVE_SPEED,100,0.0);
-
+            gyroDrive(DRIVE_SPEED,100,0.0);
+            gyroTurn( TURN_SPEED, -90.0);         // Turn  CCW to -45 Degrees
 
 
 
