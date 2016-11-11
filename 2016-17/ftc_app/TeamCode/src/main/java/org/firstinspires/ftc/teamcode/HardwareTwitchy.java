@@ -30,13 +30,18 @@ public class HardwareTwitchy
     public DcMotor  leftMotor   = null; //why?
     public DcMotor  rightMotor = null;
     public DcMotor cannon =null;
-//    public Servo    servo         = null;
+    public DcMotor raiser = null;
+    public Servo pusher         = null;
+    public Servo picker = null;
 
 
-    public final static double servo_home = 0; // set starting positoin
-    public final static double servo_MIN_RANGE  = 0; // lowest position
-    public final static double servo_MAX_RANGE  = 0.50;// highest posible
+    public final static double pusher_home = 0; // set starting positoin
+    public final static double pusher_MIN_RANGE  = 0; // lowest position
+    public final static double pusher_MAX_RANGE  = 0.50;// highest posible
 
+    public final static double picker_home = 0; // set starting positoin
+    public final static double picker_MIN_RANGE  = 0; // lowest position
+    public final static double picker_MAX_RANGE  = 0.50;// highest posible
     /* Local OpMode members. */
     HardwareMap hwMap  = null;
     private ElapsedTime period  = new ElapsedTime();
@@ -53,7 +58,8 @@ public class HardwareTwitchy
         // Define and Initialize Motors
         leftMotor   = hwMap.dcMotor.get("motorLeft");
         rightMotor = hwMap.dcMotor.get("motorRight");
-//        cannon = hwMap.dcMotor.get("cannon"); // currently not attached
+        cannon = hwMap.dcMotor.get("cannon");
+        raiser = hwMap.dcMotor.get("raiser");
 
 
         //set the two backward motors to run in reverse
@@ -67,6 +73,8 @@ public class HardwareTwitchy
         // May want to use RUN_USING_ENCODERS if encoders are installed.
 
         leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        cannon.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        raiser.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.

@@ -112,7 +112,7 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
                 robot.rightMotor.setPower(-1.0);
             } else if (horizontol < 0) {
                 robot.leftMotor.setPower(-1.0);
-                robot.rightMotor.setPower(-1.0);
+                robot.rightMotor.setPower(1.0);
             }
             // disabled pp
 //            double pp = Math.signum(vertical); // checking if it is positive and negative and setting power according to those variables)
@@ -138,14 +138,14 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
             // if right trigger pressed will run cannon motor for half a second
             // currently cannon is not attached
-//            if (gamepad1.right_trigger > 0.25) {
-//                robot.cannon.setPower(0.33);// guess time
-//                timer.schedule(new TimerTask() {
-//                    public void run() {
-//                        robot.cannon.setPower(0.0);
-//                    }
-//                }, 500);
-//                }
+            if (gamepad1.right_trigger > 0.25) {
+                robot.cannon.setPower(0.33);// guess time
+                timer.schedule(new TimerTask() {
+                    public void run() {
+                        robot.cannon.setPower(0.0);
+                    }
+                }, 500);
+                }
 
 //            // Move both servos to new position.
 //            armPosition  = Range.clip(armPosition, robot.ARM_MIN_RANGE, robot.ARM_MAX_RANGE);
