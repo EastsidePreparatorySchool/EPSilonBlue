@@ -99,20 +99,26 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             vertical = gamepad1.left_stick_y;
             horizontol = gamepad1.left_stick_x;
 
-            if (vertical > 0 ){
-                robot.rightMotor.setPower(1.0);
-                robot.leftMotor.setPower(1.0);
-            } else if (vertical <0){
-                robot.leftMotor.setPower(-1.0);
-                robot.rightMotor.setPower(-1.0);
+            if (vertical > 0.5 ){
+                robot.rightMotor.setPower(-0.5);
+                robot.leftMotor.setPower(-0.5);
+            } else if (vertical <0.5){
+                robot.leftMotor.setPower(0.5);
+                robot.rightMotor.setPower(0.5);
+            } else{
+                robot.leftMotor.setPower(0.0);
+                robot.rightMotor.setPower(0.0);
             }
 
-            if (horizontol > 0) {
-                robot.leftMotor.setPower(1.0);
-                robot.rightMotor.setPower(-1.0);
-            } else if (horizontol < 0) {
-                robot.leftMotor.setPower(-1.0);
-                robot.rightMotor.setPower(1.0);
+            if (horizontol > 0.5) {
+                robot.leftMotor.setPower(0.5);
+                robot.rightMotor.setPower(-0.5);
+            } else if (horizontol < 0.5) {
+                robot.leftMotor.setPower(-0.5);
+                robot.rightMotor.setPower(0.5);
+            } else {
+                robot.leftMotor.setPower(0.0);
+                robot.rightMotor.setPower(0.0);
             }
             // disabled pp
 //            double pp = Math.signum(vertical); // checking if it is positive and negative and setting power according to those variables)
