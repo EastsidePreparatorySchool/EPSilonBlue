@@ -27,15 +27,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareTwitchy
 {
     /* Public OpMode members. */
-    public DcMotor  leftMotor   = null; //why?
-    public DcMotor  rightMotor = null;
-    public DcMotor cannon =null;
-//    public Servo    servo         = null;
+    public DcMotor  leftMotor; //why?
+    public DcMotor  rightMotor;
+    public DcMotor cannon;
+    public Servo    beaconSelector;
+    public Servo    ballPicker;
 
-
-    public final static double servo_home = 0; // set starting positoin
+    public final static double servo_HOME = 0.5; // set starting positoin
     public final static double servo_MIN_RANGE  = 0; // lowest position
-    public final static double servo_MAX_RANGE  = 0.50;// highest posible
+    public final static double servo_MAX_RANGE  = 1;// highest posible
 
     /* Local OpMode members. */
     HardwareMap hwMap  = null;
@@ -53,8 +53,8 @@ public class HardwareTwitchy
         // Define and Initialize Motors
         leftMotor   = hwMap.dcMotor.get("motorLeft");
         rightMotor = hwMap.dcMotor.get("motorRight");
-
-
+        beaconSelector = hwMap.servo.get("pusher");
+        ballPicker = hwMap.servo.get("picker");
         // cannon = hwMap.dcMotor.get("cannon"); currently not attached
 
 
@@ -71,11 +71,7 @@ public class HardwareTwitchy
         leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        // Define and initialize ALL installed servos.
-//        arm = hwMap.servo.get("arm");
-//        claw = hwMap.servo.get("claw");
-//        arm.setPosition(ARM_HOME);
-//        claw.setPosition(CLAW_HOME);
+
     }
 
     /***

@@ -90,12 +90,12 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
+    static final double     DRIVE_SPEED             = 0.5;     // Nominal speed for better accuracy.
+    static final double     TURN_SPEED              = 0.3;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
+    static final double     P_TURN_COEFF            = 0.03;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_COEFF           = 0.05;     // Larger is more responsive, but also less stable
 
 
 
@@ -153,19 +153,24 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         // Put a hold after each turn
         // TODO Write all code here
 
-        while(opModeIsActive()){
+       // while(opModeIsActive()){
+        gyroDrive(DRIVE_SPEED,100,0.0);
+        gyroTurn( TURN_SPEED, -90.0);         // Turn  CCW to -45 Degrees
+        gyroHold(TURN_SPEED,-90, 0.5);
 
-            gyroDrive(DRIVE_SPEED,100,0.0);
-            gyroTurn( TURN_SPEED, -90.0);         // Turn  CCW to -45 Degrees
+        gyroDrive(DRIVE_SPEED, 100, -90.0);    // Drive FWD 20 centimeters
 
+        gyroTurn( TURN_SPEED, -180.0);         // Turn  CCW to -45 Degrees
+        gyroHold(TURN_SPEED, -180, 0.5);
+        gyroDrive(DRIVE_SPEED, 100, -180);
 
+        gyroTurn(TURN_SPEED, -270);
+        gyroHold(TURN_SPEED,-270,0.5);
+        gyroDrive(DRIVE_SPEED, 100, -270);
 
-
-            idle();
-        }
-
-//        gyroDrive(DRIVE_SPEED, 20, 0.0);    // Drive FWD 20 centimeters
-//        gyroTurn( TURN_SPEED, -90.0);         // Turn  CCW to -45 Degrees
+        gyroTurn(TURN_SPEED,0);
+        gyroHold(TURN_SPEED,0,0.5);
+        gyroDrive(DRIVE_SPEED,100,0);
 //        gyroHold( TURN_SPEED, -90.0, 0.5);    // Hold -90 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
 //        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second

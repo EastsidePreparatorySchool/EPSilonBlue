@@ -44,6 +44,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -64,7 +65,7 @@ import java.util.TimerTask;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @Autonomous(name = "AutoLineFollowing", group = "Twitchy")
-//@Disabled
+@Disabled
 public class AutoLineFollowing extends LinearOpMode {
 
 
@@ -73,6 +74,8 @@ public class AutoLineFollowing extends LinearOpMode {
     ModernRoboticsI2cGyro gyro    = null;                    // Additional Gyro device
     ColorSensor bottomColor;
     ColorSensor beaconColor;
+
+
 
     Timer timer =  new Timer();
     ElapsedTime runtime = new ElapsedTime();
@@ -87,7 +90,7 @@ public class AutoLineFollowing extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
+    static final double     DRIVE_SPEED             = 0.1;     // Nominal speed for better accuracy.
     static final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
@@ -123,12 +126,12 @@ public class AutoLineFollowing extends LinearOpMode {
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");   //get reference for gyro
         bottomColor = hardwareMap.colorSensor.get("bottomColor");     // get a reference to our ColorSensor object.
         beaconColor = hardwareMap.colorSensor.get("beaconColor");
+        beaconColor.setI2cAddress(I2cAddr.create8bit(0x4c));
+        //bottomColor.setI2cAddress(I2cAddr.create8bit(0x3c));
 
-
-        //bottomColor senses lines, so set to active mode; beaconColor senses light, so set to passive mode
+//bottomColor senses lines, so set to active mode; beaconColor senses light, so set to passive mode
         bottomColor.enableLed(bLedOn);
-        beaconColor.enableLed(bLedOff);
-
+        beaconColor.enableLed(bLedOn);
 
 
 
@@ -174,8 +177,16 @@ public class AutoLineFollowing extends LinearOpMode {
         while (opModeIsActive()) {
 
             findBottomHue();
+            //wiggle(45);
+            //gyroTurn(TURN_SPEED,90.0);
 
-            //if hue is same as compare to whitehue,
+//            gyroDrive(DRIVE_SPEED, 50, 90);
+//
+//            gyroDrive(-DRIVE_SPEED, 50, 90);
+//
+//            gyroTurn(TURN_SPEED,-90);
+////
+//            //if hue is same as compare to whitehue,
             //then keep going straight,
             //if hue is not the same as whitehue,
             //wiggle around until sees the white hue, and stop
@@ -228,6 +239,8 @@ public class AutoLineFollowing extends LinearOpMode {
     //find the hue from bottomColor and print the color values to telemetry.
     public float findBottomHue (){
 
+
+
         //return variable
         float hue = 0;
 
@@ -248,17 +261,13 @@ public class AutoLineFollowing extends LinearOpMode {
         telemetry.addData("Green", bottomColor.green());
         telemetry.addData("Blue ", bottomColor.blue());
         telemetry.addData("Hue", hsvValues[0]);
+
         telemetry.addData("beacon address", beaconColor.getI2cAddress());
         telemetry.addData("bottom address", bottomColor.getI2cAddress());
+
         telemetry.update();
 
-        // change the background color to match the color detected by the RGB sensor.         // pass a reference to the hue, saturation, and value array as an argument
-        // to the HSVToColor method.
-        relativeLayout.post(new Runnable() {
-            public void run() {
-                relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-            }
-        });
+
 
         return hue;
     }
@@ -387,7 +396,7 @@ public class AutoLineFollowing extends LinearOpMode {
             robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // start motion.
-            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
+            speed = Range.clip(Math.abs(speed), 0.0, 0.1);
             robot.rightMotor.setPower(speed);
             robot.leftMotor.setPower(speed);
 
@@ -402,14 +411,14 @@ public class AutoLineFollowing extends LinearOpMode {
 
                 // if driving in reverse, the motor correction also needs to be reversed
                 if (distance < 0)
-                    steer *= -1.0;
+                    steer *= -1;
 
                 leftSpeed = speed - steer;
                 rightSpeed = speed + steer;
 
                 // Normalize speeds if any one exceeds +/- 1.0;
                 max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-                if (max > 1.0)
+                if (max > 0.5)
                 {
                     leftSpeed /= max;
                     rightSpeed /= max;
@@ -649,7 +658,7 @@ public class AutoLineFollowing extends LinearOpMode {
      * @return
      */
     public double getSteer(double error, double PCoeff) {
-        return Range.clip(error * PCoeff, -1, 1);
+        return Range.clip(error * PCoeff, -0.5, 0.5);
     }
 
 }
