@@ -172,15 +172,10 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
                 lPower /= max;
                 rPower /= max;
             }
-
-            // precision speed
-            double pLPower = lPower/5;
-            double pRPower = rPower/5;
-
-            // precision mode
-           leftMotor.setPower(lPower);
+            leftMotor.setPower(lPower);
             rightMotor.setPower(rPower);
 
+            //
 
 //            TODO:tank drive
 //            lPower = -gamepad1.left_stick_y;
