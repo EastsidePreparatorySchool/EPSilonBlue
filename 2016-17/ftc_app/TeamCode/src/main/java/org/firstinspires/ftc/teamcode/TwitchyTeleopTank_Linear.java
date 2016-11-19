@@ -178,14 +178,8 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             double pRPower = rPower/5;
 
             // precision mode
-            if(gamepad1.y){
-                leftMotor.setPower(pLPower);
-                rightMotor.setPower(pRPower);
-            } else {
-                leftMotor.setPower(lPower);
-                rightMotor.setPower(rPower);
-            }
-
+           leftMotor.setPower(lPower);
+            rightMotor.setPower(rPower);
 
 
 //            TODO:tank drive
