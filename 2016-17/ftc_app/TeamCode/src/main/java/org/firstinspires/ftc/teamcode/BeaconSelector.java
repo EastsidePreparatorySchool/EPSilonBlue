@@ -23,7 +23,7 @@ import com.qualcomm.robotcore.util.Range;
  * Created by cliu on 11/11/2016.
  */
 @Autonomous(name = "Beacon Selector", group = "Twitchy")
-//@Disabled
+@Disabled
 public class BeaconSelector extends LinearOpMode {
     /* Declare OpMode members. */
 
@@ -151,9 +151,9 @@ public class BeaconSelector extends LinearOpMode {
 
 
             if (BEACON_COLOR.equals(MY_COLOR)) {
-                side = "RIGHT";
-            }else if (BEACON_COLOR.equals(OPPONENT_COLOR)){
                 side = "LEFT";
+            }else if (BEACON_COLOR.equals(OPPONENT_COLOR)){
+                side = "RIGHT";
             }
 
             //telemetry.addData("alpha", beaconSensor.alpha());
@@ -163,7 +163,6 @@ public class BeaconSelector extends LinearOpMode {
             return side;
 
         }
-
         return "";
     }
 }

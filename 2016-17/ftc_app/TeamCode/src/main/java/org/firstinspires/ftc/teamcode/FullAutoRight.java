@@ -74,9 +74,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Twitchy: Auto Drive By Gyro", group="Twitchy")
-@Disabled
-public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
+@Autonomous(name="Full Auto Drive - Right", group="Twitchy")
+//@Disabled
+public class FullAutoRight extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareTwitchy robot   = new HardwareTwitchy();   // Use a Pushbot's hardware
@@ -86,7 +86,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP (try 1.0)
     static final double WHEEL_DIAMETER_CENTIMETERS = 10.0 ;     // For figuring circumference
     static final double COUNTS_PER_CENTIMETERS = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_CENTIMETERS * 3.1415);
+            (WHEEL_DIAMETER_CENTIMETERS * 3.1415);
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
@@ -95,7 +95,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.03;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.05;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_COEFF           = 0.04;     // Larger is more responsive, but also less stable
 
 
 
@@ -153,7 +153,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         // Put a hold after each turn
         // TODO Write all code here
 
-       // while(opModeIsActive()){
+        // while(opModeIsActive()){
         gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
         //shoot;
         gyroHold(TURN_SPEED, 0, 5);         //holde for 10s
@@ -166,13 +166,13 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         gyroDrive(DRIVE_SPEED, 50, -90);
 
         gyroTurn(TURN_SPEED, 0);
-        gyroHold(TURN_SPEED, 0, 2);
+        gyroHold(TURN_SPEED, 0, 1.5);
 
         gyroDrive(DRIVE_SPEED, 75, 0);
         gyroTurn(TURN_SPEED,90);
-        gyroHold(TURN_SPEED, 90, 2);    //at this point the back of the robot is pointing to the beacon
+        gyroHold(TURN_SPEED, 90, 1.5);    //at this point the back of the robot is pointing to the beacon
 
-        gyroDrive(-DRIVE_SPEED, 50, 90);    //go back until sense the beacon
+        gyroDrive(DRIVE_SPEED, -130, 90);    //go back until sense the beacon
 
 
 
@@ -193,18 +193,18 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
     }
 
 
-   /**
-    *  Method to drive on a fixed compass bearing (angle), based on encoder counts.
-    *  Move will stop if either of these conditions occur:
-    *  1) Move gets to the desired position
-    *  2) Driver stops the opmode running.
-    *
-    * @param speed      Target speed for forward motion.  Should allow for _/- variance for adjusting heading
-    * @param distance   Distance (in centimeters) to move from current position.  Negative distance means move backwards.
-    * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
-    *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-    *                   If a relative angle is required, add/subtract from current heading.
-    */
+    /**
+     *  Method to drive on a fixed compass bearing (angle), based on encoder counts.
+     *  Move will stop if either of these conditions occur:
+     *  1) Move gets to the desired position
+     *  2) Driver stops the opmode running.
+     *
+     * @param speed      Target speed for forward motion.  Should allow for _/- variance for adjusting heading
+     * @param distance   Distance (in centimeters) to move from current position.  Negative distance means move backwards.
+     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
+     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
+     *                   If a relative angle is required, add/subtract from current heading.
+     */
     public void gyroDrive ( double speed,
                             double distance,
                             double angle) throws InterruptedException {
@@ -241,7 +241,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-                   (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+                    (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
 
                 // adjust relative speed based on heading error.
                 error = getError(angle);
@@ -304,7 +304,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
      * @throws InterruptedException
      */
     public void gyroTurn (  double speed, double angle)
-                              throws InterruptedException {
+            throws InterruptedException {
 
         // keep looping while we are still active, and not on heading.
         while (opModeIsActive() && !onHeading(speed, angle, P_TURN_COEFF)) {
@@ -326,7 +326,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
      * @throws InterruptedException
      */
     public void gyroHold( double speed, double angle, double holdTime)
-                            throws InterruptedException {
+            throws InterruptedException {
 
         ElapsedTime holdTimer = new ElapsedTime();
 
