@@ -32,7 +32,7 @@ public class BeaconSelector extends LinearOpMode {
     int lightDetected = 2;
     double LEFT_POS = 0.5;
     double RIGHT_POS = 0.2;
-    double MIDDLE_POS = 0.37;
+    double MIDDLE_POS = 0.35;
     double CANNON_POS = 0.7;
     float RED_HUE = 15;   //10 - 15
     float BLUE_HUE = 270; //230 - 270
@@ -90,7 +90,7 @@ public class BeaconSelector extends LinearOpMode {
                 findHue();
 
             }
-            robot.beaconSelector.setPosition(MIDDLE_POS);
+            robot.beaconSelector.setPosition(CANNON_POS);
             telemetry.addData(">","action completed");
 
             telemetry.update();
