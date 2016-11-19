@@ -30,16 +30,12 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -75,13 +71,13 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  */
 
 @Autonomous(name="Twitchy: Auto Drive By Gyro", group="Twitchy")
-//@Disabled
+
 public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareTwitchy robot   = new HardwareTwitchy();   // Use a Pushbot's hardware
     ModernRoboticsI2cGyro gyro    = null;                    // Additional Gyro device
-
+    DcMotor leftMotor;
+    DcMotor rightMotor;
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP (try 1.0)
     static final double WHEEL_DIAMETER_CENTIMETERS = 10.0 ;     // For figuring circumference
@@ -90,17 +86,12 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.5;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.2;     // Nominal half speed for better accuracy.
+    static final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
+    static final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.03;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.05;     // Larger is more responsive, but also less stable
-
-
-
-
-
+    static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
 
 
     @Override
@@ -110,16 +101,13 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
          * Initialize the standard drive system variables.
          * The init() method of the hardware class does most of the work here
          */
-        robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
-
-
-
-
+        leftMotor= hardwareMap.dcMotor.get("motorLeft");
+        rightMotor = hardwareMap.dcMotor.get("motorRight");
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
-        robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // Send telemetry message to alert driver that we are calibrating;
         telemetry.addData(">", "Calibrating Gyro");    //
@@ -136,8 +124,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         telemetry.addData(">", "Robot Ready.");    //
         telemetry.update();
 
-        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Wait for the game to start (Display Gyro value), and reset gyro before we move..
         while (!isStarted()) {
@@ -151,44 +139,17 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        // TODO Write all code here
-
-       // while(opModeIsActive()){
-        gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
-        //shoot;
-        gyroHold(TURN_SPEED, 0, 5);         //holde for 10s
-
-        gyroDrive(DRIVE_SPEED, 40, 0);    // foward 40
-
-        gyroTurn(TURN_SPEED, -90.0);         // Turn  CW to -90 Degrees
-        gyroHold(TURN_SPEED, -90, 1);      // hold to calibrate
-
-        gyroDrive(DRIVE_SPEED, 50, -90);
-
-        gyroTurn(TURN_SPEED, 0);
-        gyroHold(TURN_SPEED, 0, 2);
-
-        gyroDrive(DRIVE_SPEED, 75, 0);
-        gyroTurn(TURN_SPEED,90);
-        gyroHold(TURN_SPEED, 90, 2);    //at this point the back of the robot is pointing to the beacon
-
-        gyroDrive(-DRIVE_SPEED, 50, 90);    //go back until sense the beacon
-
-
-
-//        gyroHold( TURN_SPEED, -90.0, 0.5);    // Hold -90 Deg heading for a 1/2 second
+        gyroDrive(DRIVE_SPEED, 20, 0.0);    // Drive FWD 20 centimeters
+//        gyroHold( TURN_SPEED, -45, 0.5);    // Hold -45 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
-//        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
+//        gyroHold( TURN_SPEED,  45.0 , 0.5);    // Hold  45 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
 //        gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
 //        gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 centimeters
 //        gyroHold( TURN_SPEED,   0.0, 0.5);    // Hold  0 Deg heading for a 1/2 second
 
-        // TODO stop writing code
         telemetry.addData("Path", "Complete");
         telemetry.update();
-        sleep(5000);
-
 
     }
 
@@ -223,25 +184,25 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
             // Determine new target position, and pass to motor controller
             moveCounts = (int)(distance * COUNTS_PER_CENTIMETERS);
-            newLeftTarget = robot.leftMotor.getCurrentPosition() + moveCounts;
-            newRightTarget = robot.rightMotor.getCurrentPosition() + moveCounts;
+            newLeftTarget = leftMotor.getCurrentPosition() + moveCounts;
+            newRightTarget = rightMotor.getCurrentPosition() + moveCounts;
 
             // Set Target and Turn On RUN_TO_POSITION
-            robot.leftMotor.setTargetPosition(newLeftTarget);
-            robot.rightMotor.setTargetPosition(newRightTarget);
+            leftMotor.setTargetPosition(newLeftTarget);
+            rightMotor.setTargetPosition(newRightTarget);
 
-            robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // start motion.
             speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-            robot.rightMotor.setPower(speed);
-            robot.leftMotor.setPower(speed);
+            rightMotor.setPower(speed);
+            leftMotor.setPower(speed);
 
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-                   (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+                   (leftMotor.isBusy() && rightMotor.isBusy())) {
 
                 // adjust relative speed based on heading error.
                 error = getError(angle);
@@ -262,8 +223,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
                     rightSpeed /= max;
                 }
 
-                robot.leftMotor.setPower(leftSpeed);
-                robot.rightMotor.setPower(rightSpeed);
+                leftMotor.setPower(leftSpeed);
+                rightMotor.setPower(rightSpeed);
 
                 // Display drive status for the driver.
 //                telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
@@ -280,14 +241,13 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
             }
 
             // Stop all motion;
-            robot.leftMotor.setPower(0);
-            robot.leftMotor.setPower(0);
-            robot.rightMotor.setPower(0);
-            robot.rightMotor.setPower(0);
+            leftMotor.setPower(0);
+            rightMotor.setPower(0);
+
 
             // Turn off RUN_TO_POSITION
-            robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
@@ -340,8 +300,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         }
 
         // Stop all motion;
-        robot.leftMotor.setPower(0);
-        robot.rightMotor.setPower(0);
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
     }
 
     /**
@@ -377,8 +337,8 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         }
 
         // Send desired speeds to motors.
-        robot.leftMotor.setPower(leftSpeed);
-        robot.rightMotor.setPower(rightSpeed);
+        leftMotor.setPower(leftSpeed);
+        rightMotor.setPower(rightSpeed);
 
         // Display it for the driver.
         telemetry.addData("Target", "%5.2f", angle);

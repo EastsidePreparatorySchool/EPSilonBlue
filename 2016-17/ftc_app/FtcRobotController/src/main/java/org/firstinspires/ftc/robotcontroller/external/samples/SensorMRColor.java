@@ -55,11 +55,11 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @TeleOp(name = "Sensor: MR Color", group = "Sensor")
-//@Disabled
+@Disabled
 public class SensorMRColor extends LinearOpMode {
 
-  ColorSensor beaconColor;    // Hardware Device Object
- // ColorSensor bottomColor;
+  ColorSensor colorSensor;    // Hardware Device Object
+
 
   @Override
   public void runOpMode() throws InterruptedException {
@@ -82,11 +82,11 @@ public class SensorMRColor extends LinearOpMode {
     boolean bLedOn = true;
 
     // get a reference to our ColorSensor object.
-    beaconColor = hardwareMap.colorSensor.get("beaconColor");
-   // bottomColor = hardwareMap.colorSensor.get("bottomColor");
+    colorSensor = hardwareMap.colorSensor.get("color sensor");
+
     // Set the LED in the beginning
-    beaconColor.enableLed(bLedOn);
-   // bottomColor.enableLed(false);
+    colorSensor.enableLed(bLedOn);
+
     // wait for the start button to be pressed.
     waitForStart();
 
@@ -95,32 +95,28 @@ public class SensorMRColor extends LinearOpMode {
     while (opModeIsActive()) {
 
       // check the status of the x button on either gamepad.
-      //bCurrState = gamepad1.x;
-      beaconColor.enableLed(bLedOn);
-     // bottomColor.enableLed(bLedOn);
+      bCurrState = gamepad1.x;
+
       // check for button state transitions.
-//      if ((bCurrState == true) && (bCurrState != bPrevState))  {
-//
-//        // button is transitioning to a pressed state. So Toggle LED
-//        bLedOn = !bLedOn;
-//        beaconColor.enableLed(bLedOn);
-//        bottomColor.enableLed(false);
-//
-//      }
+      if ((bCurrState == true) && (bCurrState != bPrevState))  {
+
+        // button is transitioning to a pressed state. So Toggle LED
+        bLedOn = !bLedOn;
+        colorSensor.enableLed(bLedOn);
+      }
 
       // update previous state variable.
-      //bPrevState = bCurrState;
+      bPrevState = bCurrState;
 
       // convert the RGB values to HSV values.
-      Color.RGBToHSV(beaconColor.red() * 8, beaconColor.green() * 8, beaconColor.blue() * 8, hsvValues);
-
+      Color.RGBToHSV(colorSensor.red() * 8, colorSensor.green() * 8, colorSensor.blue() * 8, hsvValues);
 
       // send the info back to driver station using telemetry function.
       telemetry.addData("LED", bLedOn ? "On" : "Off");
-      telemetry.addData("Clear", beaconColor.alpha());
-      telemetry.addData("Red  ", beaconColor.red());
-      telemetry.addData("Green", beaconColor.green());
-      telemetry.addData("Blue ", beaconColor.blue());
+      telemetry.addData("Clear", colorSensor.alpha());
+      telemetry.addData("Red  ", colorSensor.red());
+      telemetry.addData("Green", colorSensor.green());
+      telemetry.addData("Blue ", colorSensor.blue());
       telemetry.addData("Hue", hsvValues[0]);
 
       // change the background color to match the color detected by the RGB sensor.
