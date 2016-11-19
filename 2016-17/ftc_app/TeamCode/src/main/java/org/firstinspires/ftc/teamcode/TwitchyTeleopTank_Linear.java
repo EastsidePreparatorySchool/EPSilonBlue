@@ -181,12 +181,12 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             if(gamepad1.y){
                 leftMotor.setPower(pLPower);
                 rightMotor.setPower(pRPower);
-            } else if(gamepad1.a){
+            } else {
                 leftMotor.setPower(lPower);
                 rightMotor.setPower(rPower);
             }
 
-     
+
 
 //            TODO:tank drive
 //            lPower = -gamepad1.left_stick_y;
