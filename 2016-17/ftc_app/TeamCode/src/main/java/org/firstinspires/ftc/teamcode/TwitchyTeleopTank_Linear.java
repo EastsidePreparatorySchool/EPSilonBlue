@@ -32,17 +32,14 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwareK9bot;
-
-import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * This OpMode uses the common HardwareK9bot class to define the devices on the robot.
@@ -66,24 +63,50 @@ import java.util.TimerTask;
 public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareTwitchy   robot         = new HardwareTwitchy();            // Use a twitch's hardware
-    //double          armPosition     = robot.ARM_HOME;                   // Servo safe position (current no servo. Exists for reference
-    final double    CLAW_SPEED      = 0.01 ;                            // sets rate to move servo
-    final double    ARM_SPEED       = 0.01 ;     // sets rate to move servo
-
-    private ElapsedTime runtime = new ElapsedTime();
     Timer timer =  new Timer();
+    double x;
+    double y;
+    double lPower;
+    double rPower;
 
+    double max;
+    double h;
+
+    DcMotor leftMotor;
+    DcMotor rightMotor;
+    DcMotor raiser;
+    DcMotor cannon;
+    Servo beacon;
+    Servo picker;
+    double pickPosition;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        double vertical;
-        double horizontol;
 
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here 
-         */
-        robot.init(hardwareMap);
+
+        // link motors names with actual motors
+        leftMotor   = hardwareMap.dcMotor.get("motorLeft");
+        rightMotor = hardwareMap.dcMotor.get("motorRight");
+        raiser = hardwareMap.dcMotor.get("raiser");
+        cannon = hardwareMap.dcMotor.get("cannon");
+        beacon = hardwareMap.servo.get("pusher");
+        picker = hardwareMap.servo.get("picker");
+
+
+
+
+        //set the two backward motors to run in reverse
+        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
+
+        // Set all motors to run without encoders.
+        // May want to use RUN_USING_ENCODERS if encoders are installed.
+
+        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        raiser.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        cannon.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -95,75 +118,123 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            // done to check if error is in pp
-            vertical = gamepad1.left_stick_y;
-            horizontol = gamepad1.left_stick_x;
+            x = gamepad1.left_stick_x;
+            y = gamepad1.left_stick_y;
 
-            if (vertical > 0 ){
-                robot.rightMotor.setPower(1.0);
-                robot.leftMotor.setPower(1.0);
-            } else if (vertical <0){
-                robot.leftMotor.setPower(-1.0);
-                robot.rightMotor.setPower(-1.0);
+            //Todo: che Math
+//            h = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+//            lPower = (x+h)/2;
+//            rPower = lPower-x;
+//
+//
+//            //exception if just x for turning
+//            if(y<0.1 && y>-0.1 && x>0.1){
+//                leftMotor.setPower(1.0);
+//                rightMotor.setPower(-1.0);
+//            } else if(y<0.1 && y>-0.1 && x<0.1){
+//                leftMotor.setPower(-1.0);
+//                rightMotor.setPower(1.0);
+//            }
+//
+//            lPower = Range.clip(lPower, -1, 1);
+//            rPower = Range.clip(rPower, -1, 1);
+//
+//            leftMotor.setPower(lPower);
+//            rightMotor.setPower(rPower);
+
+
+
+//            TODO: quinn math
+//            lPower = Math.pow((Math.pow(y,2)+ Math.pow(x,2)-(2*y*x))/2,1/2);
+//            rPower = Math.pow((Math.pow(y,2)+ Math.pow(x,2)+(2*y*x))/2,1/2);
+//            if(-x>y){
+//                rPower = -1 *rPower;
+//            }
+//
+//            if(x>y){
+//                lPower = -1*lPower;
+//            }
+//
+//            lPower = Range.clip(lPower, -1, 1);
+//            rPower = Range.clip(rPower, -1, 1);
+//
+//            leftMotor.setPower(lPower);
+//            rightMotor.setPower(rPower);
+
+            // TODO: POV
+
+            lPower  = -gamepad1.left_stick_y + gamepad1.left_stick_x;
+            rPower = -gamepad1.left_stick_y - gamepad1.left_stick_x;
+
+            // Normalize the values so neither exceed +/- 1.0
+            max = Math.max(Math.abs(lPower), Math.abs(rPower));
+            if (max > 1.0) {
+                lPower /= max;
+                rPower /= max;
             }
 
-            if (horizontol > 0) {
-                robot.leftMotor.setPower(1.0);
-                robot.rightMotor.setPower(-1.0);
-            } else if (horizontol < 0) {
-                robot.leftMotor.setPower(-1.0);
-                robot.rightMotor.setPower(-1.0);
+            // precision speed
+            double pLPower = lPower/5;
+            double pRPower = rPower/5;
+
+            // precision mode
+           leftMotor.setPower(lPower);
+            rightMotor.setPower(rPower);
+
+
+//            TODO:tank drive
+//            lPower = -gamepad1.left_stick_y;
+//            rPower = -gamepad1.right_stick_y ;
+//            leftMotor.setPower(lPower);
+//            rightMotor.setPower(rPower);
+//
+
+            // right trigger is fire cannon
+            if(gamepad1.right_trigger >0.25){
+                cannon.setPower(-1.0);
+            } else {
+                cannon.setPower(0.0);
             }
-            // disabled pp
-//            double pp = Math.signum(vertical); // checking if it is positive and negative and setting power according to those variables)
-//            robot.leftMotor.setPower(pp);
-//            robot.rightMotor.setPower(pp);
-//
-//            pp = Math.signum(horizontol);
-//            robot.rightMotor.setPower(pp);
-//            robot.leftMotor.setPower(pp);
+
+            // cannon raise by right joystick
+            raiser.setPower(gamepad1.right_stick_y/3);
+
+            // use dpad to shift between three positions
+            if(gamepad1.dpad_left){
+                beacon.setPosition(0.2);
+            } else if (gamepad1.dpad_up){
+                beacon.setPosition(0.7);
+            } else if (gamepad1.dpad_down){
+                beacon.setPosition(0.4);
+            } else if(gamepad1.dpad_right){
+                beacon.setPosition(0.55);
+            }
 
 
-//            // Use gamepad Y & A raise and lower the arm
-//            if (gamepad1.a)
-//                armPosition += ARM_SPEED;
-//            else if (gamepad1.y)
-//                armPosition  -= ARM_SPEED;
-//
-//            // Use gamepad X & B to open and close the claw
-//            if (gamepad1.x)
-//                clawPosition += CLAW_SPEED;
-//            else if (gamepad1.b)
-//                clawPosition -= CLAW_SPEED;
+            // Use y and a to raise and lower the picker
+            if (gamepad1.y)
+                pickPosition = 0.2;
+            else if (gamepad1.a)
+                pickPosition = 0.75;
 
-            // if right trigger pressed will run cannon motor for half a second
-            // currently cannon is not attached
-//            if (gamepad1.right_trigger > 0.25) {
-//                robot.cannon.setPower(0.33);// guess time
-//                timer.schedule(new TimerTask() {
-//                    public void run() {
-//                        robot.cannon.setPower(0.0);
-//                    }
-//                }, 500);
-//                }
+            // Move servo to new position.
+            pickPosition = Range.clip(pickPosition, 0.0, 0.7);
+            picker.setPosition(pickPosition);
 
-//            // Move both servos to new position.
-//            armPosition  = Range.clip(armPosition, robot.ARM_MIN_RANGE, robot.ARM_MAX_RANGE);
-//            robot.arm.setPosition(armPosition);
-//            clawPosition = Range.clip(clawPosition, robot.CLAW_MIN_RANGE, robot.CLAW_MAX_RANGE);
-//            robot.claw.setPosition(clawPosition);
 //
 //            // Send telemetry message to signify robot running;
 //            telemetry.addData("arm",   "%.2f", armPosition);
 //            telemetry.addData("claw",  "%.2f", clawPosition);
-                telemetry.addData("horizontol", "%.2f", horizontol);
-                telemetry.addData("vertical", "%.2f", vertical);
+            double number = 9000;
+                telemetry.addData("My name is Hal", "%.2f",number);
+                telemetry.addData("left power", "%.2f", lPower);
+                telemetry.addData("right power", "%.2f", rPower);
                 telemetry.update();
 
-                // Pause for metronome tick.  40 mS each cycle = update 25 times a second.
-                robot.waitForTick(40);
+
                 idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
 
         }
     }
 }
+
