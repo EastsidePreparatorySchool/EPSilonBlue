@@ -30,12 +30,16 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -71,7 +75,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @Autonomous(name="Twitchy: Auto Drive By Gyro", group="Twitchy")
-
+//@Disabled
 public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -86,12 +90,17 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
+    static final double     DRIVE_SPEED             = 0.5;     // Nominal speed for better accuracy.
+    static final double     TURN_SPEED              = 0.2;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
+    static final double     P_TURN_COEFF            = 0.03;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_COEFF           = 0.05;     // Larger is more responsive, but also less stable
+
+
+
+
+
 
 
     @Override
@@ -103,6 +112,10 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
          */
         robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
+
+
+
+
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -138,9 +151,32 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
-        gyroDrive(DRIVE_SPEED, 20, 0.0);    // Drive FWD 20 centimeters
-        gyroTurn( TURN_SPEED, -90.0);         // Turn  CCW to -45 Degrees
-        gyroHold( TURN_SPEED, -90.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
+        // TODO Write all code here
+
+       // while(opModeIsActive()){
+        gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
+        //shoot;
+        gyroHold(TURN_SPEED, 0, 5);         //holde for 10s
+
+        gyroDrive(DRIVE_SPEED, 40, 0);    // foward 40
+
+        gyroTurn(TURN_SPEED, -90.0);         // Turn  CW to -90 Degrees
+        gyroHold(TURN_SPEED, -90, 1);      // hold to calibrate
+
+        gyroDrive(DRIVE_SPEED, 50, -90);
+
+        gyroTurn(TURN_SPEED, 0);
+        gyroHold(TURN_SPEED, 0, 2);
+
+        gyroDrive(DRIVE_SPEED, 75, 0);
+        gyroTurn(TURN_SPEED,90);
+        gyroHold(TURN_SPEED, 90, 2);    //at this point the back of the robot is pointing to the beacon
+
+        gyroDrive(-DRIVE_SPEED, 50, 90);    //go back until sense the beacon
+
+
+
+//        gyroHold( TURN_SPEED, -90.0, 0.5);    // Hold -90 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
 //        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
 //        gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
@@ -148,8 +184,11 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 //        gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 centimeters
 //        gyroHold( TURN_SPEED,   0.0, 0.5);    // Hold  0 Deg heading for a 1/2 second
 
+        // TODO stop writing code
         telemetry.addData("Path", "Complete");
         telemetry.update();
+        sleep(5000);
+
 
     }
 
