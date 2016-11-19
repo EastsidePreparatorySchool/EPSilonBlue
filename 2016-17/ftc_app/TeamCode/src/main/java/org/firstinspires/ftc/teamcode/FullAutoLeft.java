@@ -79,9 +79,9 @@ import java.util.TimerTask;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Full Auto Drive - BLUE", group="Twitchy")
+@Autonomous(name="Full Auto Drive - RED", group="Twitchy")
 //@Disabled
-public class FullAutoRight extends LinearOpMode {
+public class FullAutoLeft extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareTwitchy robot   = new HardwareTwitchy();   // Use a Pushbot's hardware
@@ -105,8 +105,8 @@ public class FullAutoRight extends LinearOpMode {
 
 
     //beacon selector variables:
-    String MY_COLOR = "BLUE";
-    String OPPONENT_COLOR = "RED";
+    String MY_COLOR = "RED";
+    String OPPONENT_COLOR = "BLUE";
     int lightDetected = 2;
     double LEFT_POS = 0.5;
     double RIGHT_POS = 0.2;
@@ -186,7 +186,7 @@ public class FullAutoRight extends LinearOpMode {
         // TODO Write all code here
 
         while (opModeIsActive()) {
-            gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
+            gyroDrive(DRIVE_SPEED, 45, 0.0);      //foward 35 cm
             //shoot;
             robot.picker.setPosition(0.75);
             robot.pusher.setPosition(0.7);
@@ -209,28 +209,28 @@ public class FullAutoRight extends LinearOpMode {
             robot.picker.setPosition(0.2);
             robot.pusher.setPosition(0.35);
 
-            gyroDrive(DRIVE_SPEED, 40, 0);    // foward 40
+            gyroDrive(DRIVE_SPEED, 30, 0);    // foward 40
 
-            gyroTurn(TURN_SPEED, -90.0);         // Turn  CW to -90 Degrees
-            gyroHold(TURN_SPEED, -90, 0.5);      // hold to calibrate
+            gyroTurn(TURN_SPEED, 90.0);         // Turn  CW to -90 Degrees
+            gyroHold(TURN_SPEED, 90, 0.5);      // hold to calibrate
 
-            gyroDrive(DRIVE_SPEED, 50, -90);
+            gyroDrive(DRIVE_SPEED, 50, 90);
 
             gyroTurn(TURN_SPEED, 0);
             gyroHold(TURN_SPEED, 0, 0.5);
 
             gyroDrive(DRIVE_SPEED, 75, 0);
-            gyroTurn(TURN_SPEED, 90);
-            gyroHold(TURN_SPEED, 90, 0.5);    //at this point the back of the robot is pointing to the beacon
+            gyroTurn(TURN_SPEED, -90);
+            gyroHold(TURN_SPEED, -90, 0.5);    //at this point the back of the robot is pointing to the beacon
 
-            gyroDrive(DRIVE_SPEED, -125, 90);    //go back until very close to the beacon
+            gyroDrive(DRIVE_SPEED, -125, -90);    //go back until very close to the beacon
 
             selectButtom();
-            gyroHold(DRIVE_SPEED,90,2);
+            gyroHold(DRIVE_SPEED,-90,2);
             //leave beacon
-            gyroDrive(DRIVE_SPEED,220,75);
-            gyroTurn(TURN_SPEED, 90);
-            gyroDrive(DRIVE_SPEED,20,90);
+            gyroDrive(DRIVE_SPEED,220,-75);
+            gyroTurn(TURN_SPEED,-90);
+            gyroDrive(DRIVE_SPEED,20,-90);
 
 
 
@@ -269,7 +269,7 @@ public class FullAutoRight extends LinearOpMode {
     }
 
 
-        //find the hue from beacon color sensor and print the color values to telemetry.
+    //find the hue from beacon color sensor and print the color values to telemetry.
     public float findHue (){
 
         //return variable
