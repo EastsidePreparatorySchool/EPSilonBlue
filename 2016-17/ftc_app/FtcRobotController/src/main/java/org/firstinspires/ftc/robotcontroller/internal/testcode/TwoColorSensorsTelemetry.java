@@ -49,6 +49,7 @@ public class TwoColorSensorsTelemetry extends LinearOpMode
     AMSColorSensor leftColorSensor;
     AMSColorSensor rightColorSensor;
 
+
     @Override
     public void runOpMode() throws InterruptedException
         {

@@ -67,6 +67,7 @@ public class HardwareTwitchy
 
         // Set all motors to zero power
         leftMotor.setPower(0.0);
+        cannon.setPower(0.0);
         rightMotor.setPower(0.0);
 
         // Set all motors to run without encoders.
