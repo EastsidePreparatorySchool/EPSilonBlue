@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This OpMode uses the common HardwareK9bot class to define the devices on the robot.
@@ -192,11 +193,11 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             if (gamepad1.right_trigger > 0.25) {
                 cannon.setPower(-1.0);
             } else {
-                cannon.setPower(0.0);
+                cannon.setPower(0.0); // 0.8 seconds for raising cannon and 0.65 seconds for firing cannon
             }
 
             // cannon raise by right joystick
-            raiser.setPower(gamepad1.right_stick_y / 3);
+            raiser.setPower(gamepad1.right_stick_y/8);
 
             // use dpad to shift between three positions
             if (gamepad1.dpad_left) {
