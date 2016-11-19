@@ -30,7 +30,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
 import android.graphics.Color;
+import android.view.View;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -81,6 +83,7 @@ public class FullAutoRight extends LinearOpMode {
     /* Declare OpMode members. */
     HardwareTwitchy robot   = new HardwareTwitchy();   // Use a Pushbot's hardware
     ModernRoboticsI2cGyro gyro    = null;                    // Additional Gyro device
+    ColorSensor beaconSensor;
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP (try 1.0)
@@ -90,15 +93,25 @@ public class FullAutoRight extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.5;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.2;     // Nominal half speed for better accuracy.
+    static final double     DRIVE_SPEED             = 0.6;     // Nominal speed for better accuracy.
+    static final double     TURN_SPEED              = 0.3;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.03;     // Larger is more responsive, but also less stable
     static final double     P_DRIVE_COEFF           = 0.04;     // Larger is more responsive, but also less stable
 
 
+    //beacon selector variables:
+    String MY_COLOR = "RED";
+    String OPPONENT_COLOR = "BLUE";
+    int lightDetected = 2;
+    double LEFT_POS = 0.5;
+    double RIGHT_POS = 0.2;
+    double MIDDLE_POS = 0.35;
+    double CANNON_POS = 0.7;
 
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    float hsvValues[] = {0F,0F,0F};
 
 
 
@@ -156,21 +169,21 @@ public class FullAutoRight extends LinearOpMode {
         // while(opModeIsActive()){
         gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
         //shoot;
-        gyroHold(TURN_SPEED, 0, 5);         //holde for 10s
+        gyroHold(TURN_SPEED, 0, 5);         //hold for 10s
 
         gyroDrive(DRIVE_SPEED, 40, 0);    // foward 40
 
         gyroTurn(TURN_SPEED, -90.0);         // Turn  CW to -90 Degrees
-        gyroHold(TURN_SPEED, -90, 1);      // hold to calibrate
+        gyroHold(TURN_SPEED, -90, 0.5);      // hold to calibrate
 
         gyroDrive(DRIVE_SPEED, 50, -90);
 
         gyroTurn(TURN_SPEED, 0);
-        gyroHold(TURN_SPEED, 0, 1.5);
+        gyroHold(TURN_SPEED, 0, 0.5);
 
-        gyroDrive(DRIVE_SPEED, 75, 0);
+        gyroDrive(DRIVE_SPEED, 70, 0);
         gyroTurn(TURN_SPEED,90);
-        gyroHold(TURN_SPEED, 90, 1.5);    //at this point the back of the robot is pointing to the beacon
+        gyroHold(TURN_SPEED, 90, 0.5);    //at this point the back of the robot is pointing to the beacon
 
         gyroDrive(DRIVE_SPEED, -130, 90);    //go back until sense the beacon
 
@@ -192,6 +205,38 @@ public class FullAutoRight extends LinearOpMode {
 
     }
 
+
+
+
+    //find the hue from bottomColor and print the color values to telemetry.
+    public float findHue (){
+
+        //return variable
+        float hue = 0;
+        beaconSensor.enableLed(false);
+        // values is a reference to the hsvValues array.
+        final float values[] = hsvValues;
+
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
+        // convert the RGB values to HSV values.
+        Color.RGBToHSV(beaconSensor.red() * 8, beaconSensor.green() * 8, beaconSensor.blue() * 8, hsvValues);
+
+        //float hue is for return the value of hue. each color has a unique hue.
+        hue = hsvValues[0];
+
+        // send the info back to driver station using telemetry function.
+
+        telemetry.addData("Clear", beaconSensor.alpha());
+//        telemetry.addData("Red  ", beaconSensor.red());
+//        telemetry.addData("Green", beaconSensor.green());
+//        telemetry.addData("Blue ", beaconSensor.blue());
+        telemetry.addData("Hue", hsvValues[0]);
+
+
+        telemetry.update();
+
+        return hue;
+    }
 
     /**
      *  Method to drive on a fixed compass bearing (angle), based on encoder counts.

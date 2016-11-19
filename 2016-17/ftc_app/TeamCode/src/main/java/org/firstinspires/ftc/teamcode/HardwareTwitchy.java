@@ -60,7 +60,8 @@ public class HardwareTwitchy
         rightMotor = hwMap.dcMotor.get("motorRight");
         cannon = hwMap.dcMotor.get("cannon");
         raiser = hwMap.dcMotor.get("raiser");
-
+        pusher = hwMap.servo.get("pusher");
+        picker = hwMap.servo.get("picker");
 
         //set the two backward motors to run in reverse
         leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
