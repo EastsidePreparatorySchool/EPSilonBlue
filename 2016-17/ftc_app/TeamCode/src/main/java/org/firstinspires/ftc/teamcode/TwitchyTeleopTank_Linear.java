@@ -45,25 +45,25 @@ import java.util.Timer;
  * This OpMode uses the common HardwareK9bot class to define the devices on the robot.
  * All device access is managed through the HardwareK9bot class. (See this class for device names)
  * The code is structured as a LinearOpMode
- *
+ * <p>
  * This particular OpMode executes a basic Tank Drive Teleop for the K9 bot
  * It raises and lowers the arm using the Gampad Y and A buttons respectively.
  * It also opens and closes the claw slowly using the X and B buttons.
- *
+ * <p>
  * Note: the configuration of the servos is such that
  * as the arm servo approaches 0, the arm position moves up (away from the floor).
  * Also, as the claw servo approaches 0, the claw opens up (drops the game element).
- *
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Twitchy: Telop Tank", group="Twitchy")
+@TeleOp(name = "Twitchy: Telop Tank", group = "Twitchy")
 
 public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
-    Timer timer =  new Timer();
+    Timer timer = new Timer();
     double x;
     double y;
     double lPower;
@@ -85,7 +85,7 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
 
         // link motors names with actual motors
-        leftMotor   = hardwareMap.dcMotor.get("motorLeft");
+        leftMotor = hardwareMap.dcMotor.get("motorLeft");
         rightMotor = hardwareMap.dcMotor.get("motorRight");
         raiser = hardwareMap.dcMotor.get("raiser");
         cannon = hardwareMap.dcMotor.get("cannon");
@@ -93,11 +93,8 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
         picker = hardwareMap.servo.get("picker");
 
 
-
-
         //set the two backward motors to run in reverse
         leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
 
 
         // Set all motors to run without encoders.
@@ -143,7 +140,6 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 //            rightMotor.setPower(rPower);
 
 
-
 //            TODO: quinn math
 //            lPower = Math.pow((Math.pow(y,2)+ Math.pow(x,2)-(2*y*x))/2,1/2);
 //            rPower = Math.pow((Math.pow(y,2)+ Math.pow(x,2)+(2*y*x))/2,1/2);
@@ -163,8 +159,8 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
             // TODO: POV
 
-            lPower  = -gamepad1.left_stick_y + gamepad1.left_stick_x;
-            rPower = -gamepad1.left_stick_y - gamepad1.left_stick_x;
+            lPower = (-gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.6;
+            rPower = (-gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.6;
 
             // Normalize the values so neither exceed +/- 1.0
             max = Math.max(Math.abs(lPower), Math.abs(rPower));
@@ -172,6 +168,14 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
                 lPower /= max;
                 rPower /= max;
             }
+            if (gamepad1.left_trigger > 0.25) {
+                lPower = lPower / 2;
+                rPower = rPower / 2;
+            } if (gamepad1.start){
+                lPower = lPower * (4/3);
+                rPower = rPower * (4/3);
+            }
+
             leftMotor.setPower(lPower);
             rightMotor.setPower(rPower);
 
@@ -185,23 +189,23 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 //
 
             // right trigger is fire cannon
-            if(gamepad1.right_trigger >0.25){
+            if (gamepad1.right_trigger > 0.25) {
                 cannon.setPower(-1.0);
             } else {
                 cannon.setPower(0.0);
             }
 
             // cannon raise by right joystick
-            raiser.setPower(gamepad1.right_stick_y/3);
+            raiser.setPower(gamepad1.right_stick_y / 3);
 
             // use dpad to shift between three positions
-            if(gamepad1.dpad_left){
+            if (gamepad1.dpad_left) {
                 beacon.setPosition(0.2);
-            } else if (gamepad1.dpad_up){
+            } else if (gamepad1.dpad_up) {
                 beacon.setPosition(0.7);
-            } else if (gamepad1.dpad_down){
+            } else if (gamepad1.dpad_down) {
                 beacon.setPosition(0.4);
-            } else if(gamepad1.dpad_right){
+            } else if (gamepad1.dpad_right) {
                 beacon.setPosition(0.55);
             }
 
@@ -220,16 +224,16 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 //            // Send telemetry message to signify robot running;
 //            telemetry.addData("arm",   "%.2f", armPosition);
 //            telemetry.addData("claw",  "%.2f", clawPosition);
-            double number = 9000;
-                telemetry.addData("My name is Hal", "%.2f",number);
-                telemetry.addData("left power", "%.2f", lPower);
-                telemetry.addData("right power", "%.2f", rPower);
-                telemetry.update();
+            telemetry.addData("My name is Hal_9000", " ");
+            telemetry.addData("left power", "%.2f", lPower);
+            telemetry.addData("right power", "%.2f", rPower);
+            telemetry.update();
 
 
-                idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
+            idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
 
         }
     }
 }
 
+//.5 seconds half power
