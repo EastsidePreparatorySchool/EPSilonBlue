@@ -93,22 +93,23 @@ public class FullAutoRight extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.6;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.3;     // Nominal half speed for better accuracy.
+    static final double     DRIVE_SPEED             = 0.5;     // Nominal speed for better accuracy.
+    static final double     TURN_SPEED              = 0.4;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.03;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.04;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_COEFF           = 0.03;     // Larger is more responsive, but also less stable
 
 
     //beacon selector variables:
-    String MY_COLOR = "RED";
-    String OPPONENT_COLOR = "BLUE";
+    String MY_COLOR = "BLUE";
+    String OPPONENT_COLOR = "RED";
     int lightDetected = 2;
     double LEFT_POS = 0.5;
     double RIGHT_POS = 0.2;
     double MIDDLE_POS = 0.35;
     double CANNON_POS = 0.7;
+    boolean flag = true;
 
     // hsvValues is an array that will hold the hue, saturation, and value information.
     float hsvValues[] = {0F,0F,0F};
@@ -125,7 +126,7 @@ public class FullAutoRight extends LinearOpMode {
          */
         robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
-
+        beaconSensor = hardwareMap.colorSensor.get("beaconColor");
 
 
 
@@ -133,6 +134,17 @@ public class FullAutoRight extends LinearOpMode {
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        //passive mode for beacon color sensor;
+        beaconSensor.enableLed(false);
+
+        //set position of the pusher servo
+        robot.pusher.setPosition(MIDDLE_POS);
+
+        //set position of the picker servo. This position is up.
+        robot.picker.setPosition(0.5);
+
 
         // Send telemetry message to alert driver that we are calibrating;
         telemetry.addData(">", "Calibrating Gyro");    //
@@ -161,54 +173,81 @@ public class FullAutoRight extends LinearOpMode {
         }
         gyro.resetZAxisIntegrator();
 
+
+
+        waitForStart();
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
         // TODO Write all code here
 
-        // while(opModeIsActive()){
-        gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
-        //shoot;
-        gyroHold(TURN_SPEED, 0, 5);         //hold for 10s
+        while (opModeIsActive()) {
+            gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
+            //shoot;
+            gyroHold(TURN_SPEED, 0, 5);         //hold for 10s
 
-        gyroDrive(DRIVE_SPEED, 40, 0);    // foward 40
+            gyroDrive(DRIVE_SPEED, 40, 0);    // foward 40
 
-        gyroTurn(TURN_SPEED, -90.0);         // Turn  CW to -90 Degrees
-        gyroHold(TURN_SPEED, -90, 0.5);      // hold to calibrate
+            gyroTurn(TURN_SPEED, -90.0);         // Turn  CW to -90 Degrees
+            gyroHold(TURN_SPEED, -90, 0.5);      // hold to calibrate
 
-        gyroDrive(DRIVE_SPEED, 50, -90);
+            gyroDrive(DRIVE_SPEED, 50, -90);
 
-        gyroTurn(TURN_SPEED, 0);
-        gyroHold(TURN_SPEED, 0, 0.5);
+            gyroTurn(TURN_SPEED, 0);
+            gyroHold(TURN_SPEED, 0, 0.5);
 
-        gyroDrive(DRIVE_SPEED, 70, 0);
-        gyroTurn(TURN_SPEED,90);
-        gyroHold(TURN_SPEED, 90, 0.5);    //at this point the back of the robot is pointing to the beacon
+            gyroDrive(DRIVE_SPEED, 75, 0);
+            gyroTurn(TURN_SPEED, 90);
+            gyroHold(TURN_SPEED, 90, 0.5);    //at this point the back of the robot is pointing to the beacon
 
-        gyroDrive(DRIVE_SPEED, -130, 90);    //go back until sense the beacon
+            gyroDrive(DRIVE_SPEED, -125, 90);    //go back until very close to the beacon
+
+            selectButtom();
+            gyroHold(DRIVE_SPEED,90,2);
+            //leave beacon
+            gyroDrive(DRIVE_SPEED,220,75);
+            gyroTurn(TURN_SPEED,90);
+            gyroDrive(DRIVE_SPEED,20,90);
 
 
 
-//        gyroHold( TURN_SPEED, -90.0, 0.5);    // Hold -90 Deg heading for a 1/2 second
-//        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
-//        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
-//        gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
-//        gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
-//        gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 centimeters
-//        gyroHold( TURN_SPEED,   0.0, 0.5);    // Hold  0 Deg heading for a 1/2 second
-
-        // TODO stop writing code
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-        sleep(5000);
-
+            // TODO stop writing code
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+            sleep(5000);
+        }
 
     }
 
 
+    public void selectButtom () {
+        String beaconPos;
+        while (flag == true) {
+            beaconPos = findLeftOrRight();
+
+            if (beaconPos.equals("LEFT")) {
+                robot.pusher.setPosition(LEFT_POS);
+                telemetry.addData(">", "left pressed");
+                telemetry.update();
+                flag = false;
+
+            } else if (beaconPos.equals("RIGHT")) {
+                robot.pusher.setPosition((RIGHT_POS));
+                telemetry.addData(">", "right pressed");
+                telemetry.update();
+                flag = false;
+
+            } else {
+                robot.pusher.setPosition(MIDDLE_POS);
+
+            }
+            findHue();
+        }
+    }
 
 
-    //find the hue from bottomColor and print the color values to telemetry.
+        //find the hue from beacon color sensor and print the color values to telemetry.
     public float findHue (){
 
         //return variable
@@ -237,6 +276,42 @@ public class FullAutoRight extends LinearOpMode {
 
         return hue;
     }
+
+    //calls findHue(). based on the Hue, determine which bottom to press. returns String left or right
+    public String findLeftOrRight () {
+
+        String side = "";
+        double BEACON_HUE;
+        String BEACON_COLOR = "";
+        //if detects light, then determine what color?
+
+        while (beaconSensor.alpha() >= lightDetected) {
+            BEACON_HUE = findHue();
+
+            //determine the name of the color;
+            if (BEACON_HUE >= 0 && BEACON_HUE <= 20) {
+                BEACON_COLOR = "RED";
+            } else if (230 <= BEACON_HUE && BEACON_HUE <= 270 ) {
+                BEACON_COLOR = "BLUE";
+            }
+
+
+            if (BEACON_COLOR.equals(MY_COLOR)) {
+                side = "LEFT";
+            }else if (BEACON_COLOR.equals(OPPONENT_COLOR)){
+                side = "RIGHT";
+            }
+
+            //telemetry.addData("alpha", beaconSensor.alpha());
+            telemetry.addData(">", side);
+            telemetry.update();
+
+            return side;
+
+        }
+        return "";
+    }
+
 
     /**
      *  Method to drive on a fixed compass bearing (angle), based on encoder counts.
