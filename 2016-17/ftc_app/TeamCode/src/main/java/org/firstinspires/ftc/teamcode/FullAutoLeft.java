@@ -111,7 +111,7 @@ public class FullAutoLeft extends LinearOpMode {
     double LEFT_POS = 0.5;
     double RIGHT_POS = 0.2;
     double MIDDLE_POS = 0.35;
-    double CANNON_POS = 0.7;
+    double CANNON_POS = 0.8;
     boolean flag = true;
 
     // hsvValues is an array that will hold the hue, saturation, and value information.
@@ -188,28 +188,20 @@ public class FullAutoLeft extends LinearOpMode {
         while (opModeIsActive()) {
             gyroDrive(DRIVE_SPEED, 45, 0.0);      //foward 35 cm
             //shoot;
+            robot.pusher.setPosition(0.8);
             robot.picker.setPosition(0.75);
-            robot.pusher.setPosition(0.7);
-            robot.raiser.setPower(0.3);
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    robot.raiser.setPower(0.2);
-                    robot.cannon.setPower(1.0);
-                }
-            },800);
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    robot.cannon.setPower(0.0);
-                    robot.raiser.setPower(0.0);
-                }
-            },1450);
+            robot.raiser.setPower(-0.25);
+            sleep(878);
+            robot.raiser.setPower(-0.20);
+            robot.cannon.setPower(-1.0);
+            sleep(650);
+            robot.cannon.setPower(0.0);
+            sleep(350);
+            robot.raiser.setPower(0.0);
             robot.picker.setPosition(0.2);
             robot.pusher.setPosition(0.35);
 
-            gyroDrive(DRIVE_SPEED, 30, 0);    // foward 40
+            gyroDrive(DRIVE_SPEED, 20, 0);    // foward 20
 
             gyroTurn(TURN_SPEED, 90.0);         // Turn  CW to -90 Degrees
             gyroHold(TURN_SPEED, 90, 0.5);      // hold to calibrate
@@ -228,8 +220,9 @@ public class FullAutoLeft extends LinearOpMode {
             selectButtom();
             gyroHold(DRIVE_SPEED,-90,2);
             //leave beacon
-            gyroDrive(DRIVE_SPEED,220,-75);
+            gyroDrive(DRIVE_SPEED,180,-60);
             gyroTurn(TURN_SPEED,-90);
+            gyroHold(TURN_SPEED, -90,0.5);
             gyroDrive(DRIVE_SPEED,20,-90);
 
 

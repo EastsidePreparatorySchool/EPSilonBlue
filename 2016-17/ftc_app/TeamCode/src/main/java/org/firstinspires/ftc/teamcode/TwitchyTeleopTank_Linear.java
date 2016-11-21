@@ -197,7 +197,7 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             }
 
             // cannon raise by right joystick
-            raiser.setPower(gamepad1.right_stick_y/8);
+            raiser.setPower(gamepad1.right_stick_y/3.5);
 
             // use dpad to shift between three positions
             if (gamepad1.dpad_left) {
