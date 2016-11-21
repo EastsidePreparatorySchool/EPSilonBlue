@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="50mm"
+   height="50mm"
+   viewBox="0 0 177.16536 177.16536"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Puncher gear.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="70.188623"
+     inkscape:cy="159.41164"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:window-width="1536"
+     inkscape:window-height="801"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       position="-244.99999,597.14284"
+       orientation="0,1"
+       id="guide4741" />
+    <sodipodi:guide
+       position="-244.99999,597.85713"
+       orientation="0,1"
+       id="guide4743" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-875.19685)">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.09;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 98.5625 0.24414062 C 57.313492 -0.050381523 16.326781 26.029515 3.2558594 77.587891 C -6.6944129 116.83684 8.0890457 174.81741 47.513672 176.81641 C 57.271442 177.31113 73.747722 166.30428 77.390625 153.75977 A 19.426237 19.426239 0 0 0 91.712891 135.02148 A 19.426237 19.426239 0 0 0 86.1875 121.45703 L 176.71875 37.71875 C 166.46436 26.59761 154.75754 17.470791 142.11719 10.957031 C 128.43676 3.9073039 113.48235 0.35066991 98.5625 0.24414062 z "
+       transform="translate(0,875.19685)"
+       id="path4704" />
+    <ellipse
+       style="fill:none;stroke:#ff0000;stroke-width:0.09;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2985"
+       cx="72.285828"
+       cy="1010.2192"
+       rx="14.110846"
+       ry="14.110861" />
+    <circle
+       style="fill:none;stroke:#ff0000;stroke-width:0.08999999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2985-0"
+       cx="43.939255"
+       cy="1010.2194"
+       r="6.4840088" />
+    <circle
+       style="fill:none;stroke:#ff0000;stroke-width:0.08999999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2985-0-4"
+       transform="matrix(0,1,-1,0,0,0)"
+       cx="981.87286"
+       cy="-72.285751"
+       r="6.4840088" />
+    <ellipse
+       style="fill:none;stroke:#ff0000;stroke-width:0.08999999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2985-0-45"
+       transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)"
+       cx="737.10022"
+       cy="663.21924"
+       rx="6.4840083"
+       ry="6.4840088" />
+    <ellipse
+       style="fill:none;stroke:#ff0000;stroke-width:0.08999999;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2985-4-8-1"
+       transform="matrix(-0.70710678,0.70710678,-0.70710678,-0.70710678,0,0)"
+       cx="691.56567"
+       cy="-765.44672"
+       rx="6.4840083"
+       ry="6.4840088" />
+  </g>
+</svg>

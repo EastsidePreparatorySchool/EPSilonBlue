@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="40.900002mm"
+   height="127.433mm"
+   viewBox="0 0 144.92127 451.53425"
+   id="svg5380"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Motor slide thin long V2.svg">
+  <defs
+     id="defs5382" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="-195"
+     inkscape:cy="156.34508"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1536"
+     inkscape:window-height="801"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5385">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-600.82795)">
+    <g
+       transform="translate(-159.44943,0.16416245)"
+       id="g5928">
+      <circle
+         r="6.4840088"
+         cy="-231.32364"
+         cx="1037.9104"
+         transform="matrix(0,1,-1,0,0,0)"
+         id="path2985-0-4-6"
+         style="fill:none;stroke:#ff0000;stroke-width:0.09;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="rect4182-6"
+         transform="translate(0,600.59053)"
+         d="m 177.19141,0.1171875 c -9.7953,0 -17.68164,26.4960935 -17.68164,26.4960935 l 17.77539,0 0,92.921879 0.0195,0 0,162.70507 c -0.0562,0.78746 -0.0937,1.58057 -0.0937,2.38282 l 0,134.20703 c 0,18.1339 14.59843,32.73242 32.73242,32.73242 l 40.41797,0 c 18.134,0 32.73242,-14.59852 32.73242,-32.73242 l 0,-125.70117 c 0.17048,-1.06126 0.26367,-2.15057 0.26367,-3.26172 l 0,-170.33203 0.0195,0 0,-92.921879 17.77539,0 c 0,0 -7.88634,-26.4960935 -17.68164,-26.4960935 l -106.27929,0 z"
+         style="opacity:1;fill:none;stroke:#ff0000;stroke-width:0.09;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="rect4173"
+         transform="translate(0,600.59053)"
+         d="m 230.31445,55.662109 c -7.83812,0 -14.14843,6.310318 -14.14843,14.148438 l 0,141.732423 0,35.41601 0,141.73243 c 0,7.83812 6.31031,14.14843 14.14843,14.14843 7.83811,0 14.14844,-6.31031 14.14844,-14.14843 l 0,-141.73243 0,-35.41601 0,-141.732423 c 0,-7.83812 -6.31033,-14.148438 -14.14844,-14.148438 z"
+         style="opacity:1;fill:none;stroke:#ff0000;stroke-width:0.09;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

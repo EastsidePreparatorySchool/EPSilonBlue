@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="70mm"
+   height="70mm"
+   viewBox="0 0 248.03148 248.03148"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Plunger liner Bottom.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="127.87274"
+     inkscape:cy="142.38165"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1536"
+     inkscape:window-height="801"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-804.33078)">
+    <g
+       id="g4170"
+       transform="translate(8.8583007,-8.8581987)">
+      <ellipse
+         ry="91.155754"
+         rx="91.155746"
+         cy="937.20471"
+         cx="115.15743"
+         id="path4136"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:0.08999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <circle
+         style="fill:none;stroke:#ff0000;stroke-width:0.07326807;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="circle4146"
+         transform="matrix(-0.70710422,0.70710934,-0.70710422,-0.70710934,0,0)"
+         cx="581.27295"
+         cy="-633.52936"
+         r="5.2785645" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4148"
+         d="m 40.683367,1019.1436 a 5.2786965,5.2783287 0 0 1 -7.4652,10e-5 5.2786965,5.2783287 0 0 1 -2e-6,-7.4647 5.2786965,5.2783287 0 0 1 7.465207,0 5.2786965,5.2783287 0 0 1 -5e-6,7.4646 z"
+         style="fill:none;stroke:#ff0000;stroke-width:0.07326735;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         style="fill:none;stroke:#ff0000;stroke-width:0.07326537;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="circle4150"
+         transform="matrix(-0.70707989,0.70713367,0.70707989,0.70713367,0,0)"
+         cx="581.24274"
+         cy="854.71118"
+         r="5.2783704" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4152"
+         d="m 197.09665,862.73041 a 5.2786905,5.2783343 0 0 0 0,-7.46468 5.2786905,5.2783343 0 0 0 -7.46519,0 5.2786905,5.2783343 0 0 0 0,7.46469 5.2786905,5.2783343 0 0 0 7.46519,-10e-6 z"
+         style="fill:none;stroke:#ff0000;stroke-width:0.07326735;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <ellipse
+       ry="123.95454"
+       rx="123.95453"
+       cy="928.3465"
+       cx="124.01573"
+       id="ellipse4168"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:0.12238293;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+</svg>

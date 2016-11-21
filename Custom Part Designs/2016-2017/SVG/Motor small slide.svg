@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="40mm"
+   height="87.5mm"
+   viewBox="0 0 141.73228 310.03937"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Motor small slide.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="-46.428571"
+     inkscape:cy="274.69182"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1536"
+     inkscape:window-height="801"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-742.32283)">
+    <g
+       id="g4180"
+       style="stroke:#ff0000;stroke-opacity:1;stroke-width:0.09;stroke-miterlimit:4;stroke-dasharray:none">
+      <g
+         id="g4175"
+         style="stroke:#ff0000;stroke-opacity:1;stroke-width:0.09;stroke-miterlimit:4;stroke-dasharray:none">
+        <circle
+           style="fill:none;stroke:#ff0000;stroke-width:0.09;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="path2985-0-4"
+           transform="matrix(0,1,-1,0,0,0)"
+           cx="1037.9115"
+           cy="-71.875008"
+           r="6.4840088" />
+        <path
+           inkscape:connector-curvature="0"
+           style="opacity:1;fill:none;stroke:#ff0000;stroke-width:0.09;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 17.742175,742.44011 c -9.795301,0 -17.681645,26.4961 -17.681645,26.4961 l 17.775395,0 0,92.92187 0.01953,0 0,170.33212 c 0,11.1499 8.92003,20.1269 20,20.1269 l 66.052735,0 c 11.07997,0 20,-8.977 20,-20.1269 l 0,-170.33212 0.0195,0 0,-92.92187 17.77539,0 c 0,0 -7.88634,-26.4961 -17.68164,-26.4961 l -106.279297,0 z"
+           id="rect4182" />
+        <rect
+           style="opacity:1;fill:none;stroke:#ff0000;stroke-width:0.09;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4173"
+           width="28.296452"
+           height="205.44409"
+           x="56.717915"
+           y="797.98486"
+           ry="14.148226" />
+      </g>
+    </g>
+  </g>
+</svg>

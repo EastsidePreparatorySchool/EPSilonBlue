@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="50mm"
+   height="50mm"
+   viewBox="0 0 177.16535 177.16535"
+   id="svg3363"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Puncher gear top.svg">
+  <defs
+     id="defs3365" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="13.571429"
+     inkscape:cy="91.428571"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1536"
+     inkscape:window-height="801"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3368">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-875.19685)">
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.09027398;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 98.683931,875.2443 c -41.387005,-0.29534 -82.510832,25.8561 -95.625479,77.55591 -9.9835576,39.35662 4.849359,97.49619 44.40587,99.50069 9.790414,0.4961 26.321813,-10.5409 29.9769,-23.1199 a 19.491226,19.479527 0 0 0 14.370184,-18.7897 19.491226,19.479527 0 0 0 -5.543874,-13.60161 l 90.834118,-83.96798 c -10.2887,-11.15165 -22.03468,-20.3035 -34.71732,-26.83513 -13.7262,-7.06907 -28.73064,-10.63546 -43.700399,-10.74228 z"
+       id="path4704" />
+    <ellipse
+       style="fill:none;stroke:#ff0000;stroke-width:0.09027398;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2985"
+       cx="72.319351"
+       cy="1010.3922"
+       rx="14.158052"
+       ry="14.149569" />
+    <ellipse
+       style="fill:none;stroke:#ff0000;stroke-width:0.09027398;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2985-0-45"
+       transform="matrix(0.70731905,0.70689445,-0.70731905,0.70689445,0,0)"
+       cx="737.35925"
+       cy="663.54785"
+       rx="6.5037475"
+       ry="6.5037479" />
+    <ellipse
+       style="fill:none;stroke:#ff0000;stroke-width:0.09027398;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2985-4-8-1"
+       transform="matrix(-0.70731905,0.70689445,-0.70731905,-0.70689445,0,0)"
+       cx="691.98059"
+       cy="-765.79205"
+       rx="6.5037475"
+       ry="6.5037479" />
+    <circle
+       cy="-72.319275"
+       cx="981.96814"
+       transform="matrix(0,1,-1,0,0,0)"
+       id="ellipse3401"
+       style="fill:none;stroke:#ff0000;stroke-width:0.14184061;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       r="10.218843" />
+    <circle
+       cy="1010.3925"
+       cx="43.877945"
+       id="ellipse3403"
+       style="fill:none;stroke:#ff0000;stroke-width:0.14184061;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       r="10.218843" />
+  </g>
+</svg>

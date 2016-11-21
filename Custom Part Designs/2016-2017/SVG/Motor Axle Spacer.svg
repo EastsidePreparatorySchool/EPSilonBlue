@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="18mm"
+   height="35mm"
+   viewBox="0 0 63.779526 124.01575"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Motor Axle Spacer.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.959798"
+     inkscape:cx="16.081942"
+     inkscape:cy="71.22552"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1536"
+     inkscape:window-height="801"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-928.34646)">
+    <g
+       id="g4217"
+       transform="translate(2.8700781,-93.791364)">
+      <g
+         inkscape:tile-y0="114.09452"
+         inkscape:tile-x0="3.1292439e-007"
+         inkscape:tile-h="27.637796"
+         inkscape:tile-w="27.637796"
+         inkscape:tile-cy="127.91341"
+         inkscape:tile-cx="13.818898"
+         id="g4153">
+        <circle
+           style="opacity:1;fill:none;stroke:#ff0000;stroke-width:0.08972487;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="path3340"
+           cx="13.818898"
+           cy="1038.5433"
+           r="13.774035" />
+        <circle
+           cy="1038.5433"
+           cx="13.818898"
+           id="circle4151"
+           style="opacity:1;fill:none;stroke:#ff0000;stroke-width:0.06786881;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           r="10.418821" />
+      </g>
+      <use
+         id="use4203"
+         transform="translate(0,30.401575)"
+         xlink:href="#g4153"
+         inkscape:tiled-clone-of="#g4153"
+         y="0"
+         x="0"
+         width="100%"
+         height="100%" />
+      <use
+         id="use4205"
+         transform="translate(0,60.803151)"
+         xlink:href="#g4153"
+         inkscape:tiled-clone-of="#g4153"
+         y="0"
+         x="0"
+         width="100%"
+         height="100%" />
+      <use
+         id="use4207"
+         transform="translate(0,91.204726)"
+         xlink:href="#g4153"
+         inkscape:tiled-clone-of="#g4153"
+         y="0"
+         x="0"
+         width="100%"
+         height="100%" />
+      <use
+         id="use4209"
+         transform="translate(30.401575,0)"
+         xlink:href="#g4153"
+         inkscape:tiled-clone-of="#g4153"
+         y="0"
+         x="0"
+         width="100%"
+         height="100%" />
+      <use
+         id="use4211"
+         transform="translate(30.401575,30.401575)"
+         xlink:href="#g4153"
+         inkscape:tiled-clone-of="#g4153"
+         y="0"
+         x="0"
+         width="100%"
+         height="100%" />
+      <use
+         id="use4213"
+         transform="translate(30.401575,60.803151)"
+         xlink:href="#g4153"
+         inkscape:tiled-clone-of="#g4153"
+         y="0"
+         x="0"
+         width="100%"
+         height="100%" />
+      <use
+         id="use4215"
+         transform="translate(30.401575,91.204726)"
+         xlink:href="#g4153"
+         inkscape:tiled-clone-of="#g4153"
+         y="0"
+         x="0"
+         width="100%"
+         height="100%" />
+    </g>
+  </g>
+</svg>
