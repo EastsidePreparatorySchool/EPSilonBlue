@@ -114,6 +114,7 @@ public class Fire2BallParkDelay extends LinearOpMode{
         // TODO Write all code here
 
         while (opModeIsActive()) {
+            sleep(15000);// 15 second delay
             gyroDrive(DRIVE_SPEED, 45, 0.0);      //forward 45 cm
             //shoot;
             robot.pusher.setPosition(0.8);
