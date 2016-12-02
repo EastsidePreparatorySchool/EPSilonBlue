@@ -23,7 +23,7 @@ import com.qualcomm.robotcore.util.Range;
  * Created by cliu on 11/11/2016.
  */
 @Autonomous(name = "Beacon Selector", group = "Twitchy")
-//@Disabled
+@Disabled
 public class BeaconSelector extends LinearOpMode {
     /* Declare OpMode members. */
 
@@ -34,8 +34,7 @@ public class BeaconSelector extends LinearOpMode {
     double RIGHT_POS = 0.2;
     double MIDDLE_POS = 0.35;
     double CANNON_POS = 0.7;
-    float RED_HUE = 15;   //10 - 15
-    float BLUE_HUE = 270; //230 - 270
+
 
 
     HardwareTwitchy robot = new HardwareTwitchy();   // Use a Pushbot's hardware
@@ -55,12 +54,12 @@ public class BeaconSelector extends LinearOpMode {
         beaconSensor = hardwareMap.colorSensor.get("beaconColor");
 
         //gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
-        double curPosition = robot.ballPicker.getPosition();
+        double curPosition = robot.picker.getPosition();
 
         //passive mode for beacon;
         beaconSensor.enableLed(false);
-        robot.beaconSelector.setPosition(MIDDLE_POS);
-        robot.ballPicker.setPosition(0.5);
+        robot.pusher.setPosition(MIDDLE_POS);
+        robot.picker.setPosition(0.5);
         boolean flag = true;
         String beaconPos;
         waitForStart();
@@ -72,25 +71,25 @@ public class BeaconSelector extends LinearOpMode {
                 beaconPos = findLeftOrRight();
 
                     if (beaconPos.equals("LEFT")) {
-                        robot.beaconSelector.setPosition(LEFT_POS);
+                        robot.pusher.setPosition(LEFT_POS);
                         telemetry.addData(">", "left pressed");
                         telemetry.update();
                         flag = false;
                         sleep(2000);
                     } else if (beaconPos.equals("RIGHT")) {
-                        robot.beaconSelector.setPosition((RIGHT_POS));
+                        robot.pusher.setPosition((RIGHT_POS));
                         telemetry.addData(">", "right pressed");
                         telemetry.update();
                         flag = false;
                         sleep(2000);
                     } else {
-                        robot.beaconSelector.setPosition(MIDDLE_POS);
+                        robot.pusher.setPosition(MIDDLE_POS);
                         sleep(1000);
                     }
                 findHue();
 
             }
-            robot.beaconSelector.setPosition(CANNON_POS);
+            robot.pusher.setPosition(CANNON_POS);
             telemetry.addData(">","action completed");
 
             telemetry.update();
@@ -151,9 +150,9 @@ public class BeaconSelector extends LinearOpMode {
 
 
             if (BEACON_COLOR.equals(MY_COLOR)) {
-                side = "RIGHT";
-            }else if (BEACON_COLOR.equals(OPPONENT_COLOR)){
                 side = "LEFT";
+            }else if (BEACON_COLOR.equals(OPPONENT_COLOR)){
+                side = "RIGHT";
             }
 
             //telemetry.addData("alpha", beaconSensor.alpha());
@@ -163,7 +162,6 @@ public class BeaconSelector extends LinearOpMode {
             return side;
 
         }
-
         return "";
     }
 }

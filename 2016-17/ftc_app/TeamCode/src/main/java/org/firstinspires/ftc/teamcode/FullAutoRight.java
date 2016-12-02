@@ -30,7 +30,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
+import android.app.Activity;
 import android.graphics.Color;
+import android.view.View;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -40,6 +42,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
@@ -74,31 +79,43 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Twitchy: Auto Drive By Gyro", group="Twitchy")
-@Disabled
-public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
+@Autonomous(name="Full Auto Drive - BLUE", group="Twitchy")
+//@Disabled
+public class FullAutoRight extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareTwitchy robot   = new HardwareTwitchy();   // Use a Pushbot's hardware
     ModernRoboticsI2cGyro gyro    = null;                    // Additional Gyro device
+    ColorSensor beaconSensor;
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP (try 1.0)
     static final double WHEEL_DIAMETER_CENTIMETERS = 10.0 ;     // For figuring circumference
     static final double COUNTS_PER_CENTIMETERS = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-                                                      (WHEEL_DIAMETER_CENTIMETERS * 3.1415);
+            (WHEEL_DIAMETER_CENTIMETERS * 3.1415);
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
     static final double     DRIVE_SPEED             = 0.5;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.2;     // Nominal half speed for better accuracy.
+    static final double     TURN_SPEED              = 0.4;     // Nominal half speed for better accuracy.
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.03;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.05;     // Larger is more responsive, but also less stable
+    static final double     P_DRIVE_COEFF           = 0.03;     // Larger is more responsive, but also less stable
 
 
+    //beacon selector variables:
+    String MY_COLOR = "BLUE";
+    String OPPONENT_COLOR = "RED";
+    int lightDetected = 2;
+    double LEFT_POS = 0.5;
+    double RIGHT_POS = 0.2;
+    double MIDDLE_POS = 0.35;
+    double CANNON_POS = 0.8;
+    boolean flag = true;
 
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    float hsvValues[] = {0F,0F,0F};
 
 
 
@@ -112,7 +129,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
          */
         robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
-
+        beaconSensor = hardwareMap.colorSensor.get("beaconColor");
 
 
 
@@ -120,6 +137,17 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        //passive mode for beacon color sensor;
+        beaconSensor.enableLed(false);
+
+        //set position of the pusher servo
+        robot.pusher.setPosition(MIDDLE_POS);
+
+        //set position of the picker servo. This position is up.
+        robot.picker.setPosition(0.5);
+
 
         // Send telemetry message to alert driver that we are calibrating;
         telemetry.addData(">", "Calibrating Gyro");    //
@@ -148,63 +176,170 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
         }
         gyro.resetZAxisIntegrator();
 
+
+
+        waitForStart();
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
         // TODO Write all code here
 
-       // while(opModeIsActive()){
-        gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
-        //shoot;
-        gyroHold(TURN_SPEED, 0, 5);         //holde for 10s
+        while (opModeIsActive()) {
+            gyroDrive(DRIVE_SPEED, 35, 0.0);      //foward 35 cm
+            //shoot;
+            robot.pusher.setPosition(0.8);
+            robot.picker.setPosition(0.75);
+            robot.raiser.setPower(-0.25);
+            sleep(878);
+            robot.raiser.setPower(-0.20);
+            robot.cannon.setPower(-1.0);
+            sleep(650);
+            robot.cannon.setPower(0.0);
+            sleep(350);
+            robot.raiser.setPower(0.0);
+            robot.picker.setPosition(0.2);
+            robot.pusher.setPosition(0.35);
 
-        gyroDrive(DRIVE_SPEED, 40, 0);    // foward 40
+            gyroDrive(DRIVE_SPEED,20, 0);    // foward 20
 
-        gyroTurn(TURN_SPEED, -90.0);         // Turn  CW to -90 Degrees
-        gyroHold(TURN_SPEED, -90, 1);      // hold to calibrate
+            gyroTurn(TURN_SPEED, -90.0);         // Turn  CW to -90 Degrees
+            gyroHold(TURN_SPEED, -90, 0.5);      // hold to calibrate
 
-        gyroDrive(DRIVE_SPEED, 50, -90);
+            gyroDrive(DRIVE_SPEED, 50, -90);
 
-        gyroTurn(TURN_SPEED, 0);
-        gyroHold(TURN_SPEED, 0, 2);
+            gyroTurn(TURN_SPEED, 0);
+            gyroHold(TURN_SPEED, 0, 0.5);
 
-        gyroDrive(DRIVE_SPEED, 75, 0);
-        gyroTurn(TURN_SPEED,90);
-        gyroHold(TURN_SPEED, 90, 2);    //at this point the back of the robot is pointing to the beacon
+            gyroDrive(DRIVE_SPEED, 75, 0);
+            gyroTurn(TURN_SPEED, 90);
+            gyroHold(TURN_SPEED, 90, 0.5);    //at this point the back of the robot is pointing to the beacon
 
-        gyroDrive(-DRIVE_SPEED, 50, 90);    //go back until sense the beacon
+            gyroDrive(DRIVE_SPEED, -125, 90);    //go back until very close to the beacon
+
+            selectButtom();
+            gyroHold(DRIVE_SPEED,90,2);
+            //leave beacon
+            gyroDrive(DRIVE_SPEED,220,60);
+            gyroTurn(TURN_SPEED, 90);
+            gyroHold(TURN_SPEED,90,0.5);
+            gyroDrive(DRIVE_SPEED,20,90);
 
 
 
-//        gyroHold( TURN_SPEED, -90.0, 0.5);    // Hold -90 Deg heading for a 1/2 second
-//        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
-//        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
-//        gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
-//        gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
-//        gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 centimeters
-//        gyroHold( TURN_SPEED,   0.0, 0.5);    // Hold  0 Deg heading for a 1/2 second
-
-        // TODO stop writing code
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
-        sleep(5000);
-
+            // TODO stop writing code
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+            sleep(5000);
+        }
 
     }
 
 
-   /**
-    *  Method to drive on a fixed compass bearing (angle), based on encoder counts.
-    *  Move will stop if either of these conditions occur:
-    *  1) Move gets to the desired position
-    *  2) Driver stops the opmode running.
-    *
-    * @param speed      Target speed for forward motion.  Should allow for _/- variance for adjusting heading
-    * @param distance   Distance (in centimeters) to move from current position.  Negative distance means move backwards.
-    * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
-    *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-    *                   If a relative angle is required, add/subtract from current heading.
-    */
+    public void selectButtom () {
+        String beaconPos;
+        while (flag == true) {
+            beaconPos = findLeftOrRight();
+
+            if (beaconPos.equals("LEFT")) {
+                robot.pusher.setPosition(LEFT_POS);
+                telemetry.addData(">", "left pressed");
+                telemetry.update();
+                flag = false;
+
+            } else if (beaconPos.equals("RIGHT")) {
+                robot.pusher.setPosition((RIGHT_POS));
+                telemetry.addData(">", "right pressed");
+                telemetry.update();
+                flag = false;
+
+            } else {
+                robot.pusher.setPosition(MIDDLE_POS);
+
+            }
+            findHue();
+        }
+    }
+
+
+        //find the hue from beacon color sensor and print the color values to telemetry.
+    public float findHue (){
+
+        //return variable
+        float hue = 0;
+        beaconSensor.enableLed(false);
+        // values is a reference to the hsvValues array.
+        final float values[] = hsvValues;
+
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(com.qualcomm.ftcrobotcontroller.R.id.RelativeLayout);
+        // convert the RGB values to HSV values.
+        Color.RGBToHSV(beaconSensor.red() * 8, beaconSensor.green() * 8, beaconSensor.blue() * 8, hsvValues);
+
+        //float hue is for return the value of hue. each color has a unique hue.
+        hue = hsvValues[0];
+
+        // send the info back to driver station using telemetry function.
+
+        telemetry.addData("Clear", beaconSensor.alpha());
+//        telemetry.addData("Red  ", beaconSensor.red());
+//        telemetry.addData("Green", beaconSensor.green());
+//        telemetry.addData("Blue ", beaconSensor.blue());
+        telemetry.addData("Hue", hsvValues[0]);
+
+
+        telemetry.update();
+
+        return hue;
+    }
+
+    //calls findHue(). based on the Hue, determine which bottom to press. returns String left or right
+    public String findLeftOrRight () {
+
+        String side = "";
+        double BEACON_HUE;
+        String BEACON_COLOR = "";
+        //if detects light, then determine what color?
+
+        while (beaconSensor.alpha() >= lightDetected) {
+            BEACON_HUE = findHue();
+
+            //determine the name of the color;
+            if (BEACON_HUE >= 0 && BEACON_HUE <= 20) {
+                BEACON_COLOR = "RED";
+            } else if (230 <= BEACON_HUE && BEACON_HUE <= 270 ) {
+                BEACON_COLOR = "BLUE";
+            }
+
+
+            if (BEACON_COLOR.equals(MY_COLOR)) {
+                side = "LEFT";
+            }else if (BEACON_COLOR.equals(OPPONENT_COLOR)){
+                side = "RIGHT";
+            }
+
+            //telemetry.addData("alpha", beaconSensor.alpha());
+            telemetry.addData(">", side);
+            telemetry.update();
+
+            return side;
+
+        }
+        return "";
+    }
+
+
+    /**
+     *  Method to drive on a fixed compass bearing (angle), based on encoder counts.
+     *  Move will stop if either of these conditions occur:
+     *  1) Move gets to the desired position
+     *  2) Driver stops the opmode running.
+     *
+     * @param speed      Target speed for forward motion.  Should allow for _/- variance for adjusting heading
+     * @param distance   Distance (in centimeters) to move from current position.  Negative distance means move backwards.
+     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
+     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
+     *                   If a relative angle is required, add/subtract from current heading.
+     */
     public void gyroDrive ( double speed,
                             double distance,
                             double angle) throws InterruptedException {
@@ -241,7 +376,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
 
             // keep looping while we are still active, and BOTH motors are running.
             while (opModeIsActive() &&
-                   (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+                    (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
 
                 // adjust relative speed based on heading error.
                 error = getError(angle);
@@ -304,7 +439,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
      * @throws InterruptedException
      */
     public void gyroTurn (  double speed, double angle)
-                              throws InterruptedException {
+            throws InterruptedException {
 
         // keep looping while we are still active, and not on heading.
         while (opModeIsActive() && !onHeading(speed, angle, P_TURN_COEFF)) {
@@ -326,7 +461,7 @@ public class TwitchyAutoDriveByGyro_Linear extends LinearOpMode {
      * @throws InterruptedException
      */
     public void gyroHold( double speed, double angle, double holdTime)
-                            throws InterruptedException {
+            throws InterruptedException {
 
         ElapsedTime holdTimer = new ElapsedTime();
 
