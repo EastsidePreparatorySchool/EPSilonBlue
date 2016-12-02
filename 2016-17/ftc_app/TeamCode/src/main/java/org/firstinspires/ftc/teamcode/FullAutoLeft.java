@@ -80,7 +80,7 @@ import java.util.TimerTask;
  */
 
 @Autonomous(name="Full Auto Drive - RED", group="Twitchy")
-//@Disabled
+@Disabled
 public class FullAutoLeft extends LinearOpMode {
 
     /* Declare OpMode members. */

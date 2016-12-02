@@ -80,7 +80,7 @@ import java.util.TimerTask;
  */
 
 @Autonomous(name="BlueConner", group="Twitchy")
-//@Disabled
+@Disabled
 public class BlueConner extends LinearOpMode {
 
     /* Declare OpMode members. */
