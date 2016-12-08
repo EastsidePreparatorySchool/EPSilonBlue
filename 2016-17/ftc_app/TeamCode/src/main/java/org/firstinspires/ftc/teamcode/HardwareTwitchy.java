@@ -33,7 +33,7 @@ public class HardwareTwitchy
     public DcMotor raiser = null;
     public Servo pusher         = null;
     public Servo picker = null;
-    
+
 
     public final static double pusher_home = 0; // set starting positoin
     public final static double pusher_MIN_RANGE  = 0; // lowest position

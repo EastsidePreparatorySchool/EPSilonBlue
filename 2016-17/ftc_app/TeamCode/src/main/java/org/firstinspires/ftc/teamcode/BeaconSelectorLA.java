@@ -124,8 +124,10 @@ public class BeaconSelectorLA extends LinearOpMode {
         while (opModeIsActive()) {
 
             findAndPressButtom();
-            gyroDrive(DRIVE_SPEED, 50, 0);
+            gyroDrive(DRIVE_SPEED, 80, 0);
             findAndPressButtom();
+            stopAllMotors();
+            sleep(40000);// 40 seconds
 
 
 
@@ -150,7 +152,7 @@ public class BeaconSelectorLA extends LinearOpMode {
 
         telemetry.addData(">", "white!");
         telemetry.update();
-
+        sleep(2000);
 
         gyroHold(TURN_SPEED, 0, 0.5);
 
@@ -162,29 +164,33 @@ public class BeaconSelectorLA extends LinearOpMode {
         //if find myColor, then hold position and drive forward to the next beacon.
         if(findBeaconColor().equals(MY_COLOR)){
             telemetry.addData(">", "Color Found!");
-
+            telemetry.update();
+            sleep(2000);
             //keep the current orientation for precision.
             gyroHold(TURN_SPEED, 0, 1);
 
-            //drive foward to next beacon.
-            //celebration
-            gyroDrive(DRIVE_SPEED,10,0);
-            gyroDrive(DRIVE_SPEED,-10,0);
+
+
 
 
 
             //if not myColor, then drive forward to the next color find color.
         }else{
-            gyroDrive(0.1,15,0);
+            //drive to the next color.
+            telemetry.addData(">", "Not myColor");
+            sleep(2000);
+            gyroDrive(0.1,10,0);
+
             if (findBeaconColor().equals(MY_COLOR)){
                 telemetry.addData(">","Color Found!");
+                sleep(2000);
+                telemetry.update();
                 //keep the current orientation for precision.
                 gyroHold(TURN_SPEED,0,1);
 
                 //press buttom here.
-                //celebrate.
-                gyroDrive(DRIVE_SPEED,10,0);
-                gyroDrive(DRIVE_SPEED,-10,0);
+
+
 
             }
         }
@@ -219,10 +225,10 @@ public class BeaconSelectorLA extends LinearOpMode {
 
 
         // send the info back to driver station using telemetry function.
-        telemetry.addData("Clear", beaconSensor.alpha());
-        telemetry.addData("Red  ", beaconSensor.red());
-        telemetry.addData("Green", beaconSensor.green());
-        telemetry.addData("Blue ", beaconSensor.blue());
+//        telemetry.addData("Clear", beaconSensor.alpha());
+//        telemetry.addData("Red  ", beaconSensor.red());
+//        telemetry.addData("Green", beaconSensor.green());
+//        telemetry.addData("Blue ", beaconSensor.blue());
         //telemetry.addData("Hue", beaconHsvValues[0]);
         telemetry.addData("Color", BEACON_COLOR);
         telemetry.update();
