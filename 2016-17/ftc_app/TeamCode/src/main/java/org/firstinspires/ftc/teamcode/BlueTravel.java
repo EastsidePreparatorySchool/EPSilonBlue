@@ -9,11 +9,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 /**
- * Created by abedi on 12/1/2016.
+ * Created by abedi on 12/8/2016.
  */
-@Autonomous(name="Fire 2 Balls", group="Twitchy")
-//@Disabled
-public class Fire2Balls extends LinearOpMode {
+@Autonomous(name = "blue Travel", group = "Twitchy")
+public class BlueTravel  extends LinearOpMode{
 
 
     /* Declare OpMode members. */
@@ -114,30 +113,11 @@ public class Fire2Balls extends LinearOpMode {
         // TODO Write all code here
 
         while (opModeIsActive()) {
-            gyroDrive(DRIVE_SPEED, 45, 0.0);      //forward 45 cm
-            //shoot;
-            robot.picker.setPosition(0.55);// middle position
-            robot.raiser.setPower(-0.25);
-            sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
-
+            gyroDrive(DRIVE_SPEED, 47, 0.0);      //forward 45 cm
+            // fire cannon
+            robot.picker.setPosition(0.75);
             robot.raiser.setPower(-0.20);
-            robot.cannon.setPower(-1.0);
-            sleep(650);// shooting of the cannon
-
-            robot.cannon.setPower(0.0);
-            robot.raiser.setPower(0.0);//lower cannon
-            gyroHold(0.0,0.0,2);
-            // reset robot to start cannon fire position
-            robot.raiser.setPower(0.0);
-            robot.picker.setPosition(0.2);// also loads the cannon
-            gyroHold(0.0,0.0,1);
-
-            //shooting again robot pusher no longer attached and needs to be controlled like this
-            //robot.pusher.setPosition(0.8);
-            robot.picker.setPosition(0.75);// bottom position
-            sleep(1000);
-            robot.raiser.setPower(-0.25);
-            sleep(1000);// preliminary things to shoot(raising cannon. moving things out of way)
+            sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
 
             robot.raiser.setPower(-0.20);
             robot.cannon.setPower(-1.0);
@@ -146,18 +126,19 @@ public class Fire2Balls extends LinearOpMode {
             robot.cannon.setPower(0.0);//lower cannon
             sleep(1000);
 
-            // reset robot to start position
-            robot.raiser.setPower(0.0);
-            robot.picker.setPosition(0.2);
-            //robot.pusher.setPosition(0.35);
+            robot.raiser.setPower(0.0);//
+            robot.picker.setPosition(0.2);// acident reload
+
+            // fire cannon two
 
 
-            // reset robot to start position
-            robot.raiser.setPower(0.0);
-            robot.picker.setPosition(0.2);
-            robot.pusher.setPosition(0.35);
+            gyroDrive(TURN_SPEED,87,0.0);// hit cap ball
+            gyroDrive(TURN_SPEED,-5,0.0);
+            gyroTurn(TURN_SPEED,145);
+            gyroDrive(TURN_SPEED,-233,145);
 
-
+            gyroTurn(TURN_SPEED,180);
+            gyroDrive(DRIVE_SPEED,-20,180);
 
             // TODO stop writing code
             telemetry.addData("Path", "Complete");
@@ -390,7 +371,7 @@ public class Fire2Balls extends LinearOpMode {
         return Range.clip(error * PCoeff, -1, 1);
     }
 
-
 }
+
 
 
