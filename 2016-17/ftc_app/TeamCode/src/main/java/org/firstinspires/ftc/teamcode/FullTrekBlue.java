@@ -8,15 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import static java.lang.Thread.sleep;
-
 /**
  * Created by abedi on 12/1/2016.
  */
 
-@Autonomous(name="Full Red Routine", group="Twitchy")
+@Autonomous(name="Full Blue Routine", group="Twitchy")
 //@Disabled
-public class FullTrekRed extends LinearOpMode {
+public class FullTrekBlue extends LinearOpMode {
 
 
     /**
@@ -164,12 +162,12 @@ public class FullTrekRed extends LinearOpMode {
             sleep(650);// shooting of the cannon
 
             robot.cannon.setPower(0.0);//lower cannon
-            sleep(1000);
+            sleep(500);
 
             // reset robot to start cannon fire position
             robot.raiser.setPower(0.0);
             robot.picker.setPosition(0.2);// also loads the cannon
-            sleep(878);
+
             //shooting again robot pusher no longer attached and needs to be controlled like this
             //robot.pusher.setPosition(0.8);
             robot.picker.setPosition(0.75);// bottom position
@@ -182,7 +180,7 @@ public class FullTrekRed extends LinearOpMode {
             sleep(650);// shooting of the cannon
 
             robot.cannon.setPower(0.0);//lower cannon
-            sleep(1000);
+            sleep(500);
 
             // reset robot to start position
             robot.raiser.setPower(0.0);
@@ -190,19 +188,19 @@ public class FullTrekRed extends LinearOpMode {
             //robot.pusher.setPosition(0.35);
 
             gyroDrive(DRIVE_SPEED,87,0.0);// to hit cap ball
-            gyroTurn(TURN_SPEED,-38.25);// turning
-            gyroDrive(DRIVE_SPEED,216.46,-38.25);//drive to angle corner
+            gyroTurn(TURN_SPEED,141.75);// turning
+            gyroDrive(DRIVE_SPEED,-216.46,141.75);//drive to angle corner
 
-            // turn straight but back towards park
-            gyroTurn(TURN_SPEED,0.0);
+            // turn straight but front facing park
+            gyroTurn(TURN_SPEED,180.0);
 
             // TODO che's backward beacon code
             //
             // TODO park code
             // turn some amount of degrees.
-            gyroTurn(TURN_SPEED,15);
-            gyroDrive(DRIVE_SPEED,50,15);
+            gyroTurn(TURN_SPEED,195);
             // drive straight backwards
+            gyroDrive(DRIVE_SPEED,50,195);
 
             // TODO stop writing code
             telemetry.addData("Path", "Complete");
