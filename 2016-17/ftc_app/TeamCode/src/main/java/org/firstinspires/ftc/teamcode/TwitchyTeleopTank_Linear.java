@@ -40,7 +40,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * This OpMode uses the common HardwareK9bot class to define the devices on the robot.
@@ -80,6 +79,7 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
     Servo beacon;
     Servo picker;
     double pickPosition;
+    double beaconPosition;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -119,45 +119,20 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             x = gamepad1.left_stick_x;
             y = gamepad1.left_stick_y;
 
-            //Todo: che Math
-//            h = Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
-//            lPower = (x+h)/2;
-//            rPower = lPower-x;
-//
-//
-//            //exception if just x for turning
-//            if(y<0.1 && y>-0.1 && x>0.1){
-//                leftMotor.setPower(1.0);
-//                rightMotor.setPower(-1.0);
-//            } else if(y<0.1 && y>-0.1 && x<0.1){
-//                leftMotor.setPower(-1.0);
-//                rightMotor.setPower(1.0);
-//            }
-//
-//            lPower = Range.clip(lPower, -1, 1);
-//            rPower = Range.clip(rPower, -1, 1);
-//
-//            leftMotor.setPower(lPower);
-//            rightMotor.setPower(rPower);
 
-
-//            TODO: quinn math
-//            lPower = Math.pow((Math.pow(y,2)+ Math.pow(x,2)-(2*y*x))/2,1/2);
-//            rPower = Math.pow((Math.pow(y,2)+ Math.pow(x,2)+(2*y*x))/2,1/2);
-//            if(-x>y){
-//                rPower = -1 *rPower;
-//            }
-//
-//            if(x>y){
-//                lPower = -1*lPower;
-//            }
-//
-//            lPower = Range.clip(lPower, -1, 1);
-//            rPower = Range.clip(rPower, -1, 1);
-//
-//            leftMotor.setPower(lPower);
-//            rightMotor.setPower(rPower);
-
+//            TODO: Control mapping
+/*
+            left joystick controls movement
+            left trigger is slow mode
+            start is fast mode
+            right trigger is fire the cannon
+            cannon raising is right joystick
+            y is raise picker
+            a is lower picker
+            dpad left is fire actuator
+            dpad right is retract actuator
+            free buttons: dpad up, dpad down, x, b,back and bumpers
+ */
             // TODO: POV
 
             lPower = (-gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.6;
@@ -169,24 +144,20 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
                 lPower /= max;
                 rPower /= max;
             }
+            // slow mo
             if (gamepad1.left_trigger > 0.25) {
-                lPower = lPower / 2;
-                rPower = rPower / 2;
-            } if (gamepad1.start){
-                lPower = lPower * (4/3);
-                rPower = rPower * (4/3);
-            }
+                lPower = (-gamepad1.left_stick_y + gamepad1.left_stick_x) * 0.3;
+                rPower = (-gamepad1.left_stick_y - gamepad1.left_stick_x) * 0.3;
+            } else if (gamepad1.start) {
+                lPower = (-gamepad1.left_stick_y + gamepad1.left_stick_x);
+                rPower = (-gamepad1.left_stick_y - gamepad1.left_stick_x);
+            } // fast mode is start
 
             leftMotor.setPower(lPower);
             rightMotor.setPower(rPower);
 
             //
 
-//            TODO:tank drive
-//            lPower = -gamepad1.left_stick_y;
-//            rPower = -gamepad1.right_stick_y ;
-//            leftMotor.setPower(lPower);
-//            rightMotor.setPower(rPower);
 //
 
             // right trigger is fire cannon
@@ -197,26 +168,23 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
             }
 
             // cannon raise by right joystick
-            raiser.setPower(gamepad1.right_stick_y/3.5);
+            raiser.setPower(gamepad1.right_stick_y / 3.5);
 
-            // use dpad to shift between three positions
+// ToDO write new linear actuator code
             if (gamepad1.dpad_left) {
-                beacon.setPosition(0.2);
-            } else if (gamepad1.dpad_up) {
-                beacon.setPosition(0.7);
-            } else if (gamepad1.dpad_down) {
-                beacon.setPosition(0.4);
-            } else if (gamepad1.dpad_right) {
-                beacon.setPosition(0.55);
+                beaconPosition = 0.2;
+            } else if (gamepad1.dpad_right){
+                beaconPosition = 0.07;
             }
 
-
+            beaconPosition = Range.clip(beaconPosition, 0.0, 0.7);
+            beacon.setPosition(beaconPosition);
             // Use y and a to raise and lower the picker
-            if (gamepad1.y)
+            if (gamepad1.y) {
                 pickPosition = 0.2;
-            else if (gamepad1.a)
+            } else if (gamepad1.a) {
                 pickPosition = 0.75;
-
+            }
             // Move servo to new position.
             pickPosition = Range.clip(pickPosition, 0.0, 0.7);
             picker.setPosition(pickPosition);
