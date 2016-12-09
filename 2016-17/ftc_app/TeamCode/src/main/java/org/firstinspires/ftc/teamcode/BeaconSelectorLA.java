@@ -34,6 +34,7 @@ public class BeaconSelectorLA extends LinearOpMode {
     String OPPONENT_COLOR = "BLUE";
 
     int whiteLightBrightness = 13;
+    int beaconBrightness = 2;
 
 
     HardwareTwitchy robot = new HardwareTwitchy();   // Use a Pushbot's hardware
@@ -86,6 +87,7 @@ public class BeaconSelectorLA extends LinearOpMode {
         //active mode for bottomSensor for finding white line.
         bottomSensor.enableLed(true);
 
+        robot.pusher.setPosition(0);
 
 
         //SET UP THE GYROSENSOR
@@ -141,60 +143,97 @@ public class BeaconSelectorLA extends LinearOpMode {
 
     public void findAndPressButtom () throws InterruptedException{
 
+        //forward parameter for right button.
+        int fowardDistance = 15;
+        //backward parameter for left button.
+        int backwardDistance = -5;
+
+        robot.pusher.setPosition(0);
         //drive foward at 0.2 speed until sees white line.
         do {
             robot.rightMotor.setPower(0.2);
             robot.leftMotor.setPower(0.2);
-
         }while(findBottomBrightness() <= whiteLightBrightness);
 
         stopAllMotors();
 
         telemetry.addData(">", "white!");
         telemetry.update();
-        sleep(2000);
-
-        gyroHold(TURN_SPEED, 0, 0.5);
 
 
+        gyroHold(TURN_SPEED, 0, 1);
 
-        //when in front of color sensor, first go back 1 cm to check color.
-        gyroDrive(0.1,-1,0);
+
+
+        //when in front of color sensor, first go back until sees enough color.
+//        do {
+//            robot.rightMotor.setPower(-0.1);
+//            robot.leftMotor.setPower(-0.1);
+//        }while(findBeaconBrightness() < beaconBrightness);    //the bigger the number, the more centered the robot.
+        gyroDrive(0.1,backwardDistance,0);
 
         //if find myColor, then hold position and drive forward to the next beacon.
         if(findBeaconColor().equals(MY_COLOR)){
+
             telemetry.addData(">", "Color Found!");
             telemetry.update();
-            sleep(2000);
+
+            //push button:
+            robot.pusher.setPosition(180);
+
             //keep the current orientation for precision.
-            gyroHold(TURN_SPEED, 0, 1);
-
-
-
-
+            gyroHold(TURN_SPEED, 0, 2);
 
 
             //if not myColor, then drive forward to the next color find color.
         }else{
             //drive to the next color.
             telemetry.addData(">", "Not myColor");
-            sleep(2000);
-            gyroDrive(0.1,10,0);
+            telemetry.update();
+
+            //drive forward until see enough light. This will enable the robot to stop in front of the color
+//            do {
+//                robot.rightMotor.setPower(0.1);
+//                robot.leftMotor.setPower(0.1);
+//            }while(findBeaconBrightness() > beaconBrightness);    //the bigger the number, the more centered the robot.
+
+            gyroDrive(0.1,fowardDistance,0);
 
             if (findBeaconColor().equals(MY_COLOR)){
                 telemetry.addData(">","Color Found!");
-                sleep(2000);
                 telemetry.update();
+                robot.pusher.setPosition(180);
                 //keep the current orientation for precision.
-                gyroHold(TURN_SPEED,0,1);
-
-                //press buttom here.
+                gyroHold(TURN_SPEED,0,2);
 
 
 
             }
         }
     }
+
+
+    public double findBeaconBrightness(){
+        //return variable
+        double BEACON_BRIGHTNESS = 0;
+
+        // values is a reference to the hsvValues array.
+        final float values[] = bottomHsvValues;
+
+        //double BEACON_HUE is for returning the value of hue. each color has a unique hue.
+        BEACON_BRIGHTNESS = beaconSensor.alpha();
+
+        // send the info back to driver station using telemetry function.
+        telemetry.addData("Beacon Clear", beaconSensor.alpha());
+//        telemetry.addData("Red  ", bottomSensor.red());
+//        telemetry.addData("Green", bottomSensor.green());
+//        telemetry.addData("Blue ", bottomSensor.blue());
+        telemetry.update();
+
+        return BEACON_BRIGHTNESS;
+    }
+
+
 
     //find the hue from beaconColor and print the hue to telemetry.
     //this returns the name of color: "BLUE" or "RED".
@@ -245,19 +284,11 @@ public class BeaconSelectorLA extends LinearOpMode {
         //return variable
         double BOTTOM_BRIGHTNESS = 0;
 
-
-
         // values is a reference to the hsvValues array.
         final float values[] = bottomHsvValues;
 
-        //final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(R.id.RelativeLayout);
-        // convert the RGB values to HSV values.
-//        Color.RGBToHSV(bottomSensor.red() * 8, bottomSensor.green() * 8, bottomSensor.blue() * 8, bottomHsvValues);
-
         //double BEACON_HUE is for returning the value of hue. each color has a unique hue.
         BOTTOM_BRIGHTNESS = bottomSensor.alpha();
-
-
 
         // send the info back to driver station using telemetry function.
         telemetry.addData("Bottom Clear", bottomSensor.alpha());
