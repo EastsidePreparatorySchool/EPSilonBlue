@@ -124,9 +124,9 @@ public class BlueTravel  extends LinearOpMode{
             sleep(650);// shooting of the cannon
 
             robot.cannon.setPower(0.0);//lower cannon
+            robot.raiser.setPower(0.0);//
             sleep(1000);
 
-            robot.raiser.setPower(0.0);//
             robot.picker.setPosition(0.2);// acident reload
 
             // fire cannon two
@@ -139,6 +139,9 @@ public class BlueTravel  extends LinearOpMode{
 
             gyroTurn(TURN_SPEED,180);
             gyroDrive(DRIVE_SPEED,-20,180);
+
+            // che code
+
 
             // TODO stop writing code
             telemetry.addData("Path", "Complete");
