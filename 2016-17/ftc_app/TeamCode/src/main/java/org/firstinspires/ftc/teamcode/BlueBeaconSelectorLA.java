@@ -27,11 +27,11 @@ import com.qualcomm.robotcore.util.Range;
  */
 @Autonomous(name = "Beacon Selector LA", group = "Twitchy")
 //@Disabled
-public class BeaconSelectorLA extends LinearOpMode {
+public class BlueBeaconSelectorLA extends LinearOpMode {
     /* Declare OpMode members. */
 
-    String MY_COLOR = "RED";
-    String OPPONENT_COLOR = "BLUE";
+    String MY_COLOR = "BLUE";
+
 
     int whiteLightBrightness = 13;
     int beaconBrightness = 2;
