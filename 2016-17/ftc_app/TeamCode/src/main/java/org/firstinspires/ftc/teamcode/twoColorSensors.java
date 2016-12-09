@@ -49,18 +49,18 @@ public class twoColorSensors extends LinearOpMode {
         gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");   //get reference for gyro
         bottomColor = hardwareMap.colorSensor.get("bottomColor");     // get a reference to our ColorSensor object.
         beaconColor = hardwareMap.colorSensor.get("beaconColor");
-        beaconColor.setI2cAddress(I2cAddr.create7bit(0x5c >> 1));
-        bottomColor.setI2cAddress(I2cAddr.create7bit(0x3c >> 1));
+        beaconColor.setI2cAddress(I2cAddr.create8bit(0x3c));
+        bottomColor.setI2cAddress(I2cAddr.create8bit(0x4c));
 
         bottomColor.enableLed(true);
         beaconColor.enableLed(false);
-        sleep(2000);
+        //sleep(2000);
 
         waitForStart();
         while (opModeIsActive()){
             findBottomHue();
-
-            idle();
+            findBeaconHue();
+           idle();
         }
 
 
@@ -87,15 +87,14 @@ public class twoColorSensors extends LinearOpMode {
         hue = hsvValues[0];
 
         // send the info back to driver station using telemetry function.
-        telemetry.addData("LED", bLedOn ? "On" : "Off");
+        telemetry.addData("bottomLED", bLedOn ? "On" : "Off");
         telemetry.addData("Clear", bottomColor.alpha());
-        telemetry.addData("Red  ", bottomColor.red());
-        telemetry.addData("Green", bottomColor.green());
-        telemetry.addData("Blue ", bottomColor.blue());
+//        telemetry.addData("Red  ", bottomColor.red());
+//        telemetry.addData("Green", bottomColor.green());
+//        telemetry.addData("Blue ", bottomColor.blue());
         telemetry.addData("Hue", hsvValues[0]);
 
-        telemetry.addData("beacon address", beaconColor.getI2cAddress());
-        telemetry.addData("bottom address", bottomColor.getI2cAddress());
+
 
         telemetry.update();
 
@@ -105,5 +104,38 @@ public class twoColorSensors extends LinearOpMode {
     }
 
 
+    //find the hue from bottomColor and print the color values to telemetry.
+    public float findBeaconHue (){
+
+
+
+        //return variable
+        float hue = 0;
+
+        // values is a reference to the hsvValues array.
+        final float values[] = hsvValues;
+
+        final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(R.id.RelativeLayout);
+        // convert the RGB values to HSV values.
+        Color.RGBToHSV(beaconColor.red() * 8, beaconColor.green() * 8, beaconColor.blue() * 8, hsvValues);
+
+        //float hue is for return the value of hue. each color has a unique hue.
+        hue = hsvValues[0];
+
+        // send the info back to driver station using telemetry function.
+        telemetry.addData("beaconLED", bLedOn ? "On" : "Off");
+        telemetry.addData("Clear", beaconColor.alpha());
+//        telemetry.addData("Red  ", beaconColor.red());
+//        telemetry.addData("Green", beaconColor.green());
+//        telemetry.addData("Blue ", beaconColor.blue());
+        telemetry.addData("Hue", hsvValues[0]);
+
+
+        telemetry.update();
+
+
+
+        return hue;
+    }
 
 }
