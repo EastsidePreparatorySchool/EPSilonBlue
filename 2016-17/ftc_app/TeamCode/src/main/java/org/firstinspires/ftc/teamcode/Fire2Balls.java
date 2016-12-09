@@ -125,18 +125,19 @@ public class Fire2Balls extends LinearOpMode {
             sleep(650);// shooting of the cannon
 
             robot.cannon.setPower(0.0);//lower cannon
-            sleep(1000);
+            sleep(2000);
 
             // reset robot to start cannon fire position
             robot.raiser.setPower(0.0);
             robot.picker.setPosition(0.2);// also loads the cannon
-            sleep(878);
+            sleep(1000);
+
             //shooting again robot pusher no longer attached and needs to be controlled like this
             //robot.pusher.setPosition(0.8);
             robot.picker.setPosition(0.75);// bottom position
-            sleep(500);
+            sleep(1000);
             robot.raiser.setPower(-0.25);
-            sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
+            sleep(1000);// preliminary things to shoot(raising cannon. moving things out of way)
 
             robot.raiser.setPower(-0.20);
             robot.cannon.setPower(-1.0);
