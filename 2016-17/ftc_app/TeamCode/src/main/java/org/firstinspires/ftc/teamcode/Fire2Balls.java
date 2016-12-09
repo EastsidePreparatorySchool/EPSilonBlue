@@ -116,7 +116,6 @@ public class Fire2Balls extends LinearOpMode {
         while (opModeIsActive()) {
             gyroDrive(DRIVE_SPEED, 45, 0.0);      //forward 45 cm
             //shoot;
-            robot.pusher.setPosition(0.8);
             robot.picker.setPosition(0.55);// middle position
             robot.raiser.setPower(-0.25);
             sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
@@ -126,14 +125,14 @@ public class Fire2Balls extends LinearOpMode {
             sleep(650);// shooting of the cannon
 
             robot.cannon.setPower(0.0);//lower cannon
-            sleep(500);
+            sleep(1000);
 
             // reset robot to start cannon fire position
             robot.raiser.setPower(0.0);
             robot.picker.setPosition(0.2);// also loads the cannon
-
-            //shooting again
-            robot.pusher.setPosition(0.8);
+            sleep(878);
+            //shooting again robot pusher no longer attached and needs to be controlled like this
+            //robot.pusher.setPosition(0.8);
             robot.picker.setPosition(0.75);// bottom position
             sleep(500);
             robot.raiser.setPower(-0.25);
@@ -144,14 +143,20 @@ public class Fire2Balls extends LinearOpMode {
             sleep(650);// shooting of the cannon
 
             robot.cannon.setPower(0.0);//lower cannon
-            sleep(500);
+            sleep(1000);
+
+            // reset robot to start position
+            robot.raiser.setPower(0.0);
+            robot.picker.setPosition(0.2);
+            //robot.pusher.setPosition(0.35);
+
 
             // reset robot to start position
             robot.raiser.setPower(0.0);
             robot.picker.setPosition(0.2);
             robot.pusher.setPosition(0.35);
 
-            gyroDrive(DRIVE_SPEED, 87, 0.0);// to hit cap ball ( 15 second delay)
+
 
             // TODO stop writing code
             telemetry.addData("Path", "Complete");
