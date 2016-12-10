@@ -144,7 +144,7 @@ public class BlueBeaconSelectorLA extends LinearOpMode {
     public void findAndPressButtom () throws InterruptedException{
 
         //forward parameter for right button.
-        int fowardDistance = 15;
+        int forwardDistance = 15;
         //backward parameter for left button.
         int backwardDistance = -5;
 
@@ -197,7 +197,7 @@ public class BlueBeaconSelectorLA extends LinearOpMode {
 //                robot.leftMotor.setPower(0.1);
 //            }while(findBeaconBrightness() > beaconBrightness);    //the bigger the number, the more centered the robot.
 
-            gyroDrive(0.1,fowardDistance,0);
+            gyroDrive(0.1,forwardDistance,0);
 
             if (findBeaconColor().equals(MY_COLOR)){
                 telemetry.addData(">","Color Found!");

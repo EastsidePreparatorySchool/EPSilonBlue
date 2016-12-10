@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 /**
  * Created by cliu on 11/17/2016.
+ *
+ *
+ * On red side the robot drives backward
  */
 
 import android.app.Activity;
@@ -27,6 +30,8 @@ import com.qualcomm.robotcore.util.Range;
  */
 @Autonomous(name = "Beacon Selector LA - Red", group = "Twitchy")
 //@Disabled
+
+
 public class RedBeaconSelectorLA extends LinearOpMode {
     /* Declare OpMode members. */
 
@@ -126,7 +131,7 @@ public class RedBeaconSelectorLA extends LinearOpMode {
         while (opModeIsActive()) {
 
             findAndPressButtom();
-            gyroDrive(DRIVE_SPEED, 80, 0);
+            gyroDrive(DRIVE_SPEED, -80, 0);
             findAndPressButtom();
             stopAllMotors();
             sleep(40000);// 40 seconds
@@ -144,15 +149,15 @@ public class RedBeaconSelectorLA extends LinearOpMode {
     public void findAndPressButtom () throws InterruptedException{
 
         //forward parameter for right button.
-        int fowardDistance = 15;
+        int forwardDistance = 5;
         //backward parameter for left button.
-        int backwardDistance = -5;
+        int backwardDistance = -15;
 
         robot.pusher.setPosition(0);
         //drive foward at 0.2 speed until sees white line.
         do {
-            robot.rightMotor.setPower(0.2);
-            robot.leftMotor.setPower(0.2);
+            robot.rightMotor.setPower(-0.2);
+            robot.leftMotor.setPower(-0.2);
         }while(findBottomBrightness() <= whiteLightBrightness);
 
         stopAllMotors();
@@ -160,17 +165,13 @@ public class RedBeaconSelectorLA extends LinearOpMode {
         telemetry.addData(">", "white!");
         telemetry.update();
 
-
+        //correct orientation.
         gyroHold(TURN_SPEED, 0, 1);
 
 
 
-        //when in front of color sensor, first go back until sees enough color.
-//        do {
-//            robot.rightMotor.setPower(-0.1);
-//            robot.leftMotor.setPower(-0.1);
-//        }while(findBeaconBrightness() < beaconBrightness);    //the bigger the number, the more centered the robot.
-        gyroDrive(0.1,backwardDistance,0);
+        //drive forward for right button.
+        gyroDrive(0.1,forwardDistance,0);
 
         //if find myColor, then hold position and drive forward to the next beacon.
         if(findBeaconColor().equals(MY_COLOR)){
@@ -197,7 +198,7 @@ public class RedBeaconSelectorLA extends LinearOpMode {
 //                robot.leftMotor.setPower(0.1);
 //            }while(findBeaconBrightness() > beaconBrightness);    //the bigger the number, the more centered the robot.
 
-            gyroDrive(0.1,fowardDistance,0);
+            gyroDrive(0.1,backwardDistance,0);
 
             if (findBeaconColor().equals(MY_COLOR)){
                 telemetry.addData(">","Color Found!");
