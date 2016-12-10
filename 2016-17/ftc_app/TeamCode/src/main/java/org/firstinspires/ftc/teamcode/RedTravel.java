@@ -5,58 +5,23 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 /**
- * Created by abedi on 12/1/2016.
+ * Created by abedi on 12/8/2016.
  */
-
-@Autonomous(name="Full Blue Routine", group="Twitchy")
-//@Disabled
-public class FullTrekBlue extends LinearOpMode {
-
-
-    /**
-     * This file illustrates the concept of driving a path based on Gyro heading and encoder counts.
-     * It uses the common Pushbot hardware class to define the drive on the robot.
-     * The code is structured as a LinearOpMode
-     * <p>
-     * The code REQUIRES that you DO have encoders on the wheels,
-     * otherwise you would use: PushbotAutoDriveByTime;
-     * <p>
-     * This code ALSO requires that you have a Modern Robotics I2C gyro with the name "gyro"
-     * otherwise you would use: PushbotAutoDriveByEncoder;
-     * <p>
-     * This code requires that the drive Motors have been configured such that a positive
-     * power command moves them forward, and causes the encoders to count UP.
-     * <p>
-     * This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
-     * <p>
-     * In order to calibrate the Gyro correctly, the robot must remain stationary during calibration.
-     * This is performed when the INIT button is pressed on the Driver Station.
-     * This code assumes that the robot is stationary when the INIT button is pressed.
-     * If this is not the case, then the INIT should be performed again.
-     * <p>
-     * Note: in this example, all angles are referenced to the initial coordinate frame set during the
-     * the Gyro Calibration process, or whenever the program issues a resetZAxisIntegrator() call on the Gyro.
-     * <p>
-     * The angle of movement/rotation is assumed to be a standardized rotation around the robot Z axis,
-     * which means that a Positive rotation is Counter Clock Wise, looking down on the field.
-     * This is consistent with the FTC field coordinate conventions set out in the document:
-     * ftc_app\doc\tutorial\FTC_FieldCoordinateSystemDefinition.pdf
-     * <p>
-     * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
-     * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
-     */
+@Autonomous(name = "Red Travel", group = "Twitchy")
+public class RedTravel extends LinearOpMode{
 
 
 
-        /* Declare OpMode members. */
+    double beaconPosition;
+
+    /* Declare OpMode members. */
     HardwareTwitchy robot = new HardwareTwitchy();   // Use a Pushbot's hardware
     ModernRoboticsI2cGyro gyro = null;                    // Additional Gyro device
-    ColorSensor beaconSensor;
-
     static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP (try 1.0)
     static final double WHEEL_DIAMETER_CENTIMETERS = 10.0;     // For figuring circumference
@@ -74,17 +39,13 @@ public class FullTrekBlue extends LinearOpMode {
 
 
     //beacon selector variables:
-    String MY_COLOR = "RED";
-    String OPPONENT_COLOR = "BLUE";
-    int lightDetected = 2;
-    double LEFT_POS = 0.5;
-    double RIGHT_POS = 0.2;
-    double MIDDLE_POS = 0.35;
-    double CANNON_POS = 0.8;
-    boolean flag = true;
-
+    String MY_COLOR = "BLUE";
+    ColorSensor beaconSensor;
+    ColorSensor bottomSensor;
+    int whiteLightBrightness = 13;
+    int beaconBrightness = 2;
     // hsvValues is an array that will hold the hue, saturation, and value information.
-    float hsvValues[] = {0F, 0F, 0F};
+    float bottomHsvValues[] = {0F, 0F, 0F};
 
 
     @Override
@@ -97,7 +58,16 @@ public class FullTrekBlue extends LinearOpMode {
         robot.init(hardwareMap);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         beaconSensor = hardwareMap.colorSensor.get("beaconColor");
+        bottomSensor = hardwareMap.colorSensor.get("bottomColor");
 
+        //SET UP THE COLOR SENSORS
+        beaconSensor.setI2cAddress(I2cAddr.create8bit(0x3c));
+        bottomSensor.setI2cAddress(I2cAddr.create8bit(0x4c));
+
+        //passive mode for beaconSensor;
+        beaconSensor.enableLed(false);
+        //active mode for bottomSensor for finding white line.
+        bottomSensor.enableLed(true);
 
         // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -106,9 +76,6 @@ public class FullTrekBlue extends LinearOpMode {
 
         //passive mode for beacon color sensor;
         beaconSensor.enableLed(false);
-
-        //set position of the pusher servo
-        robot.pusher.setPosition(MIDDLE_POS);
 
         //set position of the picker servo. This position is up.
         robot.picker.setPosition(0.5);
@@ -122,7 +89,7 @@ public class FullTrekBlue extends LinearOpMode {
 
         // make sure the gyro is calibrated before continuing
         while (gyro.isCalibrating()) {
-            sleep(50);
+            Thread.sleep(50);
             idle();
         }
 
@@ -150,11 +117,10 @@ public class FullTrekBlue extends LinearOpMode {
         // TODO Write all code here
 
         while (opModeIsActive()) {
-            gyroDrive(DRIVE_SPEED, 45, 0.0);      //forward 45 cm
-            //shoot;
-            //robot.pusher.setPosition(0.8);
-            robot.picker.setPosition(0.55);// middle position
-            robot.raiser.setPower(-0.25);
+            gyroDrive(DRIVE_SPEED, 47, 0.0);      //forward 45 cm
+            // fire cannon
+            robot.picker.setPosition(0.75);
+            robot.raiser.setPower(-0.20);
             sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
 
             robot.raiser.setPower(-0.20);
@@ -162,45 +128,35 @@ public class FullTrekBlue extends LinearOpMode {
             sleep(650);// shooting of the cannon
 
             robot.cannon.setPower(0.0);//lower cannon
-            sleep(500);
+            robot.raiser.setPower(0.0);//
+            sleep(1000);
 
-            // reset robot to start cannon fire position
-            robot.raiser.setPower(0.0);
-            robot.picker.setPosition(0.2);// also loads the cannon
+            robot.picker.setPosition(0.2);// acident reload
 
-            //shooting again robot pusher no longer attached and needs to be controlled like this
-            //robot.pusher.setPosition(0.8);
-            robot.picker.setPosition(0.75);// bottom position
-            sleep(500);
-            robot.raiser.setPower(-0.25);
-            sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
+            // fire cannon two
 
-            robot.raiser.setPower(-0.20);
-            robot.cannon.setPower(-1.0);
-            sleep(650);// shooting of the cannon
 
-            robot.cannon.setPower(0.0);//lower cannon
-            sleep(500);
+            gyroDrive(TURN_SPEED,87,0.0);// hit cap ball
+            gyroDrive(TURN_SPEED,-5,0.0);
 
-            // reset robot to start position
-            robot.raiser.setPower(0.0);
-            robot.picker.setPosition(0.2);
-            //robot.pusher.setPosition(0.35);
 
-            gyroDrive(DRIVE_SPEED,87,0.0);// to hit cap ball
-            gyroTurn(TURN_SPEED,141.75);// turning
-            gyroDrive(DRIVE_SPEED,-216.46,141.75);//drive to angle corner
+            // start of red specific
+            gyroTurn(TURN_SPEED,-35);
+            gyroDrive(TURN_SPEED,233,-35);
 
-            // turn straight but front facing park
-            gyroTurn(TURN_SPEED,180.0);
+            gyroTurn(TURN_SPEED,0);
+            gyroDrive(DRIVE_SPEED,20,0);
 
-            // TODO che's backward beacon code
-            //
-            // TODO park code
-            // turn some amount of degrees.
-            gyroTurn(TURN_SPEED,195);
-            // drive straight backwards
-            gyroDrive(DRIVE_SPEED,50,195);
+//            // che code
+//            findAndPressButtom();
+//            gyroDrive(DRIVE_SPEED, 80, 0);
+//            findAndPressButtom();
+//            stopAllMotors();
+
+//            // park on corner
+//            gyroTurn(TURN_SPEED,185);
+//            gyroDrive(DRIVE_SPEED,20,185);
+
 
             // TODO stop writing code
             telemetry.addData("Path", "Complete");
@@ -210,7 +166,271 @@ public class FullTrekBlue extends LinearOpMode {
 
     }
 
+    public void stopAllMotors (){
+        robot.leftMotor.setPower(0);
+        robot.rightMotor.setPower(0);
+    }
+    public void findAndPressButtom () throws InterruptedException{
 
+        //forward parameter for right button.
+        int fowardDistance = 15;
+        //backward parameter for left button.
+        int backwardDistance = -5;
+
+        robot.pusher.setPosition(0);
+        //drive foward at 0.2 speed until sees white line.
+        do {
+            robot.rightMotor.setPower(0.2);
+            robot.leftMotor.setPower(0.2);
+        }while(findBottomBrightness() <= whiteLightBrightness);
+
+        stopAllMotors();
+
+        telemetry.addData(">", "white!");
+        telemetry.update();
+
+
+        gyroHold(TURN_SPEED, 0, 1);
+
+
+
+        //when in front of color sensor, first go back until sees enough color.
+//        do {
+//            robot.rightMotor.setPower(-0.1);
+//            robot.leftMotor.setPower(-0.1);
+//        }while(findBeaconBrightness() < beaconBrightness);    //the bigger the number, the more centered the robot.
+        gyroDrive(0.1,backwardDistance,0);
+
+        //if find myColor, then hold position and drive forward to the next beacon.
+        if(findBeaconColor().equals(MY_COLOR)){
+
+            telemetry.addData(">", "Color Found!");
+            telemetry.update();
+
+            //push button:
+            beaconPosition = 0.2;
+            beaconPosition = Range.clip(beaconPosition,0.2,0.7);
+            robot.pusher.setPosition(beaconPosition);
+            sleep(500);
+            beaconPosition = 0.7;
+            beaconPosition = Range.clip(beaconPosition,0.2,0.7);
+            robot.pusher.setPosition(beaconPosition);
+
+            //keep the current orientation for precision.
+            gyroHold(TURN_SPEED, 0, 2);
+
+
+            //if not myColor, then drive forward to the next color find color.
+        }else{
+            //drive to the next color.
+            telemetry.addData(">", "Not myColor");
+            telemetry.update();
+
+            //drive forward until see enough light. This will enable the robot to stop in front of the color
+//            do {
+//                robot.rightMotor.setPower(0.1);
+//                robot.leftMotor.setPower(0.1);
+//            }while(findBeaconBrightness() > beaconBrightness);    //the bigger the number, the more centered the robot.
+
+            gyroDrive(0.1,fowardDistance,0);
+
+            if (findBeaconColor().equals(MY_COLOR)){
+                telemetry.addData(">","Color Found!");
+                telemetry.update();
+                robot.pusher.setPosition(180);
+                //keep the current orientation for precision.
+                gyroHold(TURN_SPEED,0,2);
+
+
+
+            }
+        }
+    }
+
+
+    public double findBeaconBrightness(){
+        //return variable
+        double BEACON_BRIGHTNESS = 0;
+
+        // values is a reference to the hsvValues array.
+        final float values[] = bottomHsvValues;
+
+        //double BEACON_HUE is for returning the value of hue. each color has a unique hue.
+        BEACON_BRIGHTNESS = beaconSensor.alpha();
+
+        // send the info back to driver station using telemetry function.
+        telemetry.addData("Beacon Clear", beaconSensor.alpha());
+//        telemetry.addData("Red  ", bottomSensor.red());
+//        telemetry.addData("Green", bottomSensor.green());
+//        telemetry.addData("Blue ", bottomSensor.blue());
+        telemetry.update();
+
+        return BEACON_BRIGHTNESS;
+    }
+
+
+
+    //find the hue from beaconColor and print the hue to telemetry.
+    //this returns the name of color: "BLUE" or "RED".
+    public String findBeaconColor() {
+
+        //return variable
+        double BEACON_HUE = 0;
+        String BEACON_COLOR = "";
+        int redValue;
+        int blueValue;
+
+
+        redValue = beaconSensor.red();
+        blueValue = beaconSensor.blue();
+
+
+
+        if(Math.abs(redValue - blueValue) >= 3){
+            if((redValue - blueValue) > 0){
+                BEACON_COLOR = "RED";
+            }else if ((redValue - blueValue) < 0){
+                BEACON_COLOR = "BLUE";
+            }
+        }
+
+
+
+
+
+        // send the info back to driver station using telemetry function.
+//        telemetry.addData("Clear", beaconSensor.alpha());
+//        telemetry.addData("Red  ", beaconSensor.red());
+//        telemetry.addData("Green", beaconSensor.green());
+//        telemetry.addData("Blue ", beaconSensor.blue());
+        //telemetry.addData("Hue", beaconHsvValues[0]);
+        telemetry.addData("Color", BEACON_COLOR);
+        telemetry.update();
+
+        return BEACON_COLOR;
+    }
+
+
+
+    //this returns the brightness of bottom color.
+    //white line should give bright reflection.
+    public double findBottomBrightness() {
+
+        //return variable
+        double BOTTOM_BRIGHTNESS = 0;
+
+        // values is a reference to the hsvValues array.
+        final float values[] = bottomHsvValues;
+
+        //double BEACON_HUE is for returning the value of hue. each color has a unique hue.
+        BOTTOM_BRIGHTNESS = bottomSensor.alpha();
+
+        // send the info back to driver station using telemetry function.
+        telemetry.addData("Bottom Clear", bottomSensor.alpha());
+//        telemetry.addData("Red  ", bottomSensor.red());
+//        telemetry.addData("Green", bottomSensor.green());
+//        telemetry.addData("Blue ", bottomSensor.blue());
+        telemetry.addData("Bottom Hue", bottomHsvValues[0]);
+        telemetry.update();
+
+        return BOTTOM_BRIGHTNESS;
+    }
+
+
+
+
+    /**
+     * Method to drive on a fixed compass bearing (angle).
+     * Move will stop:
+     * 1) Driver stops the opmode running.
+     *
+     * @param speed    Target speed for forward motion.  Should allow for _/- variance for adjusting heading
+     * @param direction Direction (1 or -1). Positive is foward, Negative is backward.
+     * @param angle    Absolute Angle (in Degrees) relative to last gyro reset.
+     *                 0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
+     *                 If a relative angle is required, add/subtract from current heading.
+     */
+    public void gyroDriveInfinite(double speed,
+                                  int direction,
+                                  double angle) throws InterruptedException {
+
+        int newLeftTarget;
+        int newRightTarget;
+        int moveCounts;
+        double max;
+        double error;
+        double steer;
+        double leftSpeed;
+        double rightSpeed;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+//            // Determine new target position, and pass to motor controller
+//            moveCounts = (int) (distance * COUNTS_PER_CENTIMETERS);
+//            newLeftTarget = robot.leftMotor.getCurrentPosition() + moveCounts;
+//            newRightTarget = robot.rightMotor.getCurrentPosition() + moveCounts;
+
+//            // Set Target and Turn On RUN_TO_POSITION
+//            robot.leftMotor.setTargetPosition(newLeftTarget);
+//            robot.rightMotor.setTargetPosition(newRightTarget);
+
+//            robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // start motion.
+            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
+            speed = speed * direction;
+
+            robot.rightMotor.setPower(speed);
+            robot.leftMotor.setPower(speed);
+
+
+            // keep looping while we are still active, and BOTH motors are running.
+            while (opModeIsActive() &&
+                    (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+
+                // adjust relative speed based on heading error.
+                error = getError(angle);
+                steer = getSteer(error, P_DRIVE_COEFF);
+
+                // if driving in reverse, the motor correction also needs to be reversed
+                if (direction < 0)
+                    steer *= -1.0;
+
+                leftSpeed = speed - steer;
+                rightSpeed = speed + steer;
+
+                // Normalize speeds if any one exceeds +/- 1.0;
+                max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+                if (max > 1.0) {
+                    leftSpeed /= max;
+                    rightSpeed /= max;
+                }
+
+                robot.leftMotor.setPower(leftSpeed);
+                robot.rightMotor.setPower(rightSpeed);
+
+
+
+
+                //telemetry.update();
+
+                // Allow time for other processes to run.
+                idle();
+            }
+
+//            // Stop all motion;
+//            robot.leftMotor.setPower(0);
+//            robot.leftMotor.setPower(0);
+//            robot.rightMotor.setPower(0);
+//            robot.rightMotor.setPower(0);
+
+//            // Turn off RUN_TO_POSITION
+//            robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
     /**
      * Method to drive on a fixed compass bearing (angle), based on encoder counts.
      * Move will stop if either of these conditions occur:
@@ -433,5 +653,7 @@ public class FullTrekBlue extends LinearOpMode {
         return Range.clip(error * PCoeff, -1, 1);
     }
 
-
 }
+
+
+
