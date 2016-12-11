@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+
 import java.util.Timer;
 
 /**
@@ -72,39 +73,32 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
     double max;
     double h;
 
-    DcMotor leftMotor;
-    DcMotor rightMotor;
-    DcMotor raiser;
-    DcMotor cannon;
-    Servo beacon;
-    Servo picker;
+
     double pickPosition;
     double beaconPosition;
+    HardwareTwitchy robot = new HardwareTwitchy();   // Use a Pushbot's hardware
+
 
     @Override
     public void runOpMode() throws InterruptedException {
 
 
         // link motors names with actual motors
-        leftMotor = hardwareMap.dcMotor.get("motorLeft");
-        rightMotor = hardwareMap.dcMotor.get("motorRight");
-        raiser = hardwareMap.dcMotor.get("raiser");
-        cannon = hardwareMap.dcMotor.get("cannon");
-        beacon = hardwareMap.servo.get("pusher");
-        picker = hardwareMap.servo.get("picker");
+        robot.init(hardwareMap);
+        robot.pusher.setPosition(0.8);
 
 
         //set the two backward motors to run in reverse
-        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
 
-        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        raiser.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        cannon.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.raiser.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.cannon.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -153,8 +147,8 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
                 rPower = (-gamepad1.left_stick_y - gamepad1.left_stick_x);
             } // fast mode is start
 
-            leftMotor.setPower(lPower);
-            rightMotor.setPower(rPower);
+            robot.leftMotor.setPower(lPower);
+            robot.rightMotor.setPower(rPower);
 
             //
 
@@ -162,32 +156,35 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
             // right trigger is fire cannon
             if (gamepad1.right_trigger > 0.25) {
-                cannon.setPower(-1.0);
+                robot.cannon.setPower(-1.0);
             } else {
-                cannon.setPower(0.0); // 0.8 seconds for raising cannon and 0.65 seconds for firing cannon
+                robot.cannon.setPower(0.0); // 0.8 seconds for raising cannon and 0.65 seconds for firing cannon
             }
 
             // cannon raise by right joystick
-            raiser.setPower(gamepad1.right_stick_y / 3.5);
+            robot.raiser.setPower(gamepad1.right_stick_y / 3.5);
 
 // ToDO write new linear actuator code
             if (gamepad1.dpad_left) {
                 beaconPosition = 0.2;
-            } else if (gamepad1.dpad_right){
-                beaconPosition = 0.07;
+            } else {
+                beaconPosition = 0.8;
             }
 
             beaconPosition = Range.clip(beaconPosition, 0.0, 0.7);
-            beacon.setPosition(beaconPosition);
+
+            robot.pusher.setPosition(beaconPosition);
             // Use y and a to raise and lower the picker
             if (gamepad1.y) {
                 pickPosition = 0.2;
             } else if (gamepad1.a) {
                 pickPosition = 0.75;
+            }else {
+                pickPosition = 0.55;
             }
             // Move servo to new position.
             pickPosition = Range.clip(pickPosition, 0.0, 0.7);
-            picker.setPosition(pickPosition);
+            robot.picker.setPosition(pickPosition);
 
 //
 //            // Send telemetry message to signify robot running;

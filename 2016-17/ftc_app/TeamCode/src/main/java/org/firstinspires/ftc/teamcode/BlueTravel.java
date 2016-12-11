@@ -13,8 +13,7 @@ import com.qualcomm.robotcore.util.Range;
  * Created by abedi on 12/8/2016.
  */
 @Autonomous(name = "blue Travel", group = "Twitchy")
-public class BlueTravel  extends LinearOpMode{
-
+public class BlueTravel extends LinearOpMode {
 
 
     double beaconPosition;
@@ -42,7 +41,7 @@ public class BlueTravel  extends LinearOpMode{
     String MY_COLOR = "BLUE";
     ColorSensor beaconSensor;
     ColorSensor bottomSensor;
-    int whiteLightBrightness = 13;
+    int whiteLightBrightness = 10;
     int beaconBrightness = 2;
     // hsvValues is an array that will hold the hue, saturation, and value information.
     float bottomHsvValues[] = {0F, 0F, 0F};
@@ -56,9 +55,11 @@ public class BlueTravel  extends LinearOpMode{
          * The init() method of the hardware class does most of the work here
          */
         robot.init(hardwareMap);
+
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         beaconSensor = hardwareMap.colorSensor.get("beaconColor");
         bottomSensor = hardwareMap.colorSensor.get("bottomColor");
+
 
         //SET UP THE COLOR SENSORS
         beaconSensor.setI2cAddress(I2cAddr.create8bit(0x3c));
@@ -117,8 +118,139 @@ public class BlueTravel  extends LinearOpMode{
         // TODO Write all code here
 
         while (opModeIsActive()) {
-            gyroDrive(DRIVE_SPEED, 47, 0.0);      //forward 45 cm
+
+            gyroDrive(DRIVE_SPEED, 40, 0.0);      //forward 45 cm
             // fire cannon
+            fireCannon();
+            reload();
+            //fireCannon();
+
+//
+            gyroDrive(TURN_SPEED,80, 0.0);// hit cap ball
+            gyroHold(DRIVE_SPEED,0.0,2);
+            gyroDrive(TURN_SPEED, -5, 0.0);
+            gyroHold(DRIVE_SPEED,0.0,2);
+
+
+            // start of blue specific
+            gyroTurn(TURN_SPEED, 145);
+            gyroHold(DRIVE_SPEED,145,1);
+            gyroDrive(TURN_SPEED, -233, 145);
+
+            gyroTurn(TURN_SPEED, 182);
+            gyroHold(TURN_SPEED,182,1);
+            gyroDrive(DRIVE_SPEED, -25, 182);
+            gyroHold(DRIVE_SPEED,182,1);
+
+//            // che code
+            findAndPressButtom();
+            gyroHold(TURN_SPEED,0,0.5);
+            gyroDrive(DRIVE_SPEED, 80, 0);
+            findAndPressButtom();
+            stopAllMotors();
+
+            gyroHold(TURN_SPEED,182,1);
+            // park on corner
+            gyroTurn(TURN_SPEED, 185);
+            gyroDrive(DRIVE_SPEED, 20, 185);
+
+
+            // TODO stop writing code
+            telemetry.addData("Path", "Complete");
+            telemetry.update();
+            break;
+        }
+
+    }
+
+    public void fireActuator() throws InterruptedException {
+        beaconPosition = 0.2;
+        beaconPosition = Range.clip(beaconPosition, 0.2, 0.8);
+        robot.pusher.setPosition(beaconPosition);
+        sleep(500);
+        beaconPosition = 0.8;
+        beaconPosition = Range.clip(beaconPosition, 0.2, 0.8);
+        robot.pusher.setPosition(beaconPosition);
+        sleep(1200);
+    }
+
+    public void stopAllMotors() {
+        robot.leftMotor.setPower(0);
+        robot.rightMotor.setPower(0);
+    }
+
+    public void findAndPressButtom() throws InterruptedException {
+
+        //forward parameter for right button.
+        int fowardDistance = 10;
+        //backward parameter for left button.
+        int backwardDistance = -9;
+
+        long initTime = System.currentTimeMillis();
+        //retract at the beginning.
+        //drive foward at 0.2 speed until sees white line.
+
+
+        do {
+            robot.rightMotor.setPower(0.2);
+            robot.leftMotor.setPower(0.2);
+        } while (findBottomBrightness() <= whiteLightBrightness  &&  System.currentTimeMillis()-initTime <= 2000);
+
+        stopAllMotors();
+
+        telemetry.addData(">", "white!");
+        telemetry.update();
+
+
+        gyroHold(TURN_SPEED, 0, 1);
+
+
+        //when in front of color sensor, first go back until sees enough color.
+//        do {
+//            robot.rightMotor.setPower(-0.1);
+//            robot.leftMotor.setPower(-0.1);
+//        }while(findBeaconBrightness() < beaconBrightness);    //the bigger the number, the more centered the robot.
+        gyroDrive(0.1, backwardDistance, 0);
+
+        //if find myColor, then hold position and drive forward to the next beacon.
+        if (findBeaconColor().equals(MY_COLOR)) {
+
+            telemetry.addData(">", "Color Found!");
+            telemetry.update();
+
+            //push button:
+            fireActuator();
+
+            //keep the current orientation for precision.
+            gyroHold(TURN_SPEED, 0, 2);
+
+
+            //if not myColor, then drive forward to the next color find color.
+        } else {
+            //drive to the next color.
+            telemetry.addData(">", "Not myColor");
+            telemetry.update();
+
+            //drive forward until see enough light. This will enable the robot to stop in front of the color
+//            do {
+//                robot.rightMotor.setPower(0.1);
+//                robot.leftMotor.setPower(0.1);
+//            }while(findBeaconBrightness() > beaconBrightness);    //the bigger the number, the more centered the robot.
+
+            gyroDrive(0.1, fowardDistance, 0);
+
+            if (findBeaconColor().equals(MY_COLOR)) {
+                telemetry.addData(">", "Color Found!");
+                telemetry.update();
+                fireActuator();                //keep the current orientation for precision.
+                gyroHold(TURN_SPEED, 0, 2);
+
+
+            }
+        }
+    }
+
+    public void fireCannon() throws InterruptedException{
             robot.picker.setPosition(0.75);
             robot.raiser.setPower(-0.20);
             sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
@@ -131,124 +263,16 @@ public class BlueTravel  extends LinearOpMode{
             robot.raiser.setPower(0.0);//
             sleep(1000);
 
-            robot.picker.setPosition(0.2);// acident reload
-
-            // fire cannon two
-
-
-            gyroDrive(TURN_SPEED,87,0.0);// hit cap ball
-            gyroDrive(TURN_SPEED,-5,0.0);
-
-
-            // start of blue specific
-            gyroTurn(TURN_SPEED,145);
-            gyroDrive(TURN_SPEED,-233,145);
-
-            gyroTurn(TURN_SPEED,180);
-            gyroDrive(DRIVE_SPEED,-20,180);
-
-//            // che code
-//            findAndPressButtom();
-//            gyroDrive(DRIVE_SPEED, 80, 0);
-//            findAndPressButtom();
-//            stopAllMotors();
-
-//            // park on corner
-//            gyroTurn(TURN_SPEED,185);
-//            gyroDrive(DRIVE_SPEED,20,185);
-
-
-            // TODO stop writing code
-            telemetry.addData("Path", "Complete");
-            telemetry.update();
-            break;
-        }
-
+            robot.picker.setPosition(0.2);// reload
+    }
+    public void reload() throws InterruptedException{
+        robot.picker.setPosition(0.2);// reload
+        gyroDrive(DRIVE_SPEED,-10,0.0);
+        gyroHold(DRIVE_SPEED,0.0,1);
+        gyroDrive(DRIVE_SPEED,10,0.0);
     }
 
-    public void stopAllMotors (){
-        robot.leftMotor.setPower(0);
-        robot.rightMotor.setPower(0);
-    }
-    public void findAndPressButtom () throws InterruptedException{
-
-        //forward parameter for right button.
-        int fowardDistance = 15;
-        //backward parameter for left button.
-        int backwardDistance = -5;
-
-        robot.pusher.setPosition(0);
-        //drive foward at 0.2 speed until sees white line.
-        do {
-            robot.rightMotor.setPower(0.2);
-            robot.leftMotor.setPower(0.2);
-        }while(findBottomBrightness() <= whiteLightBrightness);
-
-        stopAllMotors();
-
-        telemetry.addData(">", "white!");
-        telemetry.update();
-
-
-        gyroHold(TURN_SPEED, 0, 1);
-
-
-
-        //when in front of color sensor, first go back until sees enough color.
-//        do {
-//            robot.rightMotor.setPower(-0.1);
-//            robot.leftMotor.setPower(-0.1);
-//        }while(findBeaconBrightness() < beaconBrightness);    //the bigger the number, the more centered the robot.
-        gyroDrive(0.1,backwardDistance,0);
-
-        //if find myColor, then hold position and drive forward to the next beacon.
-        if(findBeaconColor().equals(MY_COLOR)){
-
-            telemetry.addData(">", "Color Found!");
-            telemetry.update();
-
-            //push button:
-            beaconPosition = 0.2;
-            beaconPosition = Range.clip(beaconPosition,0.2,0.7);
-            robot.pusher.setPosition(beaconPosition);
-            sleep(500);
-            beaconPosition = 0.7;
-            beaconPosition = Range.clip(beaconPosition,0.2,0.7);
-            robot.pusher.setPosition(beaconPosition);
-
-            //keep the current orientation for precision.
-            gyroHold(TURN_SPEED, 0, 2);
-
-
-            //if not myColor, then drive forward to the next color find color.
-        }else{
-            //drive to the next color.
-            telemetry.addData(">", "Not myColor");
-            telemetry.update();
-
-            //drive forward until see enough light. This will enable the robot to stop in front of the color
-//            do {
-//                robot.rightMotor.setPower(0.1);
-//                robot.leftMotor.setPower(0.1);
-//            }while(findBeaconBrightness() > beaconBrightness);    //the bigger the number, the more centered the robot.
-
-            gyroDrive(0.1,fowardDistance,0);
-
-            if (findBeaconColor().equals(MY_COLOR)){
-                telemetry.addData(">","Color Found!");
-                telemetry.update();
-                robot.pusher.setPosition(180);
-                //keep the current orientation for precision.
-                gyroHold(TURN_SPEED,0,2);
-
-
-
-            }
-        }
-    }
-
-
-    public double findBeaconBrightness(){
+    public double findBeaconBrightness() {
         //return variable
         double BEACON_BRIGHTNESS = 0;
 
@@ -269,7 +293,6 @@ public class BlueTravel  extends LinearOpMode{
     }
 
 
-
     //find the hue from beaconColor and print the hue to telemetry.
     //this returns the name of color: "BLUE" or "RED".
     public String findBeaconColor() {
@@ -285,17 +308,13 @@ public class BlueTravel  extends LinearOpMode{
         blueValue = beaconSensor.blue();
 
 
-
-        if(Math.abs(redValue - blueValue) >= 3){
-            if((redValue - blueValue) > 0){
+        if (Math.abs(redValue - blueValue) >= 3) {
+            if ((redValue - blueValue) > 0) {
                 BEACON_COLOR = "RED";
-            }else if ((redValue - blueValue) < 0){
+            } else if ((redValue - blueValue) < 0) {
                 BEACON_COLOR = "BLUE";
             }
         }
-
-
-
 
 
         // send the info back to driver station using telemetry function.
@@ -309,7 +328,6 @@ public class BlueTravel  extends LinearOpMode{
 
         return BEACON_COLOR;
     }
-
 
 
     //this returns the brightness of bottom color.
@@ -337,18 +355,16 @@ public class BlueTravel  extends LinearOpMode{
     }
 
 
-
-
     /**
      * Method to drive on a fixed compass bearing (angle).
      * Move will stop:
      * 1) Driver stops the opmode running.
      *
-     * @param speed    Target speed for forward motion.  Should allow for _/- variance for adjusting heading
+     * @param speed     Target speed for forward motion.  Should allow for _/- variance for adjusting heading
      * @param direction Direction (1 or -1). Positive is foward, Negative is backward.
-     * @param angle    Absolute Angle (in Degrees) relative to last gyro reset.
-     *                 0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-     *                 If a relative angle is required, add/subtract from current heading.
+     * @param angle     Absolute Angle (in Degrees) relative to last gyro reset.
+     *                  0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
+     *                  If a relative angle is required, add/subtract from current heading.
      */
     public void gyroDriveInfinite(double speed,
                                   int direction,
@@ -412,8 +428,6 @@ public class BlueTravel  extends LinearOpMode{
                 robot.rightMotor.setPower(rightSpeed);
 
 
-
-
                 //telemetry.update();
 
                 // Allow time for other processes to run.
@@ -431,6 +445,7 @@ public class BlueTravel  extends LinearOpMode{
 //            robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
     /**
      * Method to drive on a fixed compass bearing (angle), based on encoder counts.
      * Move will stop if either of these conditions occur:

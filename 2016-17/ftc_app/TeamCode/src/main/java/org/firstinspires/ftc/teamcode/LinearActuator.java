@@ -30,17 +30,18 @@ public class LinearActuator extends LinearOpMode {
          * The init() method of the hardware class does most of the work here
          */
         robot.init(hardwareMap);
-        robot.pusher.setPosition(0.7);
-        sleep(100);
 
    waitForStart();
 
         while (opModeIsActive()) {
             beaconPosition = 0.2;
-            beaconPosition = Range.clip(beaconPosition,0.2,0.7);
+            beaconPosition = Range.clip(beaconPosition,0.2,0.8);
             robot.pusher.setPosition(beaconPosition);
-            sleep(500);
-            robot.pusher.setPosition(0.7);
+            sleep(600);
+            beaconPosition = 0.8;
+            beaconPosition = Range.clip(beaconPosition,0.2,0.8);
+            robot.pusher.setPosition(beaconPosition);
+            sleep(1200);
             break;
 
         }

@@ -70,6 +70,7 @@ public class HardwareTwitchy
         leftMotor.setPower(0.0);
         cannon.setPower(0.0);
         rightMotor.setPower(0.0);
+        //pusher.setPosition(0.8);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
