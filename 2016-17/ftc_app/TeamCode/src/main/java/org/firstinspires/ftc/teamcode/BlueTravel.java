@@ -55,6 +55,7 @@ public class BlueTravel extends LinearOpMode {
          * The init() method of the hardware class does most of the work here
          */
         robot.init(hardwareMap);
+        robot.pusher.setPosition(0.8);
 
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         beaconSensor = hardwareMap.colorSensor.get("beaconColor");
@@ -119,46 +120,23 @@ public class BlueTravel extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            gyroDrive(DRIVE_SPEED, 40, 0.0);      //forward 45 cm
+            gyroDrive(DRIVE_SPEED, 30, 0.0);      //forward 45 cm
             // fire cannon
-            fireCannon();
-            reload();
+            //fireCannon();
             //fireCannon();
 
 //
-            gyroDrive(TURN_SPEED,80, 0.0);// hit cap ball
-            gyroHold(DRIVE_SPEED,0.0,2);
-            gyroDrive(TURN_SPEED, -5, 0.0);
-            gyroHold(DRIVE_SPEED,0.0,2);
+            gyroDrive(DRIVE_SPEED,71.44, 0.0);// have traveled 1.5 mats +10
+            gyroTurn(TURN_SPEED,-90);
 
 
             // start of blue specific
-            gyroTurn(TURN_SPEED, 145);
-            gyroHold(DRIVE_SPEED,145,1);
-            gyroDrive(TURN_SPEED, -233, 145);
+            gyroDrive(DRIVE_SPEED,138,-90);//+10
 
-            gyroTurn(TURN_SPEED, 182);
-            gyroHold(TURN_SPEED,182,1);
-            gyroDrive(DRIVE_SPEED, -25, 182);
-            gyroHold(DRIVE_SPEED,182,1);
+            gyroTurn(TURN_SPEED, 180);// should be up against wall now. needs fine tuning
 
-//            // che code
-            findAndPressButtom();
-            gyroHold(TURN_SPEED,0,0.5);
-            gyroDrive(DRIVE_SPEED, 80, 0);
-            findAndPressButtom();
-            stopAllMotors();
-
-            gyroHold(TURN_SPEED,182,1);
-            // park on corner
-            gyroTurn(TURN_SPEED, 185);
-            gyroDrive(DRIVE_SPEED, 20, 185);
-
-
-            // TODO stop writing code
-            telemetry.addData("Path", "Complete");
-            telemetry.update();
-            break;
+            //TODO: place in the beacon code.
+            buttonCode(180.0);
         }
 
     }
@@ -171,12 +149,41 @@ public class BlueTravel extends LinearOpMode {
         beaconPosition = 0.8;
         beaconPosition = Range.clip(beaconPosition, 0.2, 0.8);
         robot.pusher.setPosition(beaconPosition);
-        sleep(1200);
+        sleep(500);
+        beaconPosition = robot.beacon_home;
+        beaconPosition = Range.clip(beaconPosition,0.2,0.8);
+        robot.pusher.setPosition(beaconPosition);
     }
 
     public void stopAllMotors() {
         robot.leftMotor.setPower(0);
         robot.rightMotor.setPower(0);
+    }
+    public void driveTillDetect(){
+        int amountToMove = (int) (60.96 * COUNTS_PER_CENTIMETERS);// 60.96 = 2ft is one panel
+        int LeftTarget = robot.leftMotor.getCurrentPosition() + amountToMove;
+        int RightTarget = robot.rightMotor.getCurrentPosition() + amountToMove;
+
+        // drive untile it finds color or passes 2ft
+        do{
+            robot.rightMotor.setPower(-0.2);
+            robot.leftMotor.setPower(-0.2);
+        } while(LeftTarget > robot.rightMotor.getCurrentPosition() &&
+                RightTarget > robot.rightMotor.getCurrentPosition() &&
+                (findBeaconColor().equals(MY_COLOR) == false ));
+        stopAllMotors();
+
+    }
+
+    public void buttonCode(double angle) throws  InterruptedException{
+        // drive at slow speed. no more than one panel.
+       driveTillDetect();
+        fireActuator();
+        stopAllMotors();
+        gyroDrive(DRIVE_SPEED,-60.96,angle);
+        driveTillDetect();
+        fireActuator();
+        stopAllMotors();
     }
 
     public void findAndPressButtom() throws InterruptedException {
@@ -185,7 +192,6 @@ public class BlueTravel extends LinearOpMode {
         int fowardDistance = 10;
         //backward parameter for left button.
         int backwardDistance = -9;
-
         long initTime = System.currentTimeMillis();
         //retract at the beginning.
         //drive foward at 0.2 speed until sees white line.
@@ -202,7 +208,7 @@ public class BlueTravel extends LinearOpMode {
         telemetry.update();
 
 
-        gyroHold(TURN_SPEED, 0, 1);
+        gyroHold(TURN_SPEED, 182, 1);
 
 
         //when in front of color sensor, first go back until sees enough color.
@@ -210,7 +216,7 @@ public class BlueTravel extends LinearOpMode {
 //            robot.rightMotor.setPower(-0.1);
 //            robot.leftMotor.setPower(-0.1);
 //        }while(findBeaconBrightness() < beaconBrightness);    //the bigger the number, the more centered the robot.
-        gyroDrive(0.1, backwardDistance, 0);
+        gyroDrive(0.1, backwardDistance, 182);
 
         //if find myColor, then hold position and drive forward to the next beacon.
         if (findBeaconColor().equals(MY_COLOR)) {
@@ -222,7 +228,7 @@ public class BlueTravel extends LinearOpMode {
             fireActuator();
 
             //keep the current orientation for precision.
-            gyroHold(TURN_SPEED, 0, 2);
+            gyroHold(TURN_SPEED, 182, 2);
 
 
             //if not myColor, then drive forward to the next color find color.
@@ -237,13 +243,13 @@ public class BlueTravel extends LinearOpMode {
 //                robot.leftMotor.setPower(0.1);
 //            }while(findBeaconBrightness() > beaconBrightness);    //the bigger the number, the more centered the robot.
 
-            gyroDrive(0.1, fowardDistance, 0);
+            gyroDrive(0.1, fowardDistance, 182);
 
             if (findBeaconColor().equals(MY_COLOR)) {
                 telemetry.addData(">", "Color Found!");
                 telemetry.update();
                 fireActuator();                //keep the current orientation for precision.
-                gyroHold(TURN_SPEED, 0, 2);
+                gyroHold(TURN_SPEED, 182, 2);
 
 
             }
@@ -260,9 +266,9 @@ public class BlueTravel extends LinearOpMode {
             sleep(650);// shooting of the cannon
 
             robot.cannon.setPower(0.0);//lower cannon
-            robot.raiser.setPower(0.0);//
-            sleep(1000);
-
+            robot.raiser.setPower(0.1);//
+            sleep(878);
+            robot.raiser.setPower(0.0);
             robot.picker.setPosition(0.2);// reload
     }
     public void reload() throws InterruptedException{

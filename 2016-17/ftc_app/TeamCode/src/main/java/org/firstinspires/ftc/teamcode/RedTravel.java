@@ -55,6 +55,7 @@ public class RedTravel extends LinearOpMode {
          * The init() method of the hardware class does most of the work here
          */
         robot.init(hardwareMap);
+        robot.pusher.setPosition(0.8);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         beaconSensor = hardwareMap.colorSensor.get("beaconColor");
         bottomSensor = hardwareMap.colorSensor.get("bottomColor");
@@ -121,8 +122,6 @@ public class RedTravel extends LinearOpMode {
             // fire cannon
             fireCannon();
             reload();
-            fireCannon();
-
 
             gyroDrive(TURN_SPEED, 87, 0.0);// hit cap ball
             gyroDrive(TURN_SPEED, -5, 0.0);
@@ -137,7 +136,7 @@ public class RedTravel extends LinearOpMode {
 
 //            // che code
             findAndPressButtom();
-            gyroHold(TURN_SPEED,0,0.5);
+            gyroHold(TURN_SPEED, 0, 0.5);
             gyroDrive(DRIVE_SPEED, -80, 0);
             findAndPressButtom();
             stopAllMotors();
@@ -170,7 +169,8 @@ public class RedTravel extends LinearOpMode {
         robot.pusher.setPosition(beaconPosition);
         sleep(1200);
     }
-    public void fireCannon() throws InterruptedException{
+
+    public void fireCannon() throws InterruptedException {
         robot.picker.setPosition(0.75);
         robot.raiser.setPower(-0.20);
         sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
@@ -180,16 +180,17 @@ public class RedTravel extends LinearOpMode {
         sleep(650);// shooting of the cannon
 
         robot.cannon.setPower(0.0);//lower cannon
-        robot.raiser.setPower(0.0);//
-        sleep(1000);
-
+        robot.raiser.setPower(0.1);//
+        sleep(878);
+        robot.raiser.setPower(0.0);
         robot.picker.setPosition(0.2);// reload
     }
-    public void reload() throws InterruptedException{
+
+    public void reload() throws InterruptedException {
         robot.picker.setPosition(0.2);// reload
-        gyroDrive(DRIVE_SPEED,-10,0.0);
-        gyroHold(DRIVE_SPEED,0.0,1);
-        gyroDrive(DRIVE_SPEED,10,0.0);
+        gyroDrive(DRIVE_SPEED, -10, 0.0);
+        gyroHold(DRIVE_SPEED, 0.0, 1);
+        gyroDrive(DRIVE_SPEED, 10, 0.0);
     }
 
     public void findAndPressButtom() throws InterruptedException {
@@ -205,7 +206,8 @@ public class RedTravel extends LinearOpMode {
         do {
             robot.rightMotor.setPower(-0.2);
             robot.leftMotor.setPower(-0.2);
-        } while (findBottomBrightness() <= whiteLightBrightness &&  System.currentTimeMillis()-initTime <= 2000);
+        }
+        while (findBottomBrightness() <= whiteLightBrightness && System.currentTimeMillis() - initTime <= 2000);
 
         stopAllMotors();
 

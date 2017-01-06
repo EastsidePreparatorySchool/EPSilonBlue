@@ -93,6 +93,7 @@ public class Fire1Ball extends LinearOpMode {
          * The init() method of the hardware class does most of the work here
          */
         robot.init(hardwareMap);
+        robot.pusher.setPosition(0.8);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         beaconSensor = hardwareMap.colorSensor.get("beaconColor");
 

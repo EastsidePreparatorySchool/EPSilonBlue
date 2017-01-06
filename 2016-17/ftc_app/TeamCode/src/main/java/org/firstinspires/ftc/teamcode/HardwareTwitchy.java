@@ -34,8 +34,15 @@ public class HardwareTwitchy
     public Servo pusher         = null;
     public Servo picker = null;
 
+    // speed
+    final double slowSpeed = 0.2;
+    final double normalSpeed = 0.6;
+    final double fastSpeed = 1.0;
 
-    public final static double pusher_home = 0; // set starting positoin
+    final double slowTurn = 6;
+    final double normalTurn = 3;
+
+    public final static double beacon_home = 0.52; // set starting positoin
     public final static double pusher_MIN_RANGE  = 0; // lowest position
     public final static double pusher_MAX_RANGE  = 0.50;// highest posible
 
@@ -70,7 +77,8 @@ public class HardwareTwitchy
         leftMotor.setPower(0.0);
         cannon.setPower(0.0);
         rightMotor.setPower(0.0);
-        //pusher.setPosition(0.8);
+        pusher.setPosition(0.52);
+        picker.setPosition(0.52);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.

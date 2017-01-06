@@ -62,6 +62,7 @@ public class Fire1BallParkDelay  extends LinearOpMode{
          * The init() method of the hardware class does most of the work here
          */
         robot.init(hardwareMap);
+        robot.pusher.setPosition(0.8);
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         beaconSensor = hardwareMap.colorSensor.get("beaconColor");
 
@@ -118,9 +119,9 @@ public class Fire1BallParkDelay  extends LinearOpMode{
 
         while (opModeIsActive()) {
             sleep(20000);//20 second delay
+            robot.pusher.setPosition(0.8);
             gyroDrive(DRIVE_SPEED, 47, 0.0);      //forward 45 cm
             //shoot;
-            robot.pusher.setPosition(0.8);
             robot.picker.setPosition(0.75);
             robot.raiser.setPower(-0.25);
             sleep(878);// preliminary things to shoot(raising cannon. moving things out of way)
@@ -134,7 +135,6 @@ public class Fire1BallParkDelay  extends LinearOpMode{
 
             robot.raiser.setPower(0.0);
             robot.picker.setPosition(0.2);
-            robot.pusher.setPosition(0.35);// reset robot to start position
 
             gyroDrive(DRIVE_SPEED, 87, 0.0);// to hit cap ball ( 20 second delay is fine
 
