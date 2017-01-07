@@ -100,16 +100,35 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
+        try
+        {
+            File file = new File("/sdcard/FIRST/calibration.txt");
+            FileOutputStream fileoutput = new FileOutputStream(file);
+            PrintStream ps = new PrintStream(fileoutput);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        ps.close();
+                        fileoutput.close();
+                    }
+                },
+                10000
+        );
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             x = gamepad1.left_stick_x;
             y = gamepad1.left_stick_y;
-
+            ps.println("[x:" + x + "]");
+            ps.println("[y:" + y + "]");
 
 //            TODO: Control mapping
 /*
