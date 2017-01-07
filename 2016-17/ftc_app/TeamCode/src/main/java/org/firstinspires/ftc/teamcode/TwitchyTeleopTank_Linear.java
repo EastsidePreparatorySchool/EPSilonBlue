@@ -38,6 +38,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Timer;
 
 /**
@@ -100,14 +105,26 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
-        try
-        {
-            File file = new File("/sdcard/FIRST/calibration.txt");
-            FileOutputStream fileoutput = new FileOutputStream(file);
-            PrintStream ps = new PrintStream(fileoutput);
-        } catch (IOException e) {
+
+
+        final File file = new File("/sdcard/FIRST/calibration.txt");
+        final FileOutputStream fileoutput;
+        boolean suceeded = false;
+        try {
+            fileoutput = new FileOutputStream(file);
+            suceeded = true;
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
+            if (!suceeded) {
+                try {
+                    fileoutput = new FileOutputStream(file);
+                } catch (FileNotFoundException f){
+
+                }
+            }
+
         }
+        final PrintStream ps = new PrintStream(fileoutput);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -117,7 +134,11 @@ public class TwitchyTeleopTank_Linear extends LinearOpMode {
                     @Override
                     public void run() {
                         ps.close();
-                        fileoutput.close();
+                        try {
+                            fileoutput.close();
+                        } catch (IOException e){
+                            e.printStackTrace();
+                        }
                     }
                 },
                 10000
