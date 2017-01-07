@@ -57,7 +57,7 @@ import java.util.Timer;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name = "Twitchy: Telop POV", group = "Twitchy")
+@TeleOp(name = "Twitchy: Telop monitor", group = "Twitchy")
 
 public class TwitchyTeleopTank_Linear extends LinearOpMode {
 
