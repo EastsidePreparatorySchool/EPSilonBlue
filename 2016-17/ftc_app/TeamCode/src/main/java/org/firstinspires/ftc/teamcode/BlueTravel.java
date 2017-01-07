@@ -29,7 +29,7 @@ public class BlueTravel extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double DRIVE_SPEED = 0.5;     // Nominal speed for better accuracy.
+    static final double DRIVE_SPEED = 0.6;     // Nominal speed for better accuracy.
     static final double TURN_SPEED = 0.4;     // Nominal half speed for better accuracy.
 
     static final double HEADING_THRESHOLD = 1;      // As tight as we can make it with an integer gyro
@@ -40,6 +40,7 @@ public class BlueTravel extends LinearOpMode {
     //beacon selector variables:
     String MY_COLOR = "BLUE";
     ColorSensor beaconSensor;
+    
     ColorSensor bottomSensor;
     int whiteLightBrightness = 10;
     int beaconBrightness = 2;
@@ -125,18 +126,18 @@ public class BlueTravel extends LinearOpMode {
             //fireCannon();
             //fireCannon();
 
+            gyroTurn(TURN_SPEED,135);
+            gyroDrive(DRIVE_SPEED,-175, 135);// have traveled 1
+//            gyroTurn(TURN_SPEED,-0);
 //
-            gyroDrive(DRIVE_SPEED,71.44, 0.0);// have traveled 1.5 mats +10
-            gyroTurn(TURN_SPEED,-90);
-
-
-            // start of blue specific
-            gyroDrive(DRIVE_SPEED,138,-90);//+10
+//
+//            // start of blue specific
+//            gyroDrive(DRIVE_SPEED,138,-90);//+10
 
             gyroTurn(TURN_SPEED, 180);// should be up against wall now. needs fine tuning
 
             //TODO: place in the beacon code.
-            buttonCode(180.0);
+            //buttonCode(180.0);
         }
 
     }
@@ -160,7 +161,7 @@ public class BlueTravel extends LinearOpMode {
         robot.rightMotor.setPower(0);
     }
     public void driveTillDetect(){
-        int amountToMove = (int) (60.96 * COUNTS_PER_CENTIMETERS);// 60.96 = 2ft is one panel
+        int amountToMove = (int) (-60.96 * COUNTS_PER_CENTIMETERS);// 60.96 = 2ft is one panel
         int LeftTarget = robot.leftMotor.getCurrentPosition() + amountToMove;
         int RightTarget = robot.rightMotor.getCurrentPosition() + amountToMove;
 
