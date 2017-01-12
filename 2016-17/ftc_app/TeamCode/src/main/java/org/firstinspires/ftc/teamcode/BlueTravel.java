@@ -29,8 +29,8 @@ public class BlueTravel extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suite the specific robot drive train.
-    static final double DRIVE_SPEED = 0.6;     // Nominal speed for better accuracy.
-    static final double TURN_SPEED = 0.4;     // Nominal half speed for better accuracy.
+    static final double DRIVE_SPEED = 0.7;     // Nominal speed for better accuracy.
+    static final double TURN_SPEED = 0.5;     // Nominal half speed for better accuracy.
 
     static final double HEADING_THRESHOLD = 1;      // As tight as we can make it with an integer gyro
     static final double P_TURN_COEFF = 0.03;     // Larger is more responsive, but also less stable
@@ -56,7 +56,7 @@ public class BlueTravel extends LinearOpMode {
          * The init() method of the hardware class does most of the work here
          */
         robot.init(hardwareMap);
-        robot.pusher.setPosition(0.8);
+        robot.pusher.setPosition(0.52);
 
         gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");
         beaconSensor = hardwareMap.colorSensor.get("beaconColor");
@@ -123,11 +123,11 @@ public class BlueTravel extends LinearOpMode {
 
             gyroDrive(DRIVE_SPEED, 30, 0.0);      //forward 45 cm
             // fire cannon
-            //fireCannon();
+            // fireCannon();
             //fireCannon();
 
             gyroTurn(TURN_SPEED,135);
-            gyroDrive(DRIVE_SPEED,-175, 135);// have traveled 1
+            gyroDrive(DRIVE_SPEED,-210, 135);// have traveled 1
 //            gyroTurn(TURN_SPEED,-0);
 //
 //
@@ -135,9 +135,11 @@ public class BlueTravel extends LinearOpMode {
 //            gyroDrive(DRIVE_SPEED,138,-90);//+10
 
             gyroTurn(TURN_SPEED, 180);// should be up against wall now. needs fine tuning
-
-            //TODO: place in the beacon code.
-            //buttonCode(180.0);
+            gyroDrive(DRIVE_SPEED,30,180);
+//
+//            //TODO: place in the beacon code.
+            findAndPressButtom();
+            break;
         }
 
     }
@@ -146,11 +148,11 @@ public class BlueTravel extends LinearOpMode {
         beaconPosition = 0.2;
         beaconPosition = Range.clip(beaconPosition, 0.2, 0.8);
         robot.pusher.setPosition(beaconPosition);
-        sleep(500);
+        sleep(250);
         beaconPosition = 0.8;
         beaconPosition = Range.clip(beaconPosition, 0.2, 0.8);
         robot.pusher.setPosition(beaconPosition);
-        sleep(500);
+        sleep(250);
         beaconPosition = robot.beacon_home;
         beaconPosition = Range.clip(beaconPosition,0.2,0.8);
         robot.pusher.setPosition(beaconPosition);
@@ -173,6 +175,7 @@ public class BlueTravel extends LinearOpMode {
                 RightTarget > robot.rightMotor.getCurrentPosition() &&
                 (findBeaconColor().equals(MY_COLOR) == false ));
         stopAllMotors();
+        return;
 
     }
 
